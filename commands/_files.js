@@ -26,30 +26,45 @@ var botUsername = Bot.getProperty("bot_username") || "YourBot";
 var maxCount = Math.min(8, filesList.length);
 var text = "📁 <b>ALL STORED FILES (Showing " + maxCount + " of " + filesList.length + "):</b>\n\n";
 
-var buttons = [];
-
 // Show latest files
 for (var i = filesList.length - 1; i >= Math.max(0, filesList.length - maxCount); i--) {
   var code = filesList[i];
   var fileData = Bot.getProperty("file_" + code);
   if (fileData) {
     text += "🔹 <b>" + (fileData.name || "File") + "</b>\n" +
-      "   • Key: <code>" + code + "</code> | Size: " + fileData.size + "\n" +
-      "   • Downloads: <b>" + (fileData.downloads || 0) + "</b>\n" +
-      "   • Uploader: <code>" + (fileData.uploaded_by || "Admin") + "</code>\n" +
-      "   • Link: <code>https://t.me/" + botUsername + "?start=" + code + "</code>\n\n";
-
-    buttons.push([
-      { text: "⚙️ Manage " + code.substring(0, 10), callback_data: "/managefile " + code, style: "primary" },
-      { text: "📊 Traffic", callback_data: "/filetraffic " + code, style: "primary" },
-      { text: "🗑️ Delete", callback_data: "/deletefile " + code, style: "danger" }
-    ]);
+      "   • <b>Size:</b> " + fileData.size + " | <b>Downloads:</b> " + (fileData.downloads || 0) + " | <b>By:</b> <code>" + (fileData.uploaded_by || "Admin") + "</code>\n" +
+      "   • <b>Link:</b> <code>https://t.me/" + botUsername + "?start=" + code + "</code>\n" +
+      "   • ⚙️ /manage_" + code + "  📊 /traffic_" + code + "  🗑️ /del_" + code + "\n\n";
   }
 }
+
+text += "<i>💡 Tap any command link above to manage. Use the 3x3 menu below to navigate:</i>";
+
+var adminReplyKeyboard = [
+  [
+    { text: "📁 All Files", style: "primary" },
+    { text: "📈 All Traffic", style: "primary" },
+    { text: "🤖 My Bots", style: "primary" }
+  ],
+  [
+    { text: "📢 Force Channels", style: "primary" },
+    { text: "🔐 Button Locker", style: "primary" },
+    { text: "🛡️ Protect Content", style: "primary" }
+  ],
+  [
+    { text: "📦 Storage DB", style: "success" },
+    { text: "📢 Broadcast", style: "primary" },
+    { text: "🔙 Main Menu", style: "danger" }
+  ]
+];
 
 Api.sendMessage({
   chat_id: chat.chatid,
   text: text,
   parse_mode: "html",
-  reply_markup: { inline_keyboard: buttons }
+  reply_markup: {
+    keyboard: adminReplyKeyboard,
+    resize_keyboard: true,
+    is_persistent: true
+  }
 });

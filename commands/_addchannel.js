@@ -29,14 +29,14 @@ var text = "➕ <b>SELECT FORCE CHANNEL TYPE TO ADD:</b>\n\n" +
   "<i>Users with pending join requests will automatically be approved!</i>\n\n" +
   "👇 <i>Select an option below:</i>";
 
-var buttons = [
+var replyKeyboard = [
   [
-    { text: "🌐 Public", callback_data: "/addchannel_type public", style: "primary" },
-    { text: "🔒 Private", callback_data: "/addchannel_type private", style: "primary" },
-    { text: "📝 Request", callback_data: "/addchannel_type request", style: "primary" }
+    { text: "🌐 Public Channel", style: "primary" },
+    { text: "🔒 Private Channel", style: "primary" },
+    { text: "📝 Request Channel", style: "primary" }
   ],
   [
-    { text: "🔙 Cancel & Back", callback_data: "/fsubchannels", style: "danger" }
+    { text: "🔙 Main Menu", style: "danger" }
   ]
 ];
 
@@ -44,5 +44,9 @@ Api.sendMessage({
   chat_id: chat.chatid,
   text: text,
   parse_mode: "html",
-  reply_markup: { inline_keyboard: buttons }
+  reply_markup: {
+    keyboard: replyKeyboard,
+    resize_keyboard: true,
+    is_persistent: true
+  }
 });

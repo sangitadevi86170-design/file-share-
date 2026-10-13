@@ -29,9 +29,8 @@ if (userFiles.length === 0) {
   return;
 }
 
-var maxCount = Math.min(6, userFiles.length);
+var maxCount = Math.min(8, userFiles.length);
 var text = "📁 <b>MY UPLOADED FILES (Showing " + maxCount + " of " + userFiles.length + "):</b>\n\n";
-var buttons = [];
 
 for (var i = 0; i < maxCount; i++) {
   var code = userFiles[i];
@@ -39,23 +38,56 @@ for (var i = 0; i < maxCount; i++) {
   if (fileData) {
     var shareUrl = "https://t.me/" + botUsername + "?start=" + code;
     text += (i + 1) + ". 🔹 <b>" + (fileData.name || "File") + "</b>\n" +
-      "   • Key: <code>" + code + "</code> | Size: " + (fileData.size || "Unknown") + "\n" +
-      "   • Downloads: <b>" + (fileData.downloads || 0) + "</b>\n" +
-      "   • Link: <code>" + shareUrl + "</code>\n\n";
-
-    buttons.push([
-      { text: "⚙️ Manage " + (fileData.name || code).substring(0, 15), callback_data: "/managefile " + code, style: "primary" },
-      { text: "📊 Traffic", callback_data: "/filetraffic " + code, style: "primary" },
-      { text: "🗑️ Delete", callback_data: "/deletefile " + code, style: "danger" }
-    ]);
+      "   • <b>Size:</b> " + (fileData.size || "Unknown") + " | <b>Downloads:</b> " + (fileData.downloads || 0) + "\n" +
+      "   • <b>Link:</b> <code>" + shareUrl + "</code>\n" +
+      "   • ⚙️ /manage_" + code + "  📊 /traffic_" + code + "  🗑️ /del_" + code + "\n\n";
   }
 }
 
-text += "<i>Tap 'Manage' to rename, edit caption, or get share link. Tap 'Traffic' to see who downloaded your file!</i>";
+text += "<i>💡 Tap /manage_&lt;code&gt; above to rename or edit caption. Use the 3x3 reply keyboard below to navigate:</i>";
+
+var adminId = Bot.getProperty("admin_id") || "8710308658";
+var replyKeyboard = (user.telegramid == adminId) ? [
+  [
+    { text: "📁 My Files", style: "primary" },
+    { text: "📤 Upload File", style: "success" },
+    { text: "📊 My Traffic", style: "primary" }
+  ],
+  [
+    { text: "🤖 My Bots", style: "primary" },
+    { text: "📊 Bot Stats", style: "primary" },
+    { text: "ℹ️ Help", style: "primary" }
+  ],
+  [
+    { text: "👑 Admin Panel", style: "primary" },
+    { text: "📦 Storage DB", style: "success" },
+    { text: "🔙 Main Menu", style: "danger" }
+  ]
+] : [
+  [
+    { text: "📁 My Files", style: "primary" },
+    { text: "📤 Upload File", style: "success" },
+    { text: "📊 My Traffic", style: "primary" }
+  ],
+  [
+    { text: "🤖 My Bots", style: "primary" },
+    { text: "📊 Bot Stats", style: "primary" },
+    { text: "ℹ️ Help", style: "primary" }
+  ],
+  [
+    { text: "🤖 About Bot", style: "primary" },
+    { text: "🔄 Refresh", style: "success" },
+    { text: "🔙 Main Menu", style: "danger" }
+  ]
+];
 
 Api.sendMessage({
   chat_id: chat.chatid,
   text: text,
   parse_mode: "html",
-  reply_markup: { inline_keyboard: buttons }
+  reply_markup: {
+    keyboard: replyKeyboard,
+    resize_keyboard: true,
+    is_persistent: true
+  }
 });

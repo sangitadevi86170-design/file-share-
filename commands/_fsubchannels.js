@@ -26,31 +26,48 @@ var text = "📢 <b>FORCE SUBSCRIBE CHANNELS MANAGER</b>\n\n" +
   "━━━━━━━━━━━━━━━━━━━━\n" +
   "📋 <b>ACTIVE CHANNELS (" + channels.length + "):</b>\n\n";
 
-var buttons = [];
-
 if (channels.length === 0) {
-  text += "<i>No channels configured yet. Users can download files directly.</i>\n";
+  text += "<i>No channels configured yet. Users can download files directly.</i>\n\n";
 } else {
   for (var i = 0; i < channels.length; i++) {
     var ch = channels[i];
     var badge = (ch.type === "request") ? "📝 [REQUEST]" : ((ch.type === "private") ? "🔒 [PRIVATE]" : "🌐 [PUBLIC]");
     text += (i + 1) + ". " + badge + " <b>" + (ch.title || ch.id) + "</b>\n" +
       "   • ID: <code>" + ch.id + "</code>\n" +
-      "   • Link: " + ch.link + "\n\n";
-
-    buttons.push([
-      { text: "🗑️ Remove #" + (i + 1) + " (" + (ch.title || ch.id) + ")", callback_data: "/delchannel " + i, style: "danger" }
-    ]);
+      "   • Link: " + ch.link + "\n" +
+      "   • 🗑️ <b>Remove:</b> /delchannel_" + (i + 1) + "\n\n";
   }
 }
 
-buttons.push([
-  { text: "➕ Add Channel", callback_data: "/addchannel", style: "success" }
-]);
+text += "➕ <b>Add Channel:</b> /addchannel\n" +
+  "🗑️ <b>Remove All Channels:</b> /delchannel\n\n" +
+  "<i>Use the 3x3 menu buttons below to navigate:</i>";
+
+var adminReplyKeyboard = [
+  [
+    { text: "📁 All Files", style: "primary" },
+    { text: "📈 All Traffic", style: "primary" },
+    { text: "🤖 My Bots", style: "primary" }
+  ],
+  [
+    { text: "📢 Force Channels", style: "primary" },
+    { text: "🔐 Button Locker", style: "primary" },
+    { text: "🛡️ Protect Content", style: "primary" }
+  ],
+  [
+    { text: "📦 Storage DB", style: "success" },
+    { text: "📢 Broadcast", style: "primary" },
+    { text: "🔙 Main Menu", style: "danger" }
+  ]
+];
 
 Api.sendMessage({
   chat_id: chat.chatid,
   text: text,
   parse_mode: "html",
-  reply_markup: { inline_keyboard: buttons }
+  reply_markup: {
+    keyboard: adminReplyKeyboard,
+    resize_keyboard: true,
+    is_persistent: true
+  }
 });

@@ -130,8 +130,13 @@ if (hasMedia) {
   var totalFiles = (Bot.getProperty("total_files") || 0) + 1;
   Bot.setProperty("total_files", totalFiles, "integer");
 
-  var botUsername = Bot.getProperty("bot_username") || "YourBot";
+  var botUsername = Bot.getProperty("bot_username") || (bot && bot.name) || "FileShareBot";
+  if (!Bot.getProperty("bot_username")) {
+    Api.getMe({ on_result: "/onGetMe" });
+  }
+
   var shareUrl = "https://t.me/" + botUsername + "?start=" + fileCode;
+  var tgShareLink = "https://t.me/share/url?url=" + encodeURIComponent(shareUrl) + "&text=" + encodeURIComponent("📁 Get file: " + fileName);
 
   // 📦 PRIVATE STORAGE CHANNEL BACKUP (Default -1003772789858 or configured)
   var dbChannel = Bot.getProperty("db_channel") || "-1003772789858";
@@ -163,19 +168,47 @@ if (hasMedia) {
     "📦 <b>Size:</b> " + sizeText + "\n" +
     "🏷️ <b>Type:</b> " + fileType.toUpperCase() + "\n" +
     "🔑 <b>File Key:</b> <code>" + fileCode + "</code>\n\n" +
-    "🔗 <b>Shareable Link:</b>\n" +
+    "🔗 <b>Your Permanent Download Link:</b>\n" +
     "<code>" + shareUrl + "</code>\n\n" +
-    "<i>Anyone clicking this link will be able to download your file! You can manage this file or view who downloaded it anytime in <b>My Files</b>.</i>";
+    "🚀 <b>One-Click Share:</b>\n" +
+    tgShareLink + "\n\n" +
+    "⚙️ <b>Quick Actions:</b>\n" +
+    "• <b>Manage:</b> /manage_" + fileCode + "\n" +
+    "• <b>Downloaders:</b> /traffic_" + fileCode + "\n" +
+    "• <b>Delete:</b> /del_" + fileCode + "\n\n" +
+    "<i>Use the 3x3 menu buttons below to navigate:</i>";
 
-  var tgShareLink = "https://t.me/share/url?url=" + encodeURIComponent(shareUrl) + "&text=" + encodeURIComponent("📁 Get file: " + fileName);
-
-  var buttons = [
+  var replyKeyboard = (user.telegramid == adminId) ? [
     [
-      { text: "🚀 Share to Telegram", url: tgShareLink, style: "success" }
+      { text: "📁 My Files", style: "primary" },
+      { text: "📤 Upload File", style: "success" },
+      { text: "📊 My Traffic", style: "primary" }
     ],
     [
-      { text: "⚙️ Manage File", callback_data: "/managefile " + fileCode, style: "primary" },
-      { text: "🗑️ Delete File", callback_data: "/deletefile " + fileCode, style: "danger" }
+      { text: "🤖 My Bots", style: "primary" },
+      { text: "📊 Bot Stats", style: "primary" },
+      { text: "ℹ️ Help", style: "primary" }
+    ],
+    [
+      { text: "👑 Admin Panel", style: "primary" },
+      { text: "📦 Storage DB", style: "success" },
+      { text: "🔙 Main Menu", style: "danger" }
+    ]
+  ] : [
+    [
+      { text: "📁 My Files", style: "primary" },
+      { text: "📤 Upload File", style: "success" },
+      { text: "📊 My Traffic", style: "primary" }
+    ],
+    [
+      { text: "🤖 My Bots", style: "primary" },
+      { text: "📊 Bot Stats", style: "primary" },
+      { text: "ℹ️ Help", style: "primary" }
+    ],
+    [
+      { text: "🤖 About Bot", style: "primary" },
+      { text: "🔄 Refresh", style: "success" },
+      { text: "🔙 Main Menu", style: "danger" }
     ]
   ];
 
@@ -183,7 +216,11 @@ if (hasMedia) {
     chat_id: chat.chatid,
     text: successText,
     parse_mode: "html",
-    reply_markup: { inline_keyboard: buttons }
+    reply_markup: {
+      keyboard: replyKeyboard,
+      resize_keyboard: true,
+      is_persistent: true
+    }
   });
   return;
 }
@@ -196,11 +233,74 @@ if (incomingText.indexOf("/del_") === 0) {
   return;
 }
 
+if (incomingText.indexOf("/manage_") === 0) {
+  var codeToManage = incomingText.replace("/manage_", "");
+  Bot.runCommand("/managefile " + codeToManage);
+  return;
+}
+
+if (incomingText.indexOf("/traffic_") === 0) {
+  var codeToTraffic = incomingText.replace("/traffic_", "");
+  Bot.runCommand("/filetraffic " + codeToTraffic);
+  return;
+}
+
+if (incomingText.indexOf("/delbot_") === 0) {
+  var bIdx = incomingText.replace("/delbot_", "");
+  Bot.runCommand("/delbot " + bIdx);
+  return;
+}
+
+if (incomingText.indexOf("/delchannel_") === 0) {
+  var cIdx = incomingText.replace("/delchannel_", "");
+  Bot.runCommand("/delchannel " + cIdx);
+  return;
+}
+
 // If user sent unrecognized text
-Bot.sendMessage(
-  "🤖 <b>Welcome to File Share Bot!</b>\n\n" +
-  "• Send or forward any <b>file, document, video, or audio</b> to upload and generate a download link.\n" +
-  "• Use /myfiles to view and manage your uploaded files.\n" +
-  "• Use /help to see all commands.",
-  { parse_mode: "html" }
-);
+var defaultKeyboard = (user.telegramid == adminId) ? [
+  [
+    { text: "📁 My Files", style: "primary" },
+    { text: "📤 Upload File", style: "success" },
+    { text: "📊 My Traffic", style: "primary" }
+  ],
+  [
+    { text: "🤖 My Bots", style: "primary" },
+    { text: "📊 Bot Stats", style: "primary" },
+    { text: "ℹ️ Help", style: "primary" }
+  ],
+  [
+    { text: "👑 Admin Panel", style: "primary" },
+    { text: "📦 Storage DB", style: "success" },
+    { text: "🔙 Main Menu", style: "danger" }
+  ]
+] : [
+  [
+    { text: "📁 My Files", style: "primary" },
+    { text: "📤 Upload File", style: "success" },
+    { text: "📊 My Traffic", style: "primary" }
+  ],
+  [
+    { text: "🤖 My Bots", style: "primary" },
+    { text: "📊 Bot Stats", style: "primary" },
+    { text: "ℹ️ Help", style: "primary" }
+  ],
+  [
+    { text: "🤖 About Bot", style: "primary" },
+    { text: "🔄 Refresh", style: "success" },
+    { text: "🔙 Main Menu", style: "danger" }
+  ]
+];
+
+Api.sendMessage({
+  chat_id: chat.chatid,
+  text: "🤖 <b>Welcome to File Share Bot!</b>\n\n" +
+    "• Send or forward any <b>document, video, audio, or photo</b> to upload and get your link instantly.\n" +
+    "• Tap any of the 3x3 menu buttons below:",
+  parse_mode: "html",
+  reply_markup: {
+    keyboard: defaultKeyboard,
+    resize_keyboard: true,
+    is_persistent: true
+  }
+});

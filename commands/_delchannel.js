@@ -33,15 +33,19 @@ if (!param) {
   return;
 }
 
-// If index or ID provided
 var idx = parseInt(param);
-if (!isNaN(idx) && idx >= 0 && idx < channels.length) {
-  var removed = channels.splice(idx, 1)[0];
-  Bot.setProperty("fsub_channels", channels, "json");
-  Bot.setProperty("fsub_channel", channels.length > 0 ? channels[0].id : null, "string");
-  Bot.sendMessage("✅ <b>Removed Channel:</b> " + (removed.title || removed.id), { parse_mode: "html" });
-  Bot.runCommand("/fsubchannels");
-  return;
+if (!isNaN(idx)) {
+  if (idx > 0 && idx <= channels.length) {
+    idx = idx - 1;
+  }
+  if (idx >= 0 && idx < channels.length) {
+    var removed = channels.splice(idx, 1)[0];
+    Bot.setProperty("fsub_channels", channels, "json");
+    Bot.setProperty("fsub_channel", channels.length > 0 ? channels[0].id : null, "string");
+    Bot.sendMessage("✅ <b>Removed Channel:</b> " + (removed.title || removed.id), { parse_mode: "html" });
+    Bot.runCommand("/fsubchannels");
+    return;
+  }
 }
 
 // Match by ID

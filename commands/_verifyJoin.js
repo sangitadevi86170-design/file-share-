@@ -6,7 +6,7 @@
   folder: 
   answer: 
   keyboard: 
-  aliases: 
+  aliases: 🔄 Try Again, Try Again
   group: 
 CMD*/
 

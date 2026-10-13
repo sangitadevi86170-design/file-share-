@@ -22,30 +22,46 @@ var text = "🤖 <b>'MY BOTS' NETWORK MANAGER</b>\n\n" +
   "Manage all the Telegram bots shown to your users under the <b>🤖 My Bots</b> button.\n\n" +
   "📋 <b>ACTIVE BOTS (" + botsList.length + "):</b>\n\n";
 
-var buttons = [];
-
 if (botsList.length === 0) {
-  text += "<i>No bots added yet. Tap 'Add New Bot' below to start building your network list!</i>\n";
+  text += "<i>No bots added yet. Use /addbot to add a bot to your network!</i>\n\n";
 } else {
   for (var i = 0; i < botsList.length; i++) {
     var b = botsList[i];
     var title = b.title || b.username;
     text += (i + 1) + ". 🔹 <b>" + title + "</b> (" + b.username + ")\n" +
-      "   • Link: " + b.link + "\n\n";
-
-    buttons.push([
-      { text: "🗑️ Remove #" + (i + 1) + " (" + title + ")", callback_data: "/delbot " + i, style: "danger" }
-    ]);
+      "   • Link: " + b.link + "\n" +
+      "   • 🗑️ <b>Remove:</b> /delbot_" + (i + 1) + "\n\n";
   }
 }
 
-buttons.push([
-  { text: "➕ Add New Bot", callback_data: "/addbot", style: "success" }
-]);
+text += "➕ <b>Add New Bot:</b> /addbot\n\n" +
+  "<i>Use the 3x3 menu buttons below to navigate:</i>";
+
+var adminReplyKeyboard = [
+  [
+    { text: "📁 All Files", style: "primary" },
+    { text: "📈 All Traffic", style: "primary" },
+    { text: "🤖 My Bots", style: "primary" }
+  ],
+  [
+    { text: "📢 Force Channels", style: "primary" },
+    { text: "🔐 Button Locker", style: "primary" },
+    { text: "🛡️ Protect Content", style: "primary" }
+  ],
+  [
+    { text: "📦 Storage DB", style: "success" },
+    { text: "📢 Broadcast", style: "primary" },
+    { text: "🔙 Main Menu", style: "danger" }
+  ]
+];
 
 Api.sendMessage({
   chat_id: chat.chatid,
   text: text,
   parse_mode: "html",
-  reply_markup: { inline_keyboard: buttons }
+  reply_markup: {
+    keyboard: adminReplyKeyboard,
+    resize_keyboard: true,
+    is_persistent: true
+  }
 });

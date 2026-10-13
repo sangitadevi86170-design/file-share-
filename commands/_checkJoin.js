@@ -64,28 +64,37 @@ if (isMember) {
   return;
 }
 
-// User has not joined: Display lock screen with clickable button 'Join'
+// User has not joined: Display lock screen with channel links and Reply Keyboard
 User.setProperty("fsub_checking_index", 0, "integer");
 
 var text = "🔒 <b>Access Denied: Channel Membership Required!</b>\n\n" +
-  "You must join our channel to access this file.\n\n" +
-  "1️⃣ Click <b>Join</b> below\n" +
-  "2️⃣ Join or Send Request\n" +
-  "3️⃣ Return here and click <b>🔄 Try Again</b>";
-
-var buttons = [];
+  "You must join our channel to access and download this file:\n\n";
 
 for (var i = 0; i < channels.length; i++) {
   var ch = channels[i];
-  var btnText = (channels.length > 1) ? ("Join " + (i + 1)) : "Join";
-  buttons.push([{ text: btnText, url: ch.link, style: "primary" }]);
+  var label = (channels.length > 1) ? ("Channel " + (i + 1)) : "Join Channel";
+  text += (i + 1) + ". 👉 <a href=\"" + ch.link + "\"><b>" + label + " (" + (ch.title || "Join") + ")</b></a>\n" +
+    "   🔗 <code>" + ch.link + "</code>\n\n";
 }
 
-buttons.push([{ text: "🔄 Try Again", callback_data: "/verifyJoin", style: "success" }]);
+text += "<i>1️⃣ Click the channel link above\n" +
+  "2️⃣ Join or Send Join Request\n" +
+  "3️⃣ Tap <b>🔄 Try Again</b> on the keyboard below:</i>";
+
+var joinReplyKeyboard = [
+  [
+    { text: "🔄 Try Again", style: "success" },
+    { text: "🔙 Main Menu", style: "danger" }
+  ]
+];
 
 Api.sendMessage({
   chat_id: chat.chatid,
   text: text,
   parse_mode: "html",
-  reply_markup: { inline_keyboard: buttons }
+  reply_markup: {
+    keyboard: joinReplyKeyboard,
+    resize_keyboard: true,
+    is_persistent: true
+  }
 });

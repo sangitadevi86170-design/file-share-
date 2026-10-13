@@ -6,7 +6,7 @@
   folder: 
   answer: 
   keyboard: 
-  aliases: 
+  aliases: 🌐 Public Channel, 🔒 Private Channel, 📝 Request Channel
   group: 
 CMD*/
 
@@ -16,7 +16,15 @@ if (user.telegramid != adminId) {
   return;
 }
 
-var type = params ? params.trim().toLowerCase() : "public";
+var p = (params || message || "").toLowerCase();
+var type = "public";
+if (p.indexOf("request") !== -1) {
+  type = "request";
+} else if (p.indexOf("private") !== -1) {
+  type = "private";
+} else if (p.indexOf("public") !== -1) {
+  type = "public";
+}
 
 if (type === "public") {
   Bot.sendMessage(

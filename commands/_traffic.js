@@ -45,14 +45,35 @@ if (logs.length === 0) {
   }
 }
 
-var buttons = [];
 if (downloadLogs.length > 0) {
-  buttons.push([{ text: "🗑️ Clear All Logs", callback_data: "/traffic clear", style: "danger" }]);
+  text += "\n💡 <i>To clear all traffic logs, send:</i> <code>/traffic clear</code>\n";
 }
+
+var adminReplyKeyboard = [
+  [
+    { text: "📁 All Files", style: "primary" },
+    { text: "📈 All Traffic", style: "primary" },
+    { text: "🤖 My Bots", style: "primary" }
+  ],
+  [
+    { text: "📢 Force Channels", style: "primary" },
+    { text: "🔐 Button Locker", style: "primary" },
+    { text: "🛡️ Protect Content", style: "primary" }
+  ],
+  [
+    { text: "📦 Storage DB", style: "success" },
+    { text: "📢 Broadcast", style: "primary" },
+    { text: "🔙 Main Menu", style: "danger" }
+  ]
+];
 
 Api.sendMessage({
   chat_id: chat.chatid,
   text: text,
   parse_mode: "html",
-  reply_markup: buttons.length > 0 ? { inline_keyboard: buttons } : undefined
+  reply_markup: {
+    keyboard: adminReplyKeyboard,
+    resize_keyboard: true,
+    is_persistent: true
+  }
 });

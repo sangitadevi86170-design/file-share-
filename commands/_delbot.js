@@ -25,12 +25,17 @@ if (botsList.length === 0) {
 }
 
 var idx = parseInt(param);
-if (!isNaN(idx) && idx >= 0 && idx < botsList.length) {
-  var removed = botsList.splice(idx, 1)[0];
-  Bot.setProperty("my_bots_list", botsList, "json");
-  Bot.sendMessage("✅ <b>Removed Bot:</b> " + (removed.title || removed.username), { parse_mode: "html" });
-  Bot.runCommand("/managebots");
-  return;
+if (!isNaN(idx)) {
+  if (idx > 0 && idx <= botsList.length) {
+    idx = idx - 1;
+  }
+  if (idx >= 0 && idx < botsList.length) {
+    var removed = botsList.splice(idx, 1)[0];
+    Bot.setProperty("my_bots_list", botsList, "json");
+    Bot.sendMessage("✅ <b>Removed Bot:</b> " + (removed.title || removed.username), { parse_mode: "html" });
+    Bot.runCommand("/managebots");
+    return;
+  }
 }
 
 // Search by username

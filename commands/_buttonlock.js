@@ -6,7 +6,7 @@
   folder: 
   answer: 
   keyboard: 
-  aliases: 🔐 Button Locker, Button Locker, /locker
+  aliases: 🔐 Button Locker, Button Locker, /locker, 🔒 Lock Upload, 🔓 Unlock Upload, 🔒 Lock Download, 🔓 Unlock Download, 🔒 Lock Stats, 🔓 Unlock Stats, 🔒 Lock Help, 🔓 Unlock Help, 🔒 Lock About, 🔓 Unlock About
   group: 
 CMD*/
 
@@ -17,13 +17,25 @@ if (user.telegramid != adminId) {
 }
 
 var locked = Bot.getProperty("locked_buttons") || {};
-var toggleKey = params ? params.trim().toLowerCase() : "";
+var p = (params || message || "").toLowerCase();
+var toggleKey = "";
+
+if (p.indexOf("upload") !== -1 && (p.indexOf("lock") !== -1 || p.indexOf("unlock") !== -1 || p === "upload")) {
+  toggleKey = "upload";
+} else if (p.indexOf("download") !== -1 && (p.indexOf("lock") !== -1 || p.indexOf("unlock") !== -1 || p === "download")) {
+  toggleKey = "download";
+} else if (p.indexOf("stats") !== -1 && (p.indexOf("lock") !== -1 || p.indexOf("unlock") !== -1 || p === "stats")) {
+  toggleKey = "stats";
+} else if (p.indexOf("help") !== -1 && (p.indexOf("lock") !== -1 || p.indexOf("unlock") !== -1 || p === "help")) {
+  toggleKey = "help";
+} else if (p.indexOf("about") !== -1 && (p.indexOf("lock") !== -1 || p.indexOf("unlock") !== -1 || p === "about")) {
+  toggleKey = "about";
+}
 
 // If a toggle action was clicked
 if (toggleKey) {
   locked[toggleKey] = !locked[toggleKey];
   Bot.setProperty("locked_buttons", locked, "json");
-  Bot.sendMessage("🔄 <b>Updated Button Lock for:</b> <code>" + toggleKey.toUpperCase() + "</code> (Now " + (locked[toggleKey] ? "🔴 LOCKED" : "🟢 UNLOCKED") + ")", { parse_mode: "html" });
 }
 
 // Display current status of all button locks
@@ -40,17 +52,18 @@ var text = "🔐 <b>BUTTON LOCKER CONTROL PANEL</b>\n\n" +
   "• 📊 <b>Bot Stats Button:</b> " + statsStatus + "\n" +
   "• ℹ️ <b>Help Button:</b> " + helpStatus + "\n" +
   "• 🤖 <b>About Button:</b> " + aboutStatus + "\n\n" +
-  "👇 <i>Tap a button below to lock or unlock:</i>";
+  "👇 <i>Tap any reply button below to toggle lock/unlock:</i>";
 
-var buttons = [
+var lockerReplyKeyboard = [
   [
-    { text: (locked.upload ? "🔓 Unlock Upload" : "🔒 Lock Upload"), callback_data: "/buttonlock upload", style: (locked.upload ? "success" : "danger") },
-    { text: (locked.download ? "🔓 Unlock Download" : "🔒 Lock Download"), callback_data: "/buttonlock download", style: (locked.download ? "success" : "danger") },
-    { text: (locked.stats ? "🔓 Unlock Stats" : "🔒 Lock Stats"), callback_data: "/buttonlock stats", style: (locked.stats ? "success" : "danger") }
+    { text: (locked.upload ? "🔓 Unlock Upload" : "🔒 Lock Upload"), style: (locked.upload ? "success" : "danger") },
+    { text: (locked.download ? "🔓 Unlock Download" : "🔒 Lock Download"), style: (locked.download ? "success" : "danger") },
+    { text: (locked.stats ? "🔓 Unlock Stats" : "🔒 Lock Stats"), style: (locked.stats ? "success" : "danger") }
   ],
   [
-    { text: (locked.help ? "🔓 Unlock Help" : "🔒 Lock Help"), callback_data: "/buttonlock help", style: (locked.help ? "success" : "danger") },
-    { text: (locked.about ? "🔓 Unlock About" : "🔒 Lock About"), callback_data: "/buttonlock about", style: (locked.about ? "success" : "danger") }
+    { text: (locked.help ? "🔓 Unlock Help" : "🔒 Lock Help"), style: (locked.help ? "success" : "danger") },
+    { text: (locked.about ? "🔓 Unlock About" : "🔒 Lock About"), style: (locked.about ? "success" : "danger") },
+    { text: "🔙 Main Menu", style: "danger" }
   ]
 ];
 
@@ -58,5 +71,9 @@ Api.sendMessage({
   chat_id: chat.chatid,
   text: text,
   parse_mode: "html",
-  reply_markup: { inline_keyboard: buttons }
+  reply_markup: {
+    keyboard: lockerReplyKeyboard,
+    resize_keyboard: true,
+    is_persistent: true
+  }
 });
