@@ -10,16 +10,26 @@
   group: 
 CMD*/
 
+var adminId = Bot.getProperty("admin_id");
+var locked = Bot.getProperty("locked_buttons") || {};
+
+if (locked.stats && user.telegramid != adminId) {
+  Bot.sendMessage("🔒 <b>Feature Locked:</b> Statistics view is currently locked by the administrator.", { parse_mode: "html" });
+  return;
+}
+
 var userList = Bot.getProperty("user_list") || [];
 var totalFiles = Bot.getProperty("total_files") || 0;
-var fsubChannel = Bot.getProperty("fsub_channel") || "None (Disabled)";
+var channels = Bot.getProperty("fsub_channels") || [];
+var downloadLogs = Bot.getProperty("download_logs") || [];
 var botUsername = Bot.getProperty("bot_username") || "FileShareBot";
 
 var statsMessage = "📊 <b>BOT SYSTEM STATISTICS</b>\n\n" +
   "🤖 <b>Bot:</b> @" + botUsername + "\n" +
   "👥 <b>Total Users:</b> " + userList.length + "\n" +
   "📁 <b>Total Files Stored:</b> " + totalFiles + "\n" +
-  "📢 <b>Force Join Channel:</b> <code>" + fsubChannel + "</code>\n" +
+  "📢 <b>Force Join Channels:</b> " + channels.length + " configured\n" +
+  "📥 <b>Recent Download Events:</b> " + downloadLogs.length + "\n" +
   "⚡ <b>Platform:</b> Bots.Business Cloud (.bb)\n" +
   "🟢 <b>Status:</b> Online & Operational\n\n" +
   "<i>Powered by Bots.Business (BJS Engine)</i>";

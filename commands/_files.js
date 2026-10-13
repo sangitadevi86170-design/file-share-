@@ -1,6 +1,6 @@
 /*CMD
   command: /files
-  help: View list of recent stored files
+  help: View list of recent stored files with management controls
   need_reply: false
   auto_retry_time: 
   folder: 
@@ -23,25 +23,33 @@ if (filesList.length === 0) {
 }
 
 var botUsername = Bot.getProperty("bot_username") || "YourBot";
-var maxCount = Math.min(10, filesList.length);
-var text = "📁 <b>RECENT STORED FILES (Latest " + maxCount + " of " + filesList.length + "):</b>\n\n";
+var maxCount = Math.min(8, filesList.length);
+var text = "📁 <b>RECENT STORED FILES (Showing " + maxCount + " of " + filesList.length + "):</b>\n\n";
 
-// Show latest files (iterate from end of list)
+var buttons = [];
+
+// Show latest files
 for (var i = filesList.length - 1; i >= Math.max(0, filesList.length - maxCount); i--) {
   var code = filesList[i];
   var fileData = Bot.getProperty("file_" + code);
   if (fileData) {
     text += "🔹 <b>" + (fileData.name || "File") + "</b>\n" +
       "   • Code: <code>" + code + "</code> | Size: " + fileData.size + "\n" +
-      "   • Downloads: " + (fileData.downloads || 0) + "\n" +
+      "   • Downloads: <b>" + (fileData.downloads || 0) + "</b>\n" +
       "   • Link: <code>https://t.me/" + botUsername + "?start=" + code + "</code>\n\n";
+
+    buttons.push([
+      { text: "⚙️ Manage " + code, callback_data: "/managefile " + code },
+      { text: "🗑️ Delete", callback_data: "/deletefile " + code }
+    ]);
   }
 }
 
-text += "<i>To delete a file, use: /deletefile &lt;code&gt;</i>";
+buttons.push([{ text: "🔙 Back to Admin", callback_data: "/admin" }]);
 
 Api.sendMessage({
   chat_id: chat.chatid,
   text: text,
-  parse_mode: "html"
+  parse_mode: "html",
+  reply_markup: { inline_keyboard: buttons }
 });

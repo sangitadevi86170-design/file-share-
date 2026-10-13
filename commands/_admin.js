@@ -26,42 +26,52 @@ if (user.telegramid != adminId) {
   return;
 }
 
-// Gather stats
+// Gather live stats
 var userList = Bot.getProperty("user_list") || [];
 var totalUsers = userList.length;
 var totalFiles = Bot.getProperty("total_files") || 0;
-var fsubChannel = Bot.getProperty("fsub_channel") || "❌ Disabled";
-var publicUpload = Bot.getProperty("public_upload") ? "✅ Enabled" : "❌ Disabled (Admin Only)";
-var botUsername = Bot.getProperty("bot_username") || "Not Synced (Run /start)";
+var channels = Bot.getProperty("fsub_channels") || [];
+var downloadLogs = Bot.getProperty("download_logs") || [];
+var publicUpload = Bot.getProperty("public_upload") ? "✅ Open" : "🔒 Admin Only";
+var protectContent = Bot.getProperty("protect_content") ? "🛡️ Enabled (No Forward/Save)" : "🔓 Disabled";
+var lockedButtons = Bot.getProperty("locked_buttons") || {};
+var lockedCount = 0;
+for (var k in lockedButtons) {
+  if (lockedButtons[k]) lockedCount++;
+}
 
-var adminText = "👑 <b>ADMINISTRATOR CONTROL PANEL</b>\n\n" +
-  "📊 <b>Bot Overview:</b>\n" +
+var botUsername = Bot.getProperty("bot_username") || "FileShareBot";
+
+var adminText = "👑 <b>ULTIMATE ADMINISTRATOR CONTROL PANEL</b>\n\n" +
+  "📊 <b>Bot Health & Statistics:</b>\n" +
   "• <b>Admin ID:</b> <code>" + adminId + "</code>\n" +
   "• <b>Bot Handle:</b> @" + botUsername + "\n" +
-  "• <b>Total Users:</b> " + totalUsers + "\n" +
+  "• <b>Total Registered Users:</b> " + totalUsers + "\n" +
   "• <b>Total Stored Files:</b> " + totalFiles + "\n" +
-  "• <b>Force Subscribe Channel:</b> <code>" + fsubChannel + "</code>\n" +
-  "• <b>Public Upload:</b> " + publicUpload + "\n\n" +
-  "⚙️ <b>Quick Admin Commands:</b>\n" +
-  "• <code>/setchannel @YourChannel</code> — Set Force Join Channel\n" +
-  "• <code>/delchannel</code> — Remove Force Join Channel\n" +
-  "• <code>/broadcast &lt;text&gt;</code> — Send message to all users\n" +
-  "• <code>/files</code> — View recently uploaded files\n" +
-  "• <code>/deletefile &lt;code&gt;</code> — Delete a stored file\n" +
-  "• <code>/publicupload on</code> or <code>off</code> — Allow/block user uploads\n" +
-  "• <code>/stats</code> — Detailed bot statistics";
+  "• <b>Logged Downloads:</b> " + downloadLogs.length + "\n" +
+  "• <b>Force Channels:</b> " + channels.length + " (Public/Private/Request)\n" +
+  "• <b>Content Protection:</b> " + protectContent + "\n" +
+  "• <b>Public Upload:</b> " + publicUpload + "\n" +
+  "• <b>Locked Features:</b> " + lockedCount + " buttons locked\n\n" +
+  "🛠️ <b>Quick Control Actions:</b>\n" +
+  "Tap any option below to manage your bot:";
 
 var buttons = [
   [
-    { text: "📊 Full Stats", callback_data: "/stats" },
-    { text: "📁 Recent Files", callback_data: "/files" }
+    { text: "📁 File Manager & Rename", callback_data: "/files" },
+    { text: "📈 Traffic & Downloads", callback_data: "/traffic" }
   ],
   [
-    { text: "📢 Set Channel", callback_data: "/setchannel" },
-    { text: "❌ Disable FSUB", callback_data: "/delchannel" }
+    { text: "📢 Force Channels (3 Types)", callback_data: "/fsubchannels" },
+    { text: "🔐 Button Locker", callback_data: "/buttonlock" }
   ],
   [
+    { text: "🛡️ Content Protection", callback_data: "/protectcontent" },
     { text: "🔄 Toggle Public Upload", callback_data: "/publicupload" }
+  ],
+  [
+    { text: "📢 Broadcast Message", callback_data: "/broadcast" },
+    { text: "📊 Full Analytics", callback_data: "/stats" }
   ]
 ];
 

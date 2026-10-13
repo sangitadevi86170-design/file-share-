@@ -10,6 +10,13 @@
   group: 
 CMD*/
 
+// 0. Check if user is banned
+var bannedUsers = Bot.getProperty("banned_users") || [];
+if (bannedUsers.indexOf(user.telegramid) !== -1) {
+  Bot.sendMessage("⛔ <b>Access Denied:</b> You have been banned by the administrator from using this bot.", { parse_mode: "html" });
+  return;
+}
+
 // 1. Fetch bot's username automatically if not stored yet
 var botUsername = Bot.getProperty("bot_username");
 if (!botUsername) {
@@ -35,15 +42,23 @@ var fileCode = params;
 if (fileCode) {
   fileCode = fileCode.trim();
   
-  // Check if Force Subscription (FSUB) is enabled
-  var fsubChannel = Bot.getProperty("fsub_channel");
-  if (fsubChannel) {
+  // Check Force Subscribe Channels (Public, Private, or Request)
+  var channels = Bot.getProperty("fsub_channels") || [];
+  if (channels.length === 0) {
+    var singleCh = Bot.getProperty("fsub_channel");
+    if (singleCh) {
+      channels = [{ id: singleCh, link: (singleCh.indexOf("@") === 0 ? ("https://t.me/" + singleCh.replace("@", "")) : ("https://t.me/" + singleCh)), type: "public", title: singleCh }];
+    }
+  }
+
+  if (channels.length > 0) {
     // Store requested file in user session
     User.setProperty("requested_file", fileCode, "string");
+    User.setProperty("fsub_checking_index", 0, "integer");
     
-    // Check channel membership via Telegram Bot API
+    // Check first channel membership via Telegram Bot API
     Api.getChatMember({
-      chat_id: fsubChannel,
+      chat_id: channels[0].id,
       user_id: user.telegramid,
       on_result: "/checkJoin"
     });
@@ -63,20 +78,26 @@ var welcomeText = "👋 <b>Welcome, " + firstName + "!</b>\n\n" +
   "📌 <b>Features:</b>\n" +
   "• Supports Documents, Videos, Audios, Photos & APKs\n" +
   "• Direct permanent shareable deep links\n" +
-  "• Force Subscribe (FSUB) Channel protection\n" +
-  "• Built-in Admin Broadcast & Analytics\n\n" +
+  "• Multi-Channel Force Subscribe (Public, Private & Request Channels)\n" +
+  "• Real-time Download Traffic Tracker & Button Locker\n\n" +
   "👇 <i>Choose an option below to get started:</i>";
 
-var buttons = [
-  [
-    { text: "📤 Upload Info", callback_data: "/upload_info" },
-    { text: "📊 Bot Stats", callback_data: "/stats" }
-  ],
-  [
-    { text: "ℹ️ Help & Commands", callback_data: "/help" },
-    { text: "👑 Admin Panel", callback_data: "/admin" }
-  ]
-];
+var lockedButtons = Bot.getProperty("locked_buttons") || {};
+var buttons = [];
+
+var uploadText = lockedButtons.upload ? "🔒 Upload Info [Locked]" : "📤 Upload Info";
+var statsText = lockedButtons.stats ? "🔒 Bot Stats [Locked]" : "📊 Bot Stats";
+var helpText = lockedButtons.help ? "🔒 Help [Locked]" : "ℹ️ Help & Commands";
+
+buttons.push([
+  { text: uploadText, callback_data: "/upload_info" },
+  { text: statsText, callback_data: "/stats" }
+]);
+
+buttons.push([
+  { text: helpText, callback_data: "/help" },
+  { text: "👑 Admin Panel", callback_data: "/admin" }
+]);
 
 Api.sendMessage({
   chat_id: chat.chatid,

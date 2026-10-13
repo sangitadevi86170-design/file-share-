@@ -10,9 +10,17 @@
   group: 
 CMD*/
 
+// Check if user is banned
+var bannedUsers = Bot.getProperty("banned_users") || [];
+if (bannedUsers.indexOf(user.telegramid) !== -1) {
+  Bot.sendMessage("⛔ <b>Access Denied:</b> You are banned from using this bot.", { parse_mode: "html" });
+  return;
+}
+
 var adminId = Bot.getProperty("admin_id");
 var isUserAdmin = (user.telegramid == adminId);
 var publicUpload = Bot.getProperty("public_upload"); // true or false
+var lockedButtons = Bot.getProperty("locked_buttons") || {};
 
 // Check if message contains media
 var msg = (request && request.message) ? request.message : null;
@@ -25,6 +33,15 @@ var voice = msg ? msg.voice : null;
 var hasMedia = (doc || video || photo || audio || voice);
 
 if (hasMedia) {
+  // Check button locker for uploads
+  if (lockedButtons.upload && !isUserAdmin) {
+    Bot.sendMessage(
+      "🔒 <b>Uploads Locked:</b> File uploads are temporarily locked by the administrator.",
+      { parse_mode: "html" }
+    );
+    return;
+  }
+
   // Check permission: Admin or Public Upload enabled
   if (!isUserAdmin && !publicUpload) {
     Bot.sendMessage(
@@ -109,7 +126,6 @@ if (hasMedia) {
 
   // Construct share link
   var botUsername = Bot.getProperty("bot_username");
-  var botHandle = botUsername ? ("@" + botUsername) : "this bot";
   var shareUrl = botUsername 
     ? ("https://t.me/" + botUsername + "?start=" + fileCode) 
     : ("https://t.me/YourBot?start=" + fileCode);
@@ -123,14 +139,14 @@ if (hasMedia) {
     "<code>" + shareUrl + "</code>\n\n" +
     "<i>Share this link with anyone to let them access your file instantly!</i>";
 
-  var shareTextEncoded = encodeURIComponent("📁 Get this file: " + fileName + "\n" + shareUrl);
   var tgShareLink = "https://t.me/share/url?url=" + encodeURIComponent(shareUrl) + "&text=" + encodeURIComponent("📁 Get file: " + fileName);
 
   var buttons = [
     [
-      { text: "🚀 Share Link to Telegram", url: tgShareLink }
+      { text: "🚀 Share to Telegram", url: tgShareLink }
     ],
     [
+      { text: "⚙️ Manage File", callback_data: "/managefile " + fileCode },
       { text: "🗑️ Delete File", callback_data: "/deletefile " + fileCode }
     ]
   ];

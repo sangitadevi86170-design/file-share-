@@ -12,8 +12,14 @@ CMD*/
 
 var adminId = Bot.getProperty("admin_id");
 var isUserAdmin = (user.telegramid == adminId);
+var locked = Bot.getProperty("locked_buttons") || {};
 
-var helpText = "📖 <b>FILE SHARING BOT — HELP MANUAL</b>\n\n" +
+if (locked.help && !isUserAdmin) {
+  Bot.sendMessage("🔒 <b>Feature Locked:</b> Help guide is currently locked by the administrator.", { parse_mode: "html" });
+  return;
+}
+
+var helpText = "📖 <b>FILE SHARING BOT — COMPLETE MANUAL</b>\n\n" +
   "<b>👤 User Commands:</b>\n" +
   "• /start — Start the bot & view main menu\n" +
   "• /help — Show this help manual\n" +
@@ -22,14 +28,19 @@ var helpText = "📖 <b>FILE SHARING BOT — HELP MANUAL</b>\n\n" +
 
 if (isUserAdmin) {
   helpText += "<b>👑 Administrator Commands:</b>\n" +
-    "• /admin — Open the Admin Control Panel\n" +
-    "• /setchannel @channel — Set Force Subscribe Channel\n" +
-    "• /delchannel — Remove Force Subscribe Channel\n" +
-    "• /broadcast &lt;text&gt; — Broadcast message to all users\n" +
-    "• /files — List latest uploaded files\n" +
-    "• /deletefile &lt;code&gt; — Delete a file from storage\n" +
+    "• /admin — Open the Admin Control Dashboard\n" +
+    "• /files — View uploaded files & management links\n" +
+    "• /managefile &lt;code&gt; — Rename, edit caption or delete file\n" +
+    "• /fsubchannels — Manage Force Subscribe channels (Public, Private, Request)\n" +
+    "• /addchannel — Add new Public/Private/Request channel\n" +
+    "• /delchannel — Remove Force Subscribe channel\n" +
+    "• /traffic — Real-time user download & traffic tracker\n" +
+    "• /buttonlock — Lock / Unlock specific buttons & features\n" +
+    "• /protectcontent — Toggle forwarding & saving protection\n" +
+    "• /broadcast &lt;text&gt; — Send message to all users\n" +
     "• /publicupload on|off — Toggle user upload access\n" +
-    "• /setadmin &lt;id&gt; — Transfer admin ownership\n\n";
+    "• /ban &lt;user_id&gt; — Ban an abusive user\n" +
+    "• /unban &lt;user_id&gt; — Unban a user\n\n";
 }
 
 helpText += "💡 <b>How to get files?</b>\n" +

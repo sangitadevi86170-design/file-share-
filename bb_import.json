@@ -1,116 +1,41 @@
 {
   "name": "FileShareBot",
-  "version": "1.0",
+  "version": "2.0",
   "platform": "Bots.Business (.bb)",
-  "description": "Telegram File Sharing Bot with Force Subscribe, Admin Panel, Analytics & Broadcast",
+  "description": "Advanced File Sharing Telegram Bot with 3-Type Force Channels (Public, Private, Request), File Manager (Rename, Caption), Traffic Logs, Button Locker, and Content Protection.",
   "commands": [
-    {
-      "command": "/start",
-      "help": "Start the bot or retrieve a file via link",
-      "need_reply": false,
-      "file": "commands/_start.js"
-    },
-    {
-      "command": "*",
-      "help": "Catch-all command for media uploads (Document, Video, Photo, Audio, Voice)",
-      "need_reply": false,
-      "file": "commands/_catchAll.js"
-    },
-    {
-      "command": "/getFile",
-      "help": "Retrieve and send the requested file",
-      "need_reply": false,
-      "file": "commands/_getFile.js"
-    },
-    {
-      "command": "/checkJoin",
-      "help": "Callback for Force Subscribe membership check",
-      "need_reply": false,
-      "file": "commands/_checkJoin.js"
-    },
-    {
-      "command": "/verifyJoin",
-      "help": "Re-check Force Subscribe membership",
-      "need_reply": false,
-      "file": "commands/_verifyJoin.js"
-    },
-    {
-      "command": "/admin",
-      "help": "Open the Admin Control Panel",
-      "need_reply": false,
-      "file": "commands/_admin.js"
-    },
-    {
-      "command": "/setadmin",
-      "help": "Claim or transfer bot admin privileges",
-      "need_reply": false,
-      "file": "commands/_setadmin.js"
-    },
-    {
-      "command": "/setchannel",
-      "help": "Set Force Subscribe channel",
-      "need_reply": false,
-      "file": "commands/_setchannel.js"
-    },
-    {
-      "command": "/delchannel",
-      "help": "Disable Force Subscribe channel",
-      "need_reply": false,
-      "file": "commands/_delchannel.js"
-    },
-    {
-      "command": "/broadcast",
-      "help": "Send announcement to all registered users",
-      "need_reply": false,
-      "file": "commands/_broadcast.js"
-    },
-    {
-      "command": "/stats",
-      "help": "View bot analytics and total counts",
-      "need_reply": false,
-      "file": "commands/_stats.js"
-    },
-    {
-      "command": "/files",
-      "help": "List recent uploaded files",
-      "need_reply": false,
-      "file": "commands/_files.js"
-    },
-    {
-      "command": "/deletefile",
-      "help": "Delete a file by its code",
-      "need_reply": false,
-      "file": "commands/_deletefile.js"
-    },
-    {
-      "command": "/publicupload",
-      "help": "Toggle public upload access",
-      "need_reply": false,
-      "file": "commands/_publicupload.js"
-    },
-    {
-      "command": "/help",
-      "help": "View help guide and commands",
-      "need_reply": false,
-      "file": "commands/_help.js"
-    },
-    {
-      "command": "/about",
-      "help": "View information about this bot",
-      "need_reply": false,
-      "file": "commands/_about.js"
-    },
-    {
-      "command": "/upload_info",
-      "help": "Instructions on uploading files",
-      "need_reply": false,
-      "file": "commands/_upload_info.js"
-    },
-    {
-      "command": "/onGetMe",
-      "help": "Callback to automatically store bot username",
-      "need_reply": false,
-      "file": "commands/_onGetMe.js"
-    }
+    { "command": "/start", "help": "Start bot and handle deep links", "file": "commands/_start.js" },
+    { "command": "*", "help": "Catch-all handler for media uploads", "file": "commands/_catchAll.js" },
+    { "command": "/getFile", "help": "Dispatch file and log traffic", "file": "commands/_getFile.js" },
+    { "command": "/checkJoin", "help": "Verify multi-channel membership", "file": "commands/_checkJoin.js" },
+    { "command": "/verifyJoin", "help": "Re-check all required channels", "file": "commands/_verifyJoin.js" },
+    { "command": "/sentRequest", "help": "Confirm join request for Request Channels", "file": "commands/_sentRequest.js" },
+    { "command": "/admin", "help": "Ultimate Admin Control Dashboard", "file": "commands/_admin.js" },
+    { "command": "/files", "help": "List uploaded files with manage controls", "file": "commands/_files.js" },
+    { "command": "/managefile", "help": "Manage specific file (rename, caption, delete)", "file": "commands/_managefile.js" },
+    { "command": "/renamefile", "help": "Rename file prompt", "file": "commands/_renamefile.js" },
+    { "command": "/onRenameSave", "help": "Save renamed file name", "file": "commands/_onRenameSave.js" },
+    { "command": "/setcaption", "help": "Edit file caption prompt", "file": "commands/_setcaption.js" },
+    { "command": "/onCaptionSave", "help": "Save new file caption", "file": "commands/_onCaptionSave.js" },
+    { "command": "/deletefile", "help": "Delete file from storage", "file": "commands/_deletefile.js" },
+    { "command": "/fsubchannels", "help": "Manage Force Subscribe channels list", "file": "commands/_fsubchannels.js" },
+    { "command": "/addchannel", "help": "Select channel type (Public, Private, Request)", "file": "commands/_addchannel.js" },
+    { "command": "/addchannel_type", "help": "Channel type input prompt", "file": "commands/_addchannel_type.js" },
+    { "command": "/onSaveChannel", "help": "Save channel configuration", "file": "commands/_onSaveChannel.js" },
+    { "command": "/delchannel", "help": "Remove Force Subscribe channel", "file": "commands/_delchannel.js" },
+    { "command": "/traffic", "help": "Live user download & traffic tracker", "file": "commands/_traffic.js" },
+    { "command": "/buttonlock", "help": "Button Locker Control Panel", "file": "commands/_buttonlock.js" },
+    { "command": "/protectcontent", "help": "Toggle content forwarding/saving protection", "file": "commands/_protectcontent.js" },
+    { "command": "/broadcast", "help": "Broadcast announcement to all users", "file": "commands/_broadcast.js" },
+    { "command": "/publicupload", "help": "Toggle user upload permissions", "file": "commands/_publicupload.js" },
+    { "command": "/ban", "help": "Ban an abusive user", "file": "commands/_ban.js" },
+    { "command": "/unban", "help": "Unban a user", "file": "commands/_unban.js" },
+    { "command": "/setadmin", "help": "Claim or transfer admin privileges", "file": "commands/_setadmin.js" },
+    { "command": "/setchannel", "help": "Legacy single channel setter", "file": "commands/_setchannel.js" },
+    { "command": "/stats", "help": "System analytics and statistics", "file": "commands/_stats.js" },
+    { "command": "/help", "help": "Commands guide and manual", "file": "commands/_help.js" },
+    { "command": "/about", "help": "Bot information", "file": "commands/_about.js" },
+    { "command": "/upload_info", "help": "Instructions on uploading files", "file": "commands/_upload_info.js" },
+    { "command": "/onGetMe", "help": "Automatic bot username sync callback", "file": "commands/_onGetMe.js" }
   ]
 }

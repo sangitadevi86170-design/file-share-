@@ -13,6 +13,12 @@ CMD*/
 var publicUpload = Bot.getProperty("public_upload");
 var adminId = Bot.getProperty("admin_id");
 var isUserAdmin = (user.telegramid == adminId);
+var locked = Bot.getProperty("locked_buttons") || {};
+
+if (locked.upload && !isUserAdmin) {
+  Bot.sendMessage("🔒 <b>Uploads Locked:</b> File uploads are currently locked by the administrator.", { parse_mode: "html" });
+  return;
+}
 
 var infoText = "📤 <b>HOW TO UPLOAD & SHARE FILES:</b>\n\n" +
   "1️⃣ Simply <b>send or forward</b> any file directly to this bot:\n" +
