@@ -1,0 +1,36 @@
+/*CMD
+  command: /upload_info
+  help: Information and guide on how to upload files
+  need_reply: false
+  auto_retry_time: 
+  folder: 
+  answer: 
+  keyboard: 
+  aliases: 
+  group: 
+CMD*/
+
+var publicUpload = Bot.getProperty("public_upload");
+var adminId = Bot.getProperty("admin_id");
+var isUserAdmin = (user.telegramid == adminId);
+
+var infoText = "📤 <b>HOW TO UPLOAD & SHARE FILES:</b>\n\n" +
+  "1️⃣ Simply <b>send or forward</b> any file directly to this bot:\n" +
+  "   • 📁 Documents (PDF, ZIP, APK, RAR, TXT, etc.)\n" +
+  "   • 🎥 Videos (MP4, MKV, AVI, etc.)\n" +
+  "   • 🎵 Audio & Songs (MP3, WAV, etc.)\n" +
+  "   • 🖼️ Photos & Images (PNG, JPG)\n\n" +
+  "2️⃣ The bot will instantly generate a <b>permanent shareable link</b>!\n\n" +
+  "3️⃣ Copy the link and share it anywhere. Anyone clicking it will receive the file instantly.\n\n" +
+  "🔒 <b>Current Upload Status:</b> " + (publicUpload ? "✅ Open for everyone" : (isUserAdmin ? "👑 Admin Only (You are Admin)" : "🔒 Admin Only"));
+
+var buttons = [
+  [{ text: "🔙 Back to Home", callback_data: "/start" }]
+];
+
+Api.sendMessage({
+  chat_id: chat.chatid,
+  text: infoText,
+  parse_mode: "html",
+  reply_markup: { inline_keyboard: buttons }
+});

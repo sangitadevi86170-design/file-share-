@@ -1,0 +1,116 @@
+{
+  "name": "FileShareBot",
+  "version": "1.0",
+  "platform": "Bots.Business (.bb)",
+  "description": "Telegram File Sharing Bot with Force Subscribe, Admin Panel, Analytics & Broadcast",
+  "commands": [
+    {
+      "command": "/start",
+      "help": "Start the bot or retrieve a file via link",
+      "need_reply": false,
+      "file": "commands/_start.js"
+    },
+    {
+      "command": "*",
+      "help": "Catch-all command for media uploads (Document, Video, Photo, Audio, Voice)",
+      "need_reply": false,
+      "file": "commands/_catchAll.js"
+    },
+    {
+      "command": "/getFile",
+      "help": "Retrieve and send the requested file",
+      "need_reply": false,
+      "file": "commands/_getFile.js"
+    },
+    {
+      "command": "/checkJoin",
+      "help": "Callback for Force Subscribe membership check",
+      "need_reply": false,
+      "file": "commands/_checkJoin.js"
+    },
+    {
+      "command": "/verifyJoin",
+      "help": "Re-check Force Subscribe membership",
+      "need_reply": false,
+      "file": "commands/_verifyJoin.js"
+    },
+    {
+      "command": "/admin",
+      "help": "Open the Admin Control Panel",
+      "need_reply": false,
+      "file": "commands/_admin.js"
+    },
+    {
+      "command": "/setadmin",
+      "help": "Claim or transfer bot admin privileges",
+      "need_reply": false,
+      "file": "commands/_setadmin.js"
+    },
+    {
+      "command": "/setchannel",
+      "help": "Set Force Subscribe channel",
+      "need_reply": false,
+      "file": "commands/_setchannel.js"
+    },
+    {
+      "command": "/delchannel",
+      "help": "Disable Force Subscribe channel",
+      "need_reply": false,
+      "file": "commands/_delchannel.js"
+    },
+    {
+      "command": "/broadcast",
+      "help": "Send announcement to all registered users",
+      "need_reply": false,
+      "file": "commands/_broadcast.js"
+    },
+    {
+      "command": "/stats",
+      "help": "View bot analytics and total counts",
+      "need_reply": false,
+      "file": "commands/_stats.js"
+    },
+    {
+      "command": "/files",
+      "help": "List recent uploaded files",
+      "need_reply": false,
+      "file": "commands/_files.js"
+    },
+    {
+      "command": "/deletefile",
+      "help": "Delete a file by its code",
+      "need_reply": false,
+      "file": "commands/_deletefile.js"
+    },
+    {
+      "command": "/publicupload",
+      "help": "Toggle public upload access",
+      "need_reply": false,
+      "file": "commands/_publicupload.js"
+    },
+    {
+      "command": "/help",
+      "help": "View help guide and commands",
+      "need_reply": false,
+      "file": "commands/_help.js"
+    },
+    {
+      "command": "/about",
+      "help": "View information about this bot",
+      "need_reply": false,
+      "file": "commands/_about.js"
+    },
+    {
+      "command": "/upload_info",
+      "help": "Instructions on uploading files",
+      "need_reply": false,
+      "file": "commands/_upload_info.js"
+    },
+    {
+      "command": "/onGetMe",
+      "help": "Callback to automatically store bot username",
+      "need_reply": false,
+      "file": "commands/_onGetMe.js"
+    }
+  ]
+}
