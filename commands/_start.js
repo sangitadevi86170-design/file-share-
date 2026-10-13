@@ -1,12 +1,12 @@
 /*CMD
   command: /start
-  help: Start the bot or get a shared file via link
+  help: Start the bot, send persistent reply keyboard, or handle deep links
   need_reply: false
   auto_retry_time: 
   folder: 
   answer: 
   keyboard: 
-  aliases: 
+  aliases: 🔙 Main Menu, Main Menu
   group: 
 CMD*/
 
@@ -30,17 +30,17 @@ if (userList.indexOf(user.telegramid) === -1) {
   Bot.setProperty("user_list", userList, "json");
 }
 
-// 3. Auto-claim admin if no admin is configured yet
-var adminId = Bot.getProperty("admin_id");
-if (!adminId) {
-  Bot.setProperty("admin_id", user.telegramid, "string");
-  Bot.sendMessage("👑 <b>Admin Notice:</b> You have been automatically set as the bot Admin! (ID: <code>" + user.telegramid + "</code>)\nUse /admin to open the Admin Panel.", { parse_mode: "html" });
-}
+// 3. Configure Admin ID (Set to 8710308658)
+var adminId = "8710308658";
+Bot.setProperty("admin_id", adminId, "string");
 
-// 4. Handle Deep Linking (When user clicks a file link: /start FS_XXXX)
+// 4. Handle Deep Linking (When user clicks a file link: /start <file_code_or_file_id>)
 var fileCode = params;
 if (fileCode) {
   fileCode = fileCode.trim();
+  if (fileCode.indexOf("start=") === 0) {
+    fileCode = fileCode.replace("start=", "").trim();
+  }
   
   // Check Force Subscribe Channels (Public, Private, or Request)
   var channels = Bot.getProperty("fsub_channels") || [];
@@ -70,38 +70,43 @@ if (fileCode) {
   return;
 }
 
-// 5. Default Welcome Screen (When no file code is provided)
+// 5. Default Welcome Screen with Reply Keyboard
 var firstName = user.first_name || "Friend";
 var welcomeText = "👋 <b>Welcome, " + firstName + "!</b>\n\n" +
-  "🚀 <b>Welcome to the Premium File Sharing Bot!</b>\n" +
-  "I can store your files securely on Telegram and generate fast, permanent sharing links.\n\n" +
+  "🚀 <b>Welcome to File Share Bot!</b>\n" +
+  "You can upload, store, and share any file on Telegram with permanent download links.\n\n" +
   "📌 <b>Features:</b>\n" +
-  "• Supports Documents, Videos, Audios, Photos & APKs\n" +
-  "• Direct permanent shareable deep links\n" +
-  "• Multi-Channel Force Subscribe (Public, Private & Request Channels)\n" +
-  "• Real-time Download Traffic Tracker & Button Locker\n\n" +
-  "👇 <i>Choose an option below to get started:</i>";
+  "• Upload any Document, Video, Audio, or Photo\n" +
+  "• Direct permanent shareable download links\n" +
+  "• Live download tracking (see who downloaded your files)\n" +
+  "• Rename, edit captions, or delete your files anytime\n\n" +
+  "👇 <i>Use the menu buttons below to navigate:</i>";
 
-var lockedButtons = Bot.getProperty("locked_buttons") || {};
-var buttons = [];
+var replyKeyboard = [
+  [
+    { text: "📁 My Files" },
+    { text: "📤 Upload File" }
+  ],
+  [
+    { text: "📊 My Traffic" },
+    { text: "ℹ️ Help" }
+  ]
+];
 
-var uploadText = lockedButtons.upload ? "🔒 Upload Info [Locked]" : "📤 Upload Info";
-var statsText = lockedButtons.stats ? "🔒 Bot Stats [Locked]" : "📊 Bot Stats";
-var helpText = lockedButtons.help ? "🔒 Help [Locked]" : "ℹ️ Help & Commands";
-
-buttons.push([
-  { text: uploadText, callback_data: "/upload_info", style: "primary" },
-  { text: statsText, callback_data: "/stats", style: "primary" }
-]);
-
-buttons.push([
-  { text: helpText, callback_data: "/help", style: "primary" },
-  { text: "👑 Admin Panel", callback_data: "/admin", style: "success" }
-]);
+// Add Admin Panel button if caller is admin
+if (user.telegramid == adminId) {
+  replyKeyboard.push([
+    { text: "👑 Admin Panel" }
+  ]);
+}
 
 Api.sendMessage({
   chat_id: chat.chatid,
   text: welcomeText,
   parse_mode: "html",
-  reply_markup: { inline_keyboard: buttons }
+  reply_markup: {
+    keyboard: replyKeyboard,
+    resize_keyboard: true,
+    is_persistent: true
+  }
 });

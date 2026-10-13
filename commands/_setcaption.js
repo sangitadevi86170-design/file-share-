@@ -10,18 +10,12 @@
   group: 
 CMD*/
 
-var adminId = Bot.getProperty("admin_id");
-if (user.telegramid != adminId) {
-  Bot.sendMessage("⛔ <b>Access Denied: Admin only!</b>", { parse_mode: "html" });
-  return;
-}
-
 var input = params ? params.trim() : "";
 if (!input) {
   Bot.sendMessage(
     "📝 <b>Set Caption Usage:</b>\n\n" +
     "Send: <code>/setcaption &lt;file_code&gt; &lt;caption_text&gt;</code>\n" +
-    "Or click 'Edit Caption' from /managefile.",
+    "Or click 'Edit Caption' from /myfiles.",
     { parse_mode: "html" }
   );
   return;
@@ -29,29 +23,36 @@ if (!input) {
 
 var parts = input.split(" ");
 var fileCode = parts[0];
+var fileData = Bot.getProperty("file_" + fileCode);
+
+if (!fileData) {
+  Bot.sendMessage("⚠️ <b>File not found:</b> <code>" + fileCode + "</code>", { parse_mode: "html" });
+  return;
+}
+
+var adminId = Bot.getProperty("admin_id") || "8710308658";
+var isOwner = (fileData.uploaded_by == user.telegramid);
+var isAdmin = (user.telegramid == adminId);
+
+if (!isOwner && !isAdmin) {
+  Bot.sendMessage("⛔ <b>Access Denied:</b> You can only edit caption for files you uploaded.", { parse_mode: "html" });
+  return;
+}
 
 if (parts.length > 1) {
   var newCaption = parts.slice(1).join(" ");
-  var fileData = Bot.getProperty("file_" + fileCode);
-  if (!fileData) {
-    Bot.sendMessage("⚠️ <b>File not found:</b> <code>" + fileCode + "</code>", { parse_mode: "html" });
-    return;
+  if (newCaption.toLowerCase() === "clear" || newCaption.toLowerCase() === "none") {
+    newCaption = "";
   }
   fileData.caption = newCaption;
   Bot.setProperty("file_" + fileCode, fileData, "json");
   Bot.sendMessage(
     "✅ <b>Caption Updated Successfully!</b>\n\n" +
-    "• <b>Code:</b> <code>" + fileCode + "</code>\n" +
-    "• <b>Caption:</b> " + newCaption,
+    "• <b>Key:</b> <code>" + fileCode + "</code>\n" +
+    "• <b>Caption:</b> " + (newCaption ? ("<i>" + newCaption + "</i>") : "<i>None (Cleared)</i>"),
     { parse_mode: "html" }
   );
   Bot.runCommand("/managefile " + fileCode);
-  return;
-}
-
-var fileData = Bot.getProperty("file_" + fileCode);
-if (!fileData) {
-  Bot.sendMessage("⚠️ <b>File not found:</b> <code>" + fileCode + "</code>", { parse_mode: "html" });
   return;
 }
 

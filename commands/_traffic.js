@@ -6,13 +6,13 @@
   folder: 
   answer: 
   keyboard: 
-  aliases: /downloads
+  aliases: 📈 All Traffic, All Traffic, /downloads
   group: 
 CMD*/
 
-var adminId = Bot.getProperty("admin_id");
+var adminId = Bot.getProperty("admin_id") || "8710308658";
 if (user.telegramid != adminId) {
-  Bot.sendMessage("⛔ <b>Access Denied: Admin only!</b>", { parse_mode: "html" });
+  Bot.sendMessage("⛔ <b>Access Denied: Admin only!</b> Use <b>📊 My Traffic</b> to view your own downloads.", { parse_mode: "html" });
   return;
 }
 
@@ -24,7 +24,7 @@ if (params && params.trim() === "clear") {
 
 var logs = Bot.getProperty("download_logs") || [];
 
-var text = "📈 <b>LIVE USER DOWNLOAD & TRAFFIC LOGS</b>\n\n" +
+var text = "📈 <b>GLOBAL USER DOWNLOAD & TRAFFIC LOGS</b>\n\n" +
   "📊 <b>Total Download Events Logged:</b> " + logs.length + " (Showing latest 10)\n" +
   "━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n";
 
@@ -39,7 +39,7 @@ if (logs.length === 0) {
       "   • 💬 <b>Username:</b> " + (l.username || "No username") + "\n" +
       "   • 🆔 <b>Chat ID / User ID:</b> <code>" + (l.chat_id || l.user_id) + "</code>\n" +
       "   • 📁 <b>File:</b> <code>" + (l.file_name || "File") + "</code>\n" +
-      "   • 🔑 <b>Code:</b> <code>" + l.file_code + "</code> | " + (l.file_size || "") + " [" + (l.file_type || "") + "]\n" +
+      "   • 🔑 <b>Key:</b> <code>" + l.file_code + "</code> | " + (l.file_size || "") + " [" + (l.file_type || "") + "]\n" +
       "   • ⏰ <b>Downloaded At:</b> <i>" + l.time + "</i>\n" +
       "────────────────────────────\n";
   }

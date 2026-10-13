@@ -6,11 +6,11 @@
   folder: 
   answer: 
   keyboard: 
-  aliases: /channels
+  aliases: 📢 Force Channels, Force Channels, /channels
   group: 
 CMD*/
 
-var adminId = Bot.getProperty("admin_id");
+var adminId = Bot.getProperty("admin_id") || "8710308658";
 if (user.telegramid != adminId) {
   Bot.sendMessage("⛔ <b>Access Denied: Admin only!</b>", { parse_mode: "html" });
   return;

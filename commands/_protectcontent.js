@@ -6,11 +6,11 @@
   folder: 
   answer: 
   keyboard: 
-  aliases: /protect
+  aliases: 🛡️ Protect Content, Protect Content, /protect
   group: 
 CMD*/
 
-var adminId = Bot.getProperty("admin_id");
+var adminId = Bot.getProperty("admin_id") || "8710308658";
 if (user.telegramid != adminId) {
   Bot.sendMessage("⛔ <b>Access Denied: Admin only!</b>", { parse_mode: "html" });
   return;

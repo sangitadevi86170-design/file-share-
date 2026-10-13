@@ -6,11 +6,11 @@
   folder: 
   answer: 
   keyboard: 
-  aliases: 
+  aliases: 📢 Broadcast, Broadcast
   group: 
 CMD*/
 
-var adminId = Bot.getProperty("admin_id");
+var adminId = Bot.getProperty("admin_id") || "8710308658";
 if (user.telegramid != adminId) {
   Bot.sendMessage("⛔ <b>Access Denied: Admin only!</b>", { parse_mode: "html" });
   return;
@@ -20,7 +20,7 @@ var textToBroadcast = params;
 if (!textToBroadcast) {
   Bot.sendMessage(
     "📢 <b>Broadcast Command Usage:</b>\n\n" +
-    "Send: <code>/broadcast Your message goes here</code>\n\n" +
+    "Send: <code>/broadcast Your announcement text here</code>\n\n" +
     "Supports HTML formatting like <b>bold</b>, <i>italic</i>, and links.",
     { parse_mode: "html" }
   );

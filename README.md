@@ -1,97 +1,64 @@
-# 📁 Advanced Telegram File Sharing Bot for Bots.Business (.bb) v2.0
+# 📁 Advanced Multi-User Telegram File Sharing Bot (.bb) v3.0
 
-> **24/7 Cloud Hosted on Bots.Business • 3-Type Force Channels • File Manager & Rename • Traffic Logs • Button Locker • Content Protection**
-
-Yeh bot **Bots.Business (`.bb`)** platform ke liye banaya gaya ek powerful aur feature-packed **File Sharing Telegram Bot** hai. Isko run aur host karne ke liye aapko kisi bhi VPS ya server ki zaroorat nahi hai. Yeh direct **Bots.Business Cloud** par 24/7 bilkul free me host hota hai.
+> **Cloud Hosted on Bots.Business • Persistent Reply Keyboards • User Self-Management & Personal Traffic • 3-Type Force Channels • Private Storage Channel • Native Button Styles**
 
 ---
 
-## 🌟 Supercharged Features (सभी नए फीचर्स)
+## 👑 Configuration Details
+- **Admin ID:** `8710308658` (Preset)
+- **Deep Link Format:** `https://t.me/<BotUsername>?start=<File_ID>` *(e.g. `start=BQADAQADzB8AAjAeUEZYFkQvPofTKBYE`)*
+- **Button Type:** Telegram Native Persistent **Reply Keyboard** (Bottom of chat) + Colored **Inline Buttons** (`primary`, `success`, `danger`).
 
-### 1. 📁 File Manager & Editing (`/managefile`, `/files`)
-- **Rename Files:** Upload hone ke baad kisi bhi file ka naam badal sakte hain (`/renamefile`).
-- **Edit Captions:** File ke sath aane wala custom caption edit ya clear karein (`/setcaption`).
-- **File Management Card:** Har file ka code, size, media type, download count, uploaded date aur direct share link dekhein.
-- **Delete Files:** Kisi bhi file ko 1 click me storage se remove karein (`/deletefile`).
+---
 
-### 2. 📢 3-Type Force Subscribe Channels (`/fsubchannels`)
-Admin 3 alag-alag tarah ke channels add kar sakta hai:
-1. 🌐 **Public Channel:** Username se direct link (`@channel_username`).
-2. 🔒 **Private Channel:** Invite link (`https://t.me/+join_hash`) aur `-100...` ID.
-3. 📝 **Request Channel (Join Approval):** Jahan "Request to Join" enabled hota hai! User jab join request bhej deta hai, bot automatically use verify karke file unlock kar deta hai (`/sentRequest`).
+## 🌟 Key Capabilities (मुख्य फीचर्स)
 
-### 3. 📈 Download & Live Traffic Tracker (`/traffic`)
-- **Real-Time Logs:** Kis user ne kaunsi file kab download ki, uska poora record!
-  - 👤 User Name & @Username
-  - 🆔 Telegram ID
-  - 📁 File Name & Code
-  - ⏰ Exact Date & Timestamp
-- Ek click me logs refresh ya clear karne ka option.
+### 1. ⌨️ Persistent Reply Keyboard (स्क्रीन के नीचे परमानेंट बटन्स)
+- **Regular Users के लिए:**
+  ```text
+  [ 📁 My Files ]   [ 📤 Upload File ]
+  [ 📊 My Traffic ] [ ℹ️ Help ]
+  ```
+- **Admin (8710308658) के लिए:**
+  ```text
+  [ 📁 My Files ]   [ 📤 Upload File ]
+  [ 📊 My Traffic ] [ ℹ️ Help ]
+  [ 👑 Admin Panel ]
+  ```
+- **Admin Panel Menu:**
+  ```text
+  [ 📁 All Files ]     [ 📈 All Traffic ]
+  [ 📢 Force Channels ] [ 🔐 Button Locker ]
+  [ 🛡️ Protect Content ][ 📢 Broadcast ]
+  [ 🔙 Main Menu ]
+  ```
 
-### 4. 🔐 Button Locker System (`/buttonlock`)
-Admin kisi bhi button ko temporary **LOCK** ya **UNLOCK** kar sakta hai:
-- 📤 **Upload Lock:** Regular users ko file upload karne se rokna.
-- 📥 **Download Lock:** File downloads ko temporary pause karna.
-- 📊 **Stats Lock:** `/stats` button ko lock karna.
-- ℹ️ **Help Lock:** `/help` menu lock karna.
-- 🤖 **About Lock:** `/about` info lock karna.
+### 2. 👥 User Self-Management (हर यूज़र अपनी फ़ाइलें खुद मैनेज करे)
+- कोई भी यूज़र बॉट में कोई भी फ़ाइल (Document, Video, Audio, Photo) भेजकर तुरंत लिंक पा सकता है।
+- **📁 My Files (`/myfiles`):** यूज़र अपनी सभी अपलोड की गई फ़ाइलें देख सकता है।
+- **✏️ Rename & 📝 Caption:** यूज़र अपनी फ़ाइल का नाम और कैप्शन कभी भी बदल सकता है।
+- **📊 My Traffic (`/usertraffic`):** हर यूज़र यह देख सकता है कि **उसकी फ़ाइल किस-किसने डाउनलोड की**, उसका नाम, Chat ID, यूज़रनेम और सही समय!
+- **🗑️ Delete:** यूज़र अपनी फ़ाइल कभी भी डिलीट कर सकता है।
+
+### 3. 📦 Private Database Storage Channel (`/setdbchannel`)
+- एडमिन अपना एक प्राइवेट टेलीग्राम चैनल बना कर बॉट में सेट कर सकता है (`/setdbchannel -100xxxxxxxxxx`).
+- कोई भी यूज़र जब कोई फ़ाइल अपलोड करेगा, तो बॉट उस फ़ाइल की एक बैकअप कॉपी तुरंत आपके प्राइवेट डेटाबेस चैनल में स्टोर कर देगा और यूज़र को उसका यूनिक डाउनलोड लिंक दे देगा!
+
+### 4. 📢 3-Type Force Subscribe Channels (`/fsubchannels`)
+- 🌐 **Public Channel** (`@username`)
+- 🔒 **Private Channel** (`-100...` + invite link)
+- 📝 **Request Channel** (जॉइन रिक्वेस्ट भेजते ही फ़ाइल अनलॉक)
 
 ### 5. 🛡️ Content Protection (`/protectcontent`)
-- Telegram Bot API ka `protect_content` feature!
-- Agar yeh ENABLE hai, toh users bot se mili file ko **Forward** ya **Save to Gallery/Downloads** nahi kar sakte! (Anti-leak protection).
-
-### 6. 🚫 Ban & Unban System (`/ban`, `/unban`)
-- Kisi bhi spammer ya abusive user ki Telegram ID ban karein taaki wo bot use na kar sake.
+- Telegram Bot API का `protect_content: true` — यूज़र्स फ़ाइल को Forward या Phone Gallery में Save नहीं कर सकते।
 
 ---
 
-## 🚀 Setup & GitHub Push Guide
+## 🚀 Setup & GitHub Push Commands
 
-### Step 1: GitHub Par Push Karein
-Apne terminal / PowerShell me yeh run karein:
 ```powershell
 git remote add origin https://github.com/AAPKA_USERNAME/AAPKA_REPO_NAME.git
 git push -u origin main
 ```
 
-### Step 2: Bots.Business me Import Karein
-1. [bots.business](https://bots.business) me apna bot open karein.
-2. **Settings (⚙️) ➔ Git** me jayein.
-3. Wahan di gayi **Deploy Key** ko copy karke GitHub Repo ➔ **Settings ➔ Deploy keys ➔ Add deploy key** me paste karein (Allow write access tick karein).
-4. Bots.Business me apna Git link aur branch `main` daal kar **Import/Sync** dabayein.
-5. Sabhi **33 commands** automatic import ho jayenge!
-
----
-
-## 📜 Complete Command Sheet
-
-| Command | Category | Kaam |
-| :--- | :--- | :--- |
-| `/start` | User | Welcome screen & deep-link file dispatcher |
-| `/help` | User / Admin | Complete guide manual |
-| `/stats` | User / Admin | System stats (Users, Files, Channels) |
-| `/about` | User | Bot information |
-| `/upload_info` | User | Upload guide |
-| `/admin` | Admin | Complete visual control dashboard |
-| `/files` | Admin | Recent files with Manage & Delete buttons |
-| `/managefile <code>` | Admin | File edit dashboard (Rename, Caption, Delete) |
-| `/renamefile <code>` | Admin | File ka naam badalna |
-| `/setcaption <code>` | Admin | File ka caption set/change karna |
-| `/deletefile <code>` | Admin | File delete karna |
-| `/fsubchannels` | Admin | 3-Type Force Subscribe channels manager |
-| `/addchannel` | Admin | Public / Private / Request channel add karna |
-| `/delchannel` | Admin | Force channel hatana |
-| `/traffic` | Admin | Kisne kab kaunsi file download ki (Logs) |
-| `/buttonlock` | Admin | Specific buttons lock/unlock karna |
-| `/protectcontent` | Admin | Forwarding/Saving rokna (Anti-leech) |
-| `/broadcast <msg>` | Admin | Sabhi users ko announcement bhejna |
-| `/publicupload` | Admin | User upload toggle karna |
-| `/ban <id>` | Admin | User ko ban karna |
-| `/unban <id>` | Admin | User ko unban karna |
-| `/setadmin <id>` | Admin | Admin ownership transfer karna |
-
----
-
-## 💡 Bot Creator Pro-Tips
-- **Request Channels:** Telegram channels me jab aap "Approve New Members" on karte hain, tab `Request Channel` option select karein. User ke join request bhejte hi bot use allow kar dega!
-- **Channel Admin:** Force subscribe channels me Bot ko **Administrator** zaroor banayein taaki Telegram Bot API members check karne ki permission de.
+Bots.Business में **Settings ⚙️ ➔ Git** में जाकर **Sync / Import** कर लें!

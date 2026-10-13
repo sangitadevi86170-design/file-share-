@@ -6,11 +6,11 @@
   folder: 
   answer: 
   keyboard: 
-  aliases: 
+  aliases: ℹ️ Help, Help
   group: 
 CMD*/
 
-var adminId = Bot.getProperty("admin_id");
+var adminId = Bot.getProperty("admin_id") || "8710308658";
 var isUserAdmin = (user.telegramid == adminId);
 var locked = Bot.getProperty("locked_buttons") || {};
 
@@ -19,35 +19,33 @@ if (locked.help && !isUserAdmin) {
   return;
 }
 
-var helpText = "📖 <b>FILE SHARING BOT — COMPLETE MANUAL</b>\n\n" +
-  "<b>👤 User Commands:</b>\n" +
-  "• /start — Start the bot & view main menu\n" +
-  "• /help — Show this help manual\n" +
-  "• /stats — Check bot system statistics\n" +
-  "• /about — Information about this bot\n\n";
+var helpText = "📖 <b>FILE SHARING BOT — COMPLETE USER & ADMIN MANUAL</b>\n\n" +
+  "<b>👤 User Commands & Reply Buttons:</b>\n" +
+  "• 📁 <b>My Files:</b> View, rename, edit captions, and manage your uploaded files\n" +
+  "• 📊 <b>My Traffic:</b> See live list of who downloaded your files (Name, Chat ID, Time)\n" +
+  "• 📤 <b>Upload File:</b> Instructions on how to upload documents, videos, photos, music\n" +
+  "• /start — Main menu & activate persistent keyboard\n" +
+  "• /help — Show this help manual\n\n";
 
 if (isUserAdmin) {
   helpText += "<b>👑 Administrator Commands:</b>\n" +
-    "• /admin — Open the Admin Control Dashboard\n" +
-    "• /files — View uploaded files & management links\n" +
-    "• /managefile &lt;code&gt; — Rename, edit caption or delete file\n" +
-    "• /fsubchannels — Manage Force Subscribe channels (Public, Private, Request)\n" +
-    "• /addchannel — Add new Public/Private/Request channel\n" +
-    "• /delchannel — Remove Force Subscribe channel\n" +
-    "• /traffic — Real-time user download & traffic tracker\n" +
-    "• /buttonlock — Lock / Unlock specific buttons & features\n" +
-    "• /protectcontent — Toggle forwarding & saving protection\n" +
-    "• /broadcast &lt;text&gt; — Send message to all users\n" +
-    "• /publicupload on|off — Toggle user upload access\n" +
-    "• /ban &lt;user_id&gt; — Ban an abusive user\n" +
-    "• /unban &lt;user_id&gt; — Unban a user\n\n";
+    "• /admin — Open the Admin Dashboard\n" +
+    "• 📁 <b>All Files:</b> Manage every file uploaded on the bot\n" +
+    "• 📈 <b>All Traffic:</b> View global downloaders log across all files\n" +
+    "• 📢 <b>Force Channels:</b> Set Public, Private, or Request Channels\n" +
+    "• 🔐 <b>Button Locker:</b> Lock/unlock specific bot features\n" +
+    "• 🛡️ <b>Protect Content:</b> Toggle forwarding/saving prevention\n" +
+    "• /setdbchannel &lt;id&gt; — Set private storage backup channel\n" +
+    "• /broadcast &lt;msg&gt; — Broadcast message to all bot users\n" +
+    "• /ban &lt;id&gt; / /unban &lt;id&gt; — Ban/unban users\n\n";
 }
 
-helpText += "💡 <b>How to get files?</b>\n" +
+helpText += "💡 <b>How to download files?</b>\n" +
   "Click any valid link formatted as:\n" +
-  "<code>https://t.me/&lt;bot_username&gt;?start=&lt;file_code&gt;</code>";
+  "<code>https://t.me/&lt;bot_username&gt;?start=&lt;file_key&gt;</code>";
 
 var buttons = [
+  [{ text: "📁 Open My Files", callback_data: "/myfiles", style: "primary" }],
   [{ text: "🔙 Back to Home", callback_data: "/start", style: "primary" }]
 ];
 

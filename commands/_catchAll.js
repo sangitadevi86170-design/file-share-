@@ -1,6 +1,6 @@
 /*CMD
   command: *
-  help: Catch-all command to handle media uploads and unrecognized messages
+  help: Catch-all command to handle media uploads for all users and unrecognized messages
   need_reply: false
   auto_retry_time: 
   folder: 
@@ -10,16 +10,15 @@
   group: 
 CMD*/
 
-// Check if user is banned
+// 0. Check if user is banned
 var bannedUsers = Bot.getProperty("banned_users") || [];
 if (bannedUsers.indexOf(user.telegramid) !== -1) {
-  Bot.sendMessage("⛔ <b>Access Denied:</b> You have been banned by the administrator from using this bot.", { parse_mode: "html" });
+  Bot.sendMessage("⛔ <b>Access Denied:</b> You are banned from using this bot.", { parse_mode: "html" });
   return;
 }
 
-var adminId = Bot.getProperty("admin_id");
+var adminId = Bot.getProperty("admin_id") || "8710308658";
 var isUserAdmin = (user.telegramid == adminId);
-var publicUpload = Bot.getProperty("public_upload"); // true or false
 var lockedButtons = Bot.getProperty("locked_buttons") || {};
 
 // Check if message contains media
@@ -33,21 +32,10 @@ var voice = msg ? msg.voice : null;
 var hasMedia = (doc || video || photo || audio || voice);
 
 if (hasMedia) {
-  // Check button locker for uploads
+  // Check button locker for uploads (admin can always upload)
   if (lockedButtons.upload && !isUserAdmin) {
     Bot.sendMessage(
       "🔒 <b>Uploads Locked:</b> File uploads are temporarily locked by the administrator.",
-      { parse_mode: "html" }
-    );
-    return;
-  }
-
-  // Check permission: Admin or Public Upload enabled
-  if (!isUserAdmin && !publicUpload) {
-    Bot.sendMessage(
-      "⛔ <b>Access Denied: Upload Restricted!</b>\n\n" +
-      "Only the Bot Administrator is allowed to upload files.\n" +
-      "If you are the bot owner, send /setadmin to claim admin rights.",
       { parse_mode: "html" }
     );
     return;
@@ -97,9 +85,18 @@ if (hasMedia) {
   }
 
   // Generate unique file code
-  var randomCode = Math.random().toString(36).substring(2, 7).toUpperCase();
-  var timestampCode = (new Date().getTime() % 10000).toString(36).toUpperCase();
-  var fileCode = "FS_" + randomCode + timestampCode;
+  // Priority: Use Telegram file_id directly if <= 64 chars and URL-safe (e.g. BQADAQADzB8AAjAeUEZYFkQvPofTKBYE)
+  var fileCode = "";
+  var isValidTelegramId = (fileId && fileId.length <= 64 && /^[a-zA-Z0-9_-]+$/.test(fileId));
+  
+  if (isValidTelegramId) {
+    fileCode = fileId;
+  } else {
+    // Clean base64-style unique alphanumeric code
+    var r1 = Math.random().toString(36).substring(2, 10);
+    var r2 = (new Date().getTime()).toString(36);
+    fileCode = (r1 + r2).toUpperCase();
+  }
 
   // Save file record
   var fileData = {
@@ -110,13 +107,22 @@ if (hasMedia) {
     size: sizeText,
     caption: caption,
     uploaded_by: user.telegramid,
+    uploader_name: (user.first_name || "") + (user.last_name ? (" " + user.last_name) : ""),
+    uploader_username: user.username ? ("@" + user.username) : "None",
     uploaded_at: new Date().toISOString(),
     downloads: 0
   };
 
   Bot.setProperty("file_" + fileCode, fileData, "json");
 
-  // Update files list & total count
+  // Save to user's personal files list
+  var userFiles = User.getProperty("user_files") || [];
+  if (userFiles.indexOf(fileCode) === -1) {
+    userFiles.unshift(fileCode);
+    User.setProperty("user_files", userFiles, "json");
+  }
+
+  // Update global files list & total count
   var filesList = Bot.getProperty("files_list") || [];
   filesList.push(fileCode);
   Bot.setProperty("files_list", filesList, "json");
@@ -124,20 +130,42 @@ if (hasMedia) {
   var totalFiles = (Bot.getProperty("total_files") || 0) + 1;
   Bot.setProperty("total_files", totalFiles, "integer");
 
-  // Construct share link
-  var botUsername = Bot.getProperty("bot_username");
-  var shareUrl = botUsername 
-    ? ("https://t.me/" + botUsername + "?start=" + fileCode) 
-    : ("https://t.me/YourBot?start=" + fileCode);
+  var botUsername = Bot.getProperty("bot_username") || "YourBot";
+  var shareUrl = "https://t.me/" + botUsername + "?start=" + fileCode;
 
-  var successText = "✅ <b>File Saved Successfully!</b>\n\n" +
+  // 📦 PRIVATE STORAGE CHANNEL BACKUP (If db_channel is configured)
+  var dbChannel = Bot.getProperty("db_channel");
+  if (dbChannel) {
+    var dbCaption = "📁 <b>File Stored in Database Channel:</b>\n\n" +
+      "• <b>Name:</b> <code>" + fileName + "</code>\n" +
+      "• <b>Size:</b> " + sizeText + " [" + fileType.toUpperCase() + "]\n" +
+      "• <b>Code:</b> <code>" + fileCode + "</code>\n" +
+      "• <b>Uploaded By:</b> <code>" + user.telegramid + "</code> (" + (user.first_name || "") + " " + (user.username ? ("@" + user.username) : "") + ")\n" +
+      "• <b>Download Link:</b> " + shareUrl;
+
+    try {
+      if (fileType === "document") {
+        Api.sendDocument({ chat_id: dbChannel, document: fileId, caption: dbCaption, parse_mode: "html" });
+      } else if (fileType === "video") {
+        Api.sendVideo({ chat_id: dbChannel, video: fileId, caption: dbCaption, parse_mode: "html" });
+      } else if (fileType === "photo") {
+        Api.sendPhoto({ chat_id: dbChannel, photo: fileId, caption: dbCaption, parse_mode: "html" });
+      } else if (fileType === "audio") {
+        Api.sendAudio({ chat_id: dbChannel, audio: fileId, caption: dbCaption, parse_mode: "html" });
+      } else if (fileType === "voice") {
+        Api.sendVoice({ chat_id: dbChannel, voice: fileId, caption: dbCaption, parse_mode: "html" });
+      }
+    } catch (e) {}
+  }
+
+  var successText = "✅ <b>File Uploaded Successfully!</b>\n\n" +
     "📁 <b>Name:</b> <code>" + fileName + "</code>\n" +
     "📦 <b>Size:</b> " + sizeText + "\n" +
     "🏷️ <b>Type:</b> " + fileType.toUpperCase() + "\n" +
-    "🔑 <b>Code:</b> <code>" + fileCode + "</code>\n\n" +
+    "🔑 <b>File Key:</b> <code>" + fileCode + "</code>\n\n" +
     "🔗 <b>Shareable Link:</b>\n" +
     "<code>" + shareUrl + "</code>\n\n" +
-    "<i>Share this link with anyone to let them access your file instantly!</i>";
+    "<i>Anyone clicking this link will be able to download your file! You can manage this file or view who downloaded it anytime in <b>My Files</b>.</i>";
 
   var tgShareLink = "https://t.me/share/url?url=" + encodeURIComponent(shareUrl) + "&text=" + encodeURIComponent("📁 Get file: " + fileName);
 
@@ -147,6 +175,9 @@ if (hasMedia) {
     ],
     [
       { text: "⚙️ Manage File", callback_data: "/managefile " + fileCode, style: "primary" },
+      { text: "📁 My Files", callback_data: "/myfiles", style: "primary" }
+    ],
+    [
       { text: "🗑️ Delete File", callback_data: "/deletefile " + fileCode, style: "danger" }
     ]
   ];
@@ -170,8 +201,9 @@ if (incomingText.indexOf("/del_") === 0) {
 
 // If user sent unrecognized text
 Bot.sendMessage(
-  "🤖 <b>I am ready!</b>\n\n" +
-  "• Send or forward any <b>file, document, video, or audio</b> to generate a share link.\n" +
+  "🤖 <b>Welcome to File Share Bot!</b>\n\n" +
+  "• Send or forward any <b>file, document, video, or audio</b> to upload and generate a download link.\n" +
+  "• Use /myfiles to view and manage your uploaded files.\n" +
   "• Use /help to see all commands.",
   { parse_mode: "html" }
 );

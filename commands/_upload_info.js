@@ -6,12 +6,12 @@
   folder: 
   answer: 
   keyboard: 
-  aliases: 
+  aliases: 📤 Upload File, Upload File
   group: 
 CMD*/
 
 var publicUpload = Bot.getProperty("public_upload");
-var adminId = Bot.getProperty("admin_id");
+var adminId = Bot.getProperty("admin_id") || "8710308658";
 var isUserAdmin = (user.telegramid == adminId);
 var locked = Bot.getProperty("locked_buttons") || {};
 
@@ -28,9 +28,10 @@ var infoText = "📤 <b>HOW TO UPLOAD & SHARE FILES:</b>\n\n" +
   "   • 🖼️ Photos & Images (PNG, JPG)\n\n" +
   "2️⃣ The bot will instantly generate a <b>permanent shareable link</b>!\n\n" +
   "3️⃣ Copy the link and share it anywhere. Anyone clicking it will receive the file instantly.\n\n" +
-  "🔒 <b>Current Upload Status:</b> " + (publicUpload ? "✅ Open for everyone" : (isUserAdmin ? "👑 Admin Only (You are Admin)" : "🔒 Admin Only"));
+  "4️⃣ You can rename your files, change captions, or view who downloaded your files anytime in <b>📁 My Files</b>!";
 
 var buttons = [
+  [{ text: "📁 Open My Files", callback_data: "/myfiles", style: "primary" }],
   [{ text: "🔙 Back to Home", callback_data: "/start", style: "primary" }]
 ];
 
