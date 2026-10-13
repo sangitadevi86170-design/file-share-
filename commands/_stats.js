@@ -34,8 +34,47 @@ var statsMessage = "📊 <b>BOT SYSTEM STATISTICS</b>\n\n" +
   "🟢 <b>Status:</b> Online & Operational\n\n" +
   "<i>Powered by Bots.Business (BJS Engine)</i>";
 
+var replyKeyboard = (user.telegramid == adminId) ? [
+  [
+    { text: "📁 My Files", style: "primary" },
+    { text: "📤 Upload File", style: "success" },
+    { text: "📊 My Traffic", style: "primary" }
+  ],
+  [
+    { text: "🤖 My Bots", style: "primary" },
+    { text: "📊 Bot Stats", style: "primary" },
+    { text: "ℹ️ Help", style: "primary" }
+  ],
+  [
+    { text: "👑 Admin Panel", style: "primary" },
+    { text: "📦 Storage DB", style: "success" },
+    { text: "🔙 Main Menu", style: "danger" }
+  ]
+] : [
+  [
+    { text: "📁 My Files", style: "primary" },
+    { text: "📤 Upload File", style: "success" },
+    { text: "📊 My Traffic", style: "primary" }
+  ],
+  [
+    { text: "🤖 My Bots", style: "primary" },
+    { text: "📊 Bot Stats", style: "primary" },
+    { text: "ℹ️ Help", style: "primary" }
+  ],
+  [
+    { text: "🤖 About Bot", style: "primary" },
+    { text: "🔄 Refresh", style: "success" },
+    { text: "🔙 Main Menu", style: "danger" }
+  ]
+];
+
 Api.sendMessage({
   chat_id: chat.chatid,
   text: statsMessage,
-  parse_mode: "html"
+  parse_mode: "html",
+  reply_markup: {
+    keyboard: replyKeyboard,
+    resize_keyboard: true,
+    is_persistent: true
+  }
 });

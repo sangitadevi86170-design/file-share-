@@ -28,8 +28,47 @@ var aboutText = "🤖 <b>ABOUT FILE SHARE BOT (.BB)</b>\n\n" +
   "• <b>Controls:</b> File Manager (Rename, Captions) & Button Locker\n\n" +
   "✨ <i>Fast, 24/7 online, zero hosting costs!</i>";
 
+var replyKeyboard = (user.telegramid == adminId) ? [
+  [
+    { text: "📁 My Files", style: "primary" },
+    { text: "📤 Upload File", style: "success" },
+    { text: "📊 My Traffic", style: "primary" }
+  ],
+  [
+    { text: "🤖 My Bots", style: "primary" },
+    { text: "📊 Bot Stats", style: "primary" },
+    { text: "ℹ️ Help", style: "primary" }
+  ],
+  [
+    { text: "👑 Admin Panel", style: "primary" },
+    { text: "📦 Storage DB", style: "success" },
+    { text: "🔙 Main Menu", style: "danger" }
+  ]
+] : [
+  [
+    { text: "📁 My Files", style: "primary" },
+    { text: "📤 Upload File", style: "success" },
+    { text: "📊 My Traffic", style: "primary" }
+  ],
+  [
+    { text: "🤖 My Bots", style: "primary" },
+    { text: "📊 Bot Stats", style: "primary" },
+    { text: "ℹ️ Help", style: "primary" }
+  ],
+  [
+    { text: "🤖 About Bot", style: "primary" },
+    { text: "🔄 Refresh", style: "success" },
+    { text: "🔙 Main Menu", style: "danger" }
+  ]
+];
+
 Api.sendMessage({
   chat_id: chat.chatid,
   text: aboutText,
-  parse_mode: "html"
+  parse_mode: "html",
+  reply_markup: {
+    keyboard: replyKeyboard,
+    resize_keyboard: true,
+    is_persistent: true
+  }
 });

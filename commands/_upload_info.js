@@ -30,8 +30,47 @@ var infoText = "📤 <b>HOW TO UPLOAD & SHARE FILES:</b>\n\n" +
   "3️⃣ Copy the link and share it anywhere. Anyone clicking it will receive the file instantly.\n\n" +
   "4️⃣ You can rename your files, change captions, or view who downloaded your files anytime in <b>📁 My Files</b>!";
 
+var replyKeyboard = (user.telegramid == adminId) ? [
+  [
+    { text: "📁 My Files", style: "primary" },
+    { text: "📤 Upload File", style: "success" },
+    { text: "📊 My Traffic", style: "primary" }
+  ],
+  [
+    { text: "🤖 My Bots", style: "primary" },
+    { text: "📊 Bot Stats", style: "primary" },
+    { text: "ℹ️ Help", style: "primary" }
+  ],
+  [
+    { text: "👑 Admin Panel", style: "primary" },
+    { text: "📦 Storage DB", style: "success" },
+    { text: "🔙 Main Menu", style: "danger" }
+  ]
+] : [
+  [
+    { text: "📁 My Files", style: "primary" },
+    { text: "📤 Upload File", style: "success" },
+    { text: "📊 My Traffic", style: "primary" }
+  ],
+  [
+    { text: "🤖 My Bots", style: "primary" },
+    { text: "📊 Bot Stats", style: "primary" },
+    { text: "ℹ️ Help", style: "primary" }
+  ],
+  [
+    { text: "🤖 About Bot", style: "primary" },
+    { text: "🔄 Refresh", style: "success" },
+    { text: "🔙 Main Menu", style: "danger" }
+  ]
+];
+
 Api.sendMessage({
   chat_id: chat.chatid,
   text: infoText,
-  parse_mode: "html"
+  parse_mode: "html",
+  reply_markup: {
+    keyboard: replyKeyboard,
+    resize_keyboard: true,
+    is_persistent: true
+  }
 });

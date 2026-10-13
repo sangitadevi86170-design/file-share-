@@ -21,15 +21,41 @@ var adminId = Bot.getProperty("admin_id") || "8710308658";
 var isUserAdmin = (user.telegramid == adminId);
 var lockedButtons = Bot.getProperty("locked_buttons") || {};
 
-// Check if message contains media
-var msg = (request && request.message) ? request.message : null;
-var doc = msg ? msg.document : null;
-var video = msg ? msg.video : null;
-var photo = (msg && msg.photo && msg.photo.length > 0) ? msg.photo : null;
-var audio = msg ? msg.audio : null;
-var voice = msg ? msg.voice : null;
+// Comprehensive media detection across all Bots.Business BJS execution contexts
+var doc = (request && request.document) || 
+          (request && request.message && request.message.document) || 
+          (options && options.document) || 
+          (typeof message === "object" && message && message.document);
 
-var hasMedia = (doc || video || photo || audio || voice);
+var video = (request && request.video) || 
+            (request && request.message && request.message.video) || 
+            (options && options.video) || 
+            (typeof message === "object" && message && message.video);
+
+var photo = (request && request.photo) || 
+            (request && request.message && request.message.photo) || 
+            (options && options.photo) || 
+            (typeof message === "object" && message && message.photo);
+
+var audio = (request && request.audio) || 
+            (request && request.message && request.message.audio) || 
+            (options && options.audio) || 
+            (typeof message === "object" && message && message.audio);
+
+var voice = (request && request.voice) || 
+            (request && request.message && request.message.voice) || 
+            (options && options.voice) || 
+            (typeof message === "object" && message && message.voice);
+
+var animation = (request && request.animation) || 
+                (request && request.message && request.message.animation) || 
+                (options && options.animation);
+
+var caption = (request && request.caption) || 
+              (request && request.message && request.message.caption) || 
+              (typeof message === "string" && message ? message : "");
+
+var hasMedia = (doc || video || photo || audio || voice || animation);
 
 if (hasMedia) {
   // Check button locker for uploads (admin can always upload)
@@ -45,7 +71,6 @@ if (hasMedia) {
   var fileType = "";
   var fileName = "";
   var fileSize = 0;
-  var caption = msg.caption || "";
 
   if (doc) {
     fileType = "document";
@@ -57,11 +82,18 @@ if (hasMedia) {
     fileId = video.file_id;
     fileName = video.file_name || "Video.mp4";
     fileSize = video.file_size || 0;
+  } else if (animation) {
+    fileType = "animation";
+    fileId = animation.file_id;
+    fileName = animation.file_name || "Animation.gif";
+    fileSize = animation.file_size || 0;
   } else if (photo) {
     fileType = "photo";
-    fileId = photo[photo.length - 1].file_id;
+    var photoArr = Array.isArray(photo) ? photo : [photo];
+    var bestPhoto = photoArr[photoArr.length - 1];
+    fileId = bestPhoto.file_id;
     fileName = "Photo.jpg";
-    fileSize = photo[photo.length - 1].file_size || 0;
+    fileSize = bestPhoto.file_size || 0;
   } else if (audio) {
     fileType = "audio";
     fileId = audio.file_id;
