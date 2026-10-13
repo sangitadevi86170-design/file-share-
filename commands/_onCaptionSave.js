@@ -1,7 +1,7 @@
 /*CMD
   command: /onCaptionSave
   help: Save the new file caption received from user
-  need_reply: true
+  need_reply: false
   auto_retry_time: 
   folder: 
   answer: 
@@ -11,14 +11,31 @@
 CMD*/
 
 var fileCode = User.getProperty("caption_code");
+var input = (message || "").trim();
+
+// Check for cancel / navigation buttons
+if (!input || input === "/cancel" || input.indexOf("Cancel") !== -1 || input.indexOf("My Files") !== -1) {
+  User.setProperty("caption_code", null, "string");
+  Bot.sendMessage("❌ Caption edit cancelled.", { parse_mode: "html" });
+  Bot.runCommand("/myfiles");
+  return;
+}
+if (input.indexOf("Menu") !== -1) {
+  User.setProperty("caption_code", null, "string");
+  Bot.runCommand("/start");
+  return;
+}
+
 if (!fileCode) {
   Bot.sendMessage("⚠️ No active file caption being edited.");
+  Bot.runCommand("/myfiles");
   return;
 }
 
 var fileData = Bot.getProperty("file_" + fileCode);
 if (!fileData) {
   Bot.sendMessage("⚠️ File no longer exists.");
+  Bot.runCommand("/myfiles");
   return;
 }
 
@@ -31,7 +48,7 @@ if (!isOwner && !isAdmin) {
   return;
 }
 
-var newCaption = message ? message.trim() : "";
+var newCaption = input;
 if (newCaption.toLowerCase() === "clear" || newCaption.toLowerCase() === "none") {
   newCaption = "";
 }

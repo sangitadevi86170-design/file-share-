@@ -18,32 +18,60 @@ if (user.telegramid != adminId) {
 
 var channelInput = params ? params.trim() : "";
 
-if (!channelInput) {
+var navKeyboard = [
+  [
+    { text: "👑 Admin Panel", style: "primary" },
+    { text: "🔙 Main Menu", style: "danger" }
+  ]
+];
+
+if (!channelInput || channelInput === "Storage DB" || channelInput === "📦 Storage DB") {
   var currentDb = Bot.getProperty("db_channel") || "-1003772789858";
-  Bot.sendMessage(
-    "📦 <b>DATABASE / STORAGE CHANNEL SETUP:</b>\n\n" +
-    "• <b>Current Channel ID:</b> <code>" + currentDb + "</code>\n\n" +
-    "To change the storage channel:\n" +
-    "1️⃣ Add this bot as an <b>Admin</b> in that channel with 'Post Messages' permission.\n" +
-    "2️⃣ Send: <code>/setdbchannel &lt;Channel_ID&gt;</code>\n\n" +
-    "<i>Example:</i> <code>/setdbchannel -1003772789858</code>\n" +
-    "<i>To disable:</i> <code>/setdbchannel off</code>",
-    { parse_mode: "html" }
-  );
+  Api.sendMessage({
+    chat_id: chat.chatid,
+    text: "📦 <b>DATABASE / STORAGE CHANNEL SETUP:</b>\n\n" +
+      "• <b>Current Backup Channel ID:</b> <code>" + currentDb + "</code>\n\n" +
+      "Every uploaded file is automatically saved into this channel as a permanent database backup.\n\n" +
+      "<b>To change the storage channel:</b>\n" +
+      "1️⃣ Add this bot as an <b>Admin</b> in your channel with 'Post Messages' permission.\n" +
+      "2️⃣ Send command: <code>/setdbchannel -100xxxxxxxxxx</code>\n\n" +
+      "<i>To disable backup:</i> <code>/setdbchannel off</code>",
+    parse_mode: "html",
+    reply_markup: {
+      keyboard: navKeyboard,
+      resize_keyboard: true,
+      is_persistent: true
+    }
+  });
   return;
 }
 
 if (channelInput.toLowerCase() === "off" || channelInput.toLowerCase() === "disable" || channelInput.toLowerCase() === "clear") {
   Bot.setProperty("db_channel", null, "string");
-  Bot.sendMessage("✅ <b>Database Channel Disabled!</b> Files will no longer be forwarded to a private channel.", { parse_mode: "html" });
+  Api.sendMessage({
+    chat_id: chat.chatid,
+    text: "✅ <b>Database Channel Disabled!</b>\nFiles will no longer be forwarded to a backup channel.",
+    parse_mode: "html",
+    reply_markup: {
+      keyboard: navKeyboard,
+      resize_keyboard: true,
+      is_persistent: true
+    }
+  });
   return;
 }
 
 Bot.setProperty("db_channel", channelInput, "string");
 
-Bot.sendMessage(
-  "✅ <b>Database Channel Updated Successfully!</b>\n\n" +
-  "• <b>Storage Channel ID:</b> <code>" + channelInput + "</code>\n\n" +
-  "Every file uploaded will automatically be backed up to this channel!",
-  { parse_mode: "html" }
-);
+Api.sendMessage({
+  chat_id: chat.chatid,
+  text: "✅ <b>Database Channel Updated Successfully!</b>\n\n" +
+    "• <b>Storage Channel ID:</b> <code>" + channelInput + "</code>\n\n" +
+    "Every file uploaded will now automatically be backed up to this channel!",
+  parse_mode: "html",
+  reply_markup: {
+    keyboard: navKeyboard,
+    resize_keyboard: true,
+    is_persistent: true
+  }
+});

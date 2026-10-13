@@ -36,6 +36,8 @@ var replyKeyboard = [
     { text: "📝 Request Channel", style: "primary" }
   ],
   [
+    { text: "🔙 Back to Channels", style: "primary" },
+    { text: "👑 Admin Panel", style: "primary" },
     { text: "🔙 Main Menu", style: "danger" }
   ]
 ];

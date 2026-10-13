@@ -6,7 +6,7 @@
   folder: 
   answer: 
   keyboard: 
-  aliases: 📢 Force Channels, Force Channels, /channels
+  aliases: 📢 Force Channels, Force Channels, /channels, 🔙 Back to Channels, Back to Channels
   group: 
 CMD*/
 
@@ -39,23 +39,17 @@ if (channels.length === 0) {
   }
 }
 
-text += "➕ <b>Add Channel:</b> /addchannel\n" +
-  "🗑️ <b>Remove All Channels:</b> /delchannel";
+text += "👇 <i>Tap an option below to add a channel:</i>";
 
-var adminReplyKeyboard = [
+var fsubReplyKeyboard = [
   [
-    { text: "📁 All Files", style: "primary" },
-    { text: "📈 All Traffic", style: "primary" },
-    { text: "📢 Force Channels", style: "primary" }
+    { text: "🌐 Public Channel", style: "primary" },
+    { text: "🔒 Private Channel", style: "primary" },
+    { text: "📝 Request Channel", style: "primary" }
   ],
   [
-    { text: "🔐 Button Locker", style: "primary" },
-    { text: "🛡️ Protect Content", style: "primary" },
-    { text: "📦 Storage DB", style: "success" }
-  ],
-  [
-    { text: "💬 Set Support", style: "primary" },
-    { text: "📢 Broadcast", style: "primary" },
+    { text: "🗑️ Remove All Channels", style: "danger" },
+    { text: "👑 Admin Panel", style: "primary" },
     { text: "🔙 Main Menu", style: "danger" }
   ]
 ];
@@ -65,7 +59,7 @@ Api.sendMessage({
   text: text,
   parse_mode: "html",
   reply_markup: {
-    keyboard: adminReplyKeyboard,
+    keyboard: fsubReplyKeyboard,
     resize_keyboard: true,
     is_persistent: true
   }

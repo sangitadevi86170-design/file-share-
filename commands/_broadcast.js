@@ -16,17 +16,36 @@ if (user.telegramid != adminId) {
   return;
 }
 
-var textToBroadcast = params;
-if (!textToBroadcast) {
-  Bot.sendMessage(
-    "📢 <b>Broadcast Command Usage:</b>\n\n" +
-    "Send: <code>/broadcast Your announcement text here</code>\n\n" +
-    "Supports HTML formatting like <b>bold</b>, <i>italic</i>, and links.",
-    { parse_mode: "html" }
-  );
+var textToBroadcast = params ? params.trim() : "";
+
+// If triggered from button or empty, ask for broadcast content
+if (!textToBroadcast || textToBroadcast === "Broadcast" || textToBroadcast === "📢 Broadcast") {
+  var navKeyboard = [
+    [
+      { text: "👑 Admin Panel", style: "primary" },
+      { text: "🔙 Main Menu", style: "danger" }
+    ]
+  ];
+
+  Api.sendMessage({
+    chat_id: chat.chatid,
+    text: "📢 <b>BROADCAST ANNOUNCEMENT</b>\n\n" +
+      "Please send the message you want to broadcast to all registered bot users:\n\n" +
+      "• Supports <b>bold</b>, <i>italic</i>, and <a href=\"https://t.me\">links</a>.\n\n" +
+      "<i>👇 Send your message now, or tap [ 👑 Admin Panel ] to cancel:</i>",
+    parse_mode: "html",
+    reply_markup: {
+      keyboard: navKeyboard,
+      resize_keyboard: true,
+      is_persistent: true
+    }
+  });
+
+  Bot.run({ command: "/onBroadcastInput" });
   return;
 }
 
+// If explicit param was given (e.g. /broadcast Hello everyone)
 var userList = Bot.getProperty("user_list") || [];
 if (userList.length === 0) {
   Bot.sendMessage("⚠️ No registered users found to broadcast to.");

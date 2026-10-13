@@ -57,10 +57,26 @@ if (parts.length > 1) {
 }
 
 User.setProperty("caption_code", fileCode, "string");
-Bot.sendMessage(
-  "📝 <b>Editing Caption For:</b> <code>" + (fileData.name || fileCode) + "</code>\n\n" +
-  "Current Caption: <i>" + (fileData.caption || "None") + "</i>\n\n" +
-  "Please send the <b>New Caption</b> now (or send <code>clear</code> to remove caption):",
-  { parse_mode: "html" }
-);
-Bot.runCommand("/onCaptionSave");
+
+var navKeyboard = [
+  [
+    { text: "📁 My Files", style: "primary" },
+    { text: "🔙 Main Menu", style: "danger" }
+  ]
+];
+
+Api.sendMessage({
+  chat_id: chat.chatid,
+  text: "📝 <b>Editing Caption For:</b> <code>" + (fileData.name || fileCode) + "</code>\n\n" +
+    "Current Caption: <i>" + (fileData.caption || "None") + "</i>\n\n" +
+    "Please send the <b>New Caption</b> now (or send <code>clear</code> to remove caption):\n\n" +
+    "<i>Or tap [ 📁 My Files ] to cancel.</i>",
+  parse_mode: "html",
+  reply_markup: {
+    keyboard: navKeyboard,
+    resize_keyboard: true,
+    is_persistent: true
+  }
+});
+
+Bot.run({ command: "/onCaptionSave" });

@@ -1,7 +1,7 @@
 /*CMD
   command: /onPublicInput
   help: Save public channel username
-  need_reply: true
+  need_reply: false
   auto_retry_time: 
   folder: 
   answer: 
@@ -14,8 +14,19 @@ var adminId = Bot.getProperty("admin_id") || "8710308658";
 if (user.telegramid != adminId) return;
 
 var input = message ? message.trim() : "";
-if (!input) {
-  Bot.sendMessage("⚠️ Username cannot be empty.");
+
+// Check for cancel / back navigation buttons
+if (!input || input === "/cancel" || input.indexOf("Back") !== -1 || input.indexOf("Cancel") !== -1) {
+  Bot.sendMessage("❌ Channel addition cancelled.", { parse_mode: "html" });
+  Bot.runCommand("/fsubchannels");
+  return;
+}
+if (input.indexOf("Admin") !== -1) {
+  Bot.runCommand("/admin");
+  return;
+}
+if (input.indexOf("Menu") !== -1) {
+  Bot.runCommand("/start");
   return;
 }
 

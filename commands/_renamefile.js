@@ -16,7 +16,7 @@ if (!input) {
     "✏️ <b>Rename File Usage:</b>\n\n" +
     "Send: <code>/renamefile &lt;file_code&gt; &lt;new_name&gt;</code>\n" +
     "Example: <code>/renamefile BQADAQADzB8AAjAeUEZYFkQvPofTKBYE NewMovie.mkv</code>\n\n" +
-    "Or click 'Rename File' from /myfiles.",
+    "Or click 'Rename' from /myfiles.",
     { parse_mode: "html" }
   );
   return;
@@ -55,11 +55,27 @@ if (parts.length > 1) {
   return;
 }
 
-// Prompt for new name
+// Prompt for new name interactively
 User.setProperty("renaming_code", fileCode, "string");
-Bot.sendMessage(
-  "✏️ <b>Renaming File:</b> <code>" + (fileData.name || fileCode) + "</code>\n\n" +
-  "Please send the <b>New File Name</b> now (e.g. <code>Updated_Document.pdf</code>):",
-  { parse_mode: "html" }
-);
-Bot.runCommand("/onRenameSave");
+
+var navKeyboard = [
+  [
+    { text: "📁 My Files", style: "primary" },
+    { text: "🔙 Main Menu", style: "danger" }
+  ]
+];
+
+Api.sendMessage({
+  chat_id: chat.chatid,
+  text: "✏️ <b>Renaming File:</b> <code>" + (fileData.name || fileCode) + "</code>\n\n" +
+    "Please send the <b>New File Name</b> now (e.g. <code>Updated_Document.pdf</code>):\n\n" +
+    "<i>Or tap [ 📁 My Files ] to cancel.</i>",
+  parse_mode: "html",
+  reply_markup: {
+    keyboard: navKeyboard,
+    resize_keyboard: true,
+    is_persistent: true
+  }
+});
+
+Bot.run({ command: "/onRenameSave" });

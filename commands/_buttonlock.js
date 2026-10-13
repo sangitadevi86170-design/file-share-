@@ -18,8 +18,18 @@ if (user.telegramid != adminId) {
 
 var locked = Bot.getProperty("locked_buttons") || {};
 var p = (params || message || "").toLowerCase();
-var toggleKey = "";
 
+// If admin clicked back buttons, redirect cleanly
+if (p.indexOf("admin") !== -1) {
+  Bot.runCommand("/admin");
+  return;
+}
+if (p.indexOf("menu") !== -1 || p.indexOf("main") !== -1) {
+  Bot.runCommand("/start");
+  return;
+}
+
+var toggleKey = "";
 if (p.indexOf("upload") !== -1 && (p.indexOf("lock") !== -1 || p.indexOf("unlock") !== -1 || p === "upload")) {
   toggleKey = "upload";
 } else if (p.indexOf("download") !== -1 && (p.indexOf("lock") !== -1 || p.indexOf("unlock") !== -1 || p === "download")) {
@@ -49,10 +59,11 @@ var text = "🔐 <b>BUTTON LOCKER CONTROL PANEL</b>\n\n" +
 var lockerReplyKeyboard = [
   [
     { text: (locked.upload ? "🔓 Unlock Upload" : "🔒 Lock Upload"), style: (locked.upload ? "success" : "danger") },
-    { text: (locked.download ? "🔓 Unlock Download" : "🔒 Lock Download"), style: (locked.download ? "success" : "danger") }
+    { text: (locked.download ? "🔓 Unlock Download" : "🔒 Lock Download"), style: (locked.download ? "success" : "danger") },
+    { text: (locked.help ? "🔓 Unlock Help" : "🔒 Lock Help"), style: (locked.help ? "success" : "danger") }
   ],
   [
-    { text: (locked.help ? "🔓 Unlock Help" : "🔒 Lock Help"), style: (locked.help ? "success" : "danger") },
+    { text: "👑 Admin Panel", style: "primary" },
     { text: "🔙 Main Menu", style: "danger" }
   ]
 ];

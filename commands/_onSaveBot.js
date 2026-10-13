@@ -1,7 +1,7 @@
 /*CMD
   command: /onSaveBot
   help: Parse and save the new bot to the network list
-  need_reply: true
+  need_reply: false
   auto_retry_time: 
   folder: 
   answer: 
@@ -14,8 +14,19 @@ var adminId = Bot.getProperty("admin_id") || "8710308658";
 if (user.telegramid != adminId) return;
 
 var input = message ? message.trim() : "";
-if (!input) {
-  Bot.sendMessage("⚠️ Input cannot be empty. Bot not added.");
+
+// Check for cancel / back navigation buttons
+if (!input || input === "/cancel" || input.indexOf("Cancel") !== -1 || input.indexOf("My Bots") !== -1) {
+  Bot.sendMessage("❌ Bot addition cancelled.", { parse_mode: "html" });
+  Bot.runCommand("/managebots");
+  return;
+}
+if (input.indexOf("Admin") !== -1) {
+  Bot.runCommand("/admin");
+  return;
+}
+if (input.indexOf("Menu") !== -1) {
+  Bot.runCommand("/start");
   return;
 }
 

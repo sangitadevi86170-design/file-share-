@@ -6,11 +6,11 @@
   folder: 
   answer: 
   keyboard: 
-  aliases: 
+  aliases: 🗑️ Remove All Channels, Remove All Channels, /clearchannels
   group: 
 CMD*/
 
-var adminId = Bot.getProperty("admin_id");
+var adminId = Bot.getProperty("admin_id") || "8710308658";
 if (user.telegramid != adminId) {
   Bot.sendMessage("⛔ <b>Access Denied: Admin only!</b>", { parse_mode: "html" });
   return;
@@ -22,6 +22,7 @@ var param = params ? params.trim() : "";
 if (channels.length === 0) {
   Bot.setProperty("fsub_channel", null, "string");
   Bot.sendMessage("ℹ️ No Force Subscribe channels are currently configured.", { parse_mode: "html" });
+  Bot.runCommand("/fsubchannels");
   return;
 }
 
@@ -30,6 +31,7 @@ if (!param) {
   Bot.setProperty("fsub_channels", [], "json");
   Bot.setProperty("fsub_channel", null, "string");
   Bot.sendMessage("✅ <b>All Force Subscribe channels have been removed!</b>\nUsers can now download files without any channel lock.", { parse_mode: "html" });
+  Bot.runCommand("/fsubchannels");
   return;
 }
 
@@ -66,4 +68,5 @@ if (found) {
   Bot.runCommand("/fsubchannels");
 } else {
   Bot.sendMessage("⚠️ Channel not found in active list.", { parse_mode: "html" });
+  Bot.runCommand("/fsubchannels");
 }

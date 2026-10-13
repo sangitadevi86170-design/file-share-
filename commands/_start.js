@@ -6,7 +6,7 @@
   folder: 
   answer: 
   keyboard: 
-  aliases: 🔙 Main Menu, Main Menu
+  aliases: 🔙 Main Menu, Main Menu, 🔙 Back, Back
   group: 
 CMD*/
 
@@ -34,14 +34,22 @@ if (userList.indexOf(user.telegramid) === -1) {
 var adminId = "8710308658";
 Bot.setProperty("admin_id", adminId, "string");
 
-// 4. Handle Deep Linking (When user clicks a file link: /start <file_code_or_file_id>)
-var fileCode = params;
-if (fileCode) {
-  fileCode = fileCode.trim();
-  if (fileCode.indexOf("start=") === 0) {
-    fileCode = fileCode.replace("start=", "").trim();
+// 4. Handle Deep Linking (ONLY when user arrives via file link, NEVER on Menu buttons)
+var msgStr = (message || "").trim();
+var isMenuClick = (!msgStr || msgStr.indexOf("Main Menu") !== -1 || msgStr.indexOf("🔙") !== -1 || msgStr === "/start" || msgStr === "Back");
+var fileCode = "";
+
+if (!isMenuClick && params) {
+  var p = params.trim();
+  if (p.indexOf("start=") === 0) {
+    p = p.replace("start=", "").trim();
   }
-  
+  if (p && p !== "Main Menu" && p !== "main menu" && p.indexOf("Menu") === -1 && p !== "Back") {
+    fileCode = p;
+  }
+}
+
+if (fileCode) {
   // Check Force Subscribe Channels (Public, Private, or Request)
   var channels = Bot.getProperty("fsub_channels") || [];
   if (channels.length === 0) {

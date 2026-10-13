@@ -1,7 +1,7 @@
 /*CMD
   command: /onRequestLink
   help: Save private request channel link (Step 2/2) and finalize channel addition
-  need_reply: true
+  need_reply: false
   auto_retry_time: 
   folder: 
   answer: 
@@ -14,14 +14,29 @@ var adminId = Bot.getProperty("admin_id") || "8710308658";
 if (user.telegramid != adminId) return;
 
 var link = message ? message.trim() : "";
-if (!link) {
-  Bot.sendMessage("⚠️ Link cannot be empty.");
+
+// Check for cancel / back navigation buttons
+if (!link || link === "/cancel" || link.indexOf("Back") !== -1 || link.indexOf("Cancel") !== -1) {
+  User.setProperty("temp_request_id", null, "string");
+  Bot.sendMessage("❌ Channel addition cancelled.", { parse_mode: "html" });
+  Bot.runCommand("/fsubchannels");
+  return;
+}
+if (link.indexOf("Admin") !== -1) {
+  User.setProperty("temp_request_id", null, "string");
+  Bot.runCommand("/admin");
+  return;
+}
+if (link.indexOf("Menu") !== -1) {
+  User.setProperty("temp_request_id", null, "string");
+  Bot.runCommand("/start");
   return;
 }
 
 var chatId = User.getProperty("temp_request_id");
 if (!chatId) {
-  Bot.sendMessage("⚠️ Setup session expired. Please start again from /addchannel.");
+  Bot.sendMessage("⚠️ Setup session expired. Please start again from Force Channels.", { parse_mode: "html" });
+  Bot.runCommand("/fsubchannels");
   return;
 }
 

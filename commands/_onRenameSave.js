@@ -1,7 +1,7 @@
 /*CMD
   command: /onRenameSave
   help: Save the new file name received from user
-  need_reply: true
+  need_reply: false
   auto_retry_time: 
   folder: 
   answer: 
@@ -11,14 +11,31 @@
 CMD*/
 
 var fileCode = User.getProperty("renaming_code");
+var input = (message || "").trim();
+
+// Check for cancel / navigation buttons
+if (!input || input === "/cancel" || input.indexOf("Cancel") !== -1 || input.indexOf("My Files") !== -1) {
+  User.setProperty("renaming_code", null, "string");
+  Bot.sendMessage("❌ Renaming cancelled.", { parse_mode: "html" });
+  Bot.runCommand("/myfiles");
+  return;
+}
+if (input.indexOf("Menu") !== -1) {
+  User.setProperty("renaming_code", null, "string");
+  Bot.runCommand("/start");
+  return;
+}
+
 if (!fileCode) {
   Bot.sendMessage("⚠️ No active file being renamed.");
+  Bot.runCommand("/myfiles");
   return;
 }
 
 var fileData = Bot.getProperty("file_" + fileCode);
 if (!fileData) {
   Bot.sendMessage("⚠️ File no longer exists.");
+  Bot.runCommand("/myfiles");
   return;
 }
 
@@ -31,20 +48,14 @@ if (!isOwner && !isAdmin) {
   return;
 }
 
-var newName = message ? message.trim() : "";
-if (!newName) {
-  Bot.sendMessage("⚠️ Name cannot be empty.");
-  return;
-}
-
-fileData.name = newName;
+fileData.name = input;
 Bot.setProperty("file_" + fileCode, fileData, "json");
 User.setProperty("renaming_code", null, "string");
 
 Bot.sendMessage(
   "✅ <b>File Renamed Successfully!</b>\n\n" +
   "• <b>Key:</b> <code>" + fileCode + "</code>\n" +
-  "• <b>New Name:</b> <code>" + newName + "</code>",
+  "• <b>New Name:</b> <code>" + input + "</code>",
   { parse_mode: "html" }
 );
 

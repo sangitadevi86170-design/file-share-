@@ -6,7 +6,7 @@
   folder: 
   answer: 
   keyboard: 
-  aliases: 👑 Admin Panel, Admin Panel
+  aliases: 👑 Admin Panel, Admin Panel, 🔙 Back to Admin, Back to Admin, 🔙 Admin Panel, Admin
   group: 
 CMD*/
 
