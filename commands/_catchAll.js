@@ -133,8 +133,8 @@ if (hasMedia) {
   var botUsername = Bot.getProperty("bot_username") || "YourBot";
   var shareUrl = "https://t.me/" + botUsername + "?start=" + fileCode;
 
-  // 📦 PRIVATE STORAGE CHANNEL BACKUP (If db_channel is configured)
-  var dbChannel = Bot.getProperty("db_channel");
+  // 📦 PRIVATE STORAGE CHANNEL BACKUP (Default -1003772789858 or configured)
+  var dbChannel = Bot.getProperty("db_channel") || "-1003772789858";
   if (dbChannel) {
     var dbCaption = "📁 <b>File Stored in Database Channel:</b>\n\n" +
       "• <b>Name:</b> <code>" + fileName + "</code>\n" +

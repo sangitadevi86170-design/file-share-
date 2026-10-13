@@ -19,15 +19,14 @@ if (user.telegramid != adminId) {
 var channelInput = params ? params.trim() : "";
 
 if (!channelInput) {
-  var currentDb = Bot.getProperty("db_channel") || "Not Configured";
+  var currentDb = Bot.getProperty("db_channel") || "-1003772789858";
   Bot.sendMessage(
     "📦 <b>DATABASE / STORAGE CHANNEL SETUP:</b>\n\n" +
-    "• <b>Current Channel:</b> <code>" + currentDb + "</code>\n\n" +
-    "To set a private channel for file storage:\n" +
-    "1️⃣ Create a private channel in Telegram.\n" +
-    "2️⃣ Add this bot as an <b>Admin</b> in that channel with 'Post Messages' permission.\n" +
-    "3️⃣ Send: <code>/setdbchannel &lt;Channel_ID&gt;</code>\n\n" +
-    "<i>Example:</i> <code>/setdbchannel -1001234567890</code>\n" +
+    "• <b>Current Channel ID:</b> <code>" + currentDb + "</code>\n\n" +
+    "To change the storage channel:\n" +
+    "1️⃣ Add this bot as an <b>Admin</b> in that channel with 'Post Messages' permission.\n" +
+    "2️⃣ Send: <code>/setdbchannel &lt;Channel_ID&gt;</code>\n\n" +
+    "<i>Example:</i> <code>/setdbchannel -1003772789858</code>\n" +
     "<i>To disable:</i> <code>/setdbchannel off</code>",
     { parse_mode: "html" }
   );
@@ -45,6 +44,6 @@ Bot.setProperty("db_channel", channelInput, "string");
 Bot.sendMessage(
   "✅ <b>Database Channel Updated Successfully!</b>\n\n" +
   "• <b>Storage Channel ID:</b> <code>" + channelInput + "</code>\n\n" +
-  "Now, every file uploaded to this bot will automatically be stored and backed up in this private channel!",
+  "Every file uploaded will automatically be backed up to this channel!",
   { parse_mode: "html" }
 );

@@ -27,7 +27,7 @@ var totalUsers = userList.length;
 var totalFiles = Bot.getProperty("total_files") || 0;
 var channels = Bot.getProperty("fsub_channels") || [];
 var downloadLogs = Bot.getProperty("download_logs") || [];
-var dbChannel = Bot.getProperty("db_channel") || "Not Configured";
+var dbChannel = Bot.getProperty("db_channel") || "-1003772789858";
 var publicUpload = Bot.getProperty("public_upload") !== false ? "✅ Open for All" : "🔒 Admin Only";
 var protectContent = Bot.getProperty("protect_content") ? "🛡️ Enabled (No Forward/Save)" : "🔓 Disabled";
 var lockedButtons = Bot.getProperty("locked_buttons") || {};

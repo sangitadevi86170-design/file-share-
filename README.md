@@ -1,56 +1,46 @@
-# 📁 Advanced Multi-User Telegram File Sharing Bot (.bb) v3.0
+# 📁 Advanced Multi-User Telegram File Sharing Bot (.bb) v4.0
 
-> **Cloud Hosted on Bots.Business • Persistent Reply Keyboards • User Self-Management & Personal Traffic • 3-Type Force Channels • Private Storage Channel • Native Button Styles**
+> **Cloud Hosted on Bots.Business • Persistent Reply Keyboards • User Self-Management & Personal Traffic • 3-Type Force Channels • Storage Channel: -1003772789858**
 
 ---
 
 ## 👑 Configuration Details
 - **Admin ID:** `8710308658` (Preset)
+- **Storage / Database Channel ID:** `-1003772789858` (Preset Default)
+- **Force Channel Button Label:** **`Join`**
 - **Deep Link Format:** `https://t.me/<BotUsername>?start=<File_ID>` *(e.g. `start=BQADAQADzB8AAjAeUEZYFkQvPofTKBYE`)*
 - **Button Type:** Telegram Native Persistent **Reply Keyboard** (Bottom of chat) + Colored **Inline Buttons** (`primary`, `success`, `danger`).
 
 ---
 
-## 🌟 Key Capabilities (मुख्य फीचर्स)
+## 📢 3-Type Force Subscribe Channels
 
-### 1. ⌨️ Persistent Reply Keyboard (स्क्रीन के नीचे परमानेंट बटन्स)
-- **Regular Users के लिए:**
-  ```text
-  [ 📁 My Files ]   [ 📤 Upload File ]
-  [ 📊 My Traffic ] [ ℹ️ Help ]
-  ```
-- **Admin (8710308658) के लिए:**
-  ```text
-  [ 📁 My Files ]   [ 📤 Upload File ]
-  [ 📊 My Traffic ] [ ℹ️ Help ]
-  [ 👑 Admin Panel ]
-  ```
-- **Admin Panel Menu:**
-  ```text
-  [ 📁 All Files ]     [ 📈 All Traffic ]
-  [ 📢 Force Channels ] [ 🔐 Button Locker ]
-  [ 🛡️ Protect Content ][ 📢 Broadcast ]
-  [ 🔙 Main Menu ]
-  ```
+1. 🌐 **Public Channel:**
+   - Asks for Username (e.g. `@MyChannel`).
+   - Clickable button: **`Join`**.
 
-### 2. 👥 User Self-Management (हर यूज़र अपनी फ़ाइलें खुद मैनेज करे)
-- कोई भी यूज़र बॉट में कोई भी फ़ाइल (Document, Video, Audio, Photo) भेजकर तुरंत लिंक पा सकता है।
-- **📁 My Files (`/myfiles`):** यूज़र अपनी सभी अपलोड की गई फ़ाइलें देख सकता है।
-- **✏️ Rename & 📝 Caption:** यूज़र अपनी फ़ाइल का नाम और कैप्शन कभी भी बदल सकता है।
-- **📊 My Traffic (`/usertraffic`):** हर यूज़र यह देख सकता है कि **उसकी फ़ाइल किस-किसने डाउनलोड की**, उसका नाम, Chat ID, यूज़रनेम और सही समय!
-- **🗑️ Delete:** यूज़र अपनी फ़ाइल कभी भी डिलीट कर सकता है।
+2. 🔒 **Private Channel:**
+   - **Step 1:** Asks for Chat ID (e.g. `-1001234567890`).
+   - **Step 2:** Asks for Invite Link (e.g. `https://t.me/+AbCdEfGhIj`).
+   - Clickable button: **`Join`**.
 
-### 3. 📦 Private Database Storage Channel (`/setdbchannel`)
-- एडमिन अपना एक प्राइवेट टेलीग्राम चैनल बना कर बॉट में सेट कर सकता है (`/setdbchannel -100xxxxxxxxxx`).
-- कोई भी यूज़र जब कोई फ़ाइल अपलोड करेगा, तो बॉट उस फ़ाइल की एक बैकअप कॉपी तुरंत आपके प्राइवेट डेटाबेस चैनल में स्टोर कर देगा और यूज़र को उसका यूनिक डाउनलोड लिंक दे देगा!
+3. 📝 **Private Request Channel (Approval Mode):**
+   - **Step 1:** Asks for Chat ID (e.g. `-1001234567890`).
+   - **Step 2:** Asks for Join Request Link (e.g. `https://t.me/+join_req_hash`).
+   - Clickable button: **`Join`**.
+   - **Auto-Approval:** यूज़र की जॉइन रिक्वेस्ट अगर पेंडिंग भी है, तब भी बॉट उसे अप्रूव मानकर तुरंत फ़ाइल अनलॉक कर देगा!
 
-### 4. 📢 3-Type Force Subscribe Channels (`/fsubchannels`)
-- 🌐 **Public Channel** (`@username`)
-- 🔒 **Private Channel** (`-100...` + invite link)
-- 📝 **Request Channel** (जॉइन रिक्वेस्ट भेजते ही फ़ाइल अनलॉक)
+---
 
-### 5. 🛡️ Content Protection (`/protectcontent`)
-- Telegram Bot API का `protect_content: true` — यूज़र्स फ़ाइल को Forward या Phone Gallery में Save नहीं कर सकते।
+## 📦 Private Storage Channel: `-1003772789858`
+- बॉट में जो भी फ़ाइल अपलोड होगी, उसकी बैकअप कॉपी आपके प्राइवेट चैनल `-1003772789858` में सुरक्षित स्टोर हो जाएगी।
+- एडमिन कभी भी `/setdbchannel <new_id>` भेजकर इसे बदल सकता है।
+
+---
+
+## ⌨️ Persistent Reply Keyboard
+- **Users:** `[ 📁 My Files ]` `[ 📤 Upload File ]` `[ 📊 My Traffic ]` `[ ℹ️ Help ]`
+- **Admin (8710308658):** Includes `[ 👑 Admin Panel ]`
 
 ---
 

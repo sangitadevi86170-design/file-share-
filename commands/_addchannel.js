@@ -10,20 +10,24 @@
   group: 
 CMD*/
 
-var adminId = Bot.getProperty("admin_id");
+var adminId = Bot.getProperty("admin_id") || "8710308658";
 if (user.telegramid != adminId) {
   Bot.sendMessage("⛔ <b>Access Denied: Admin only!</b>", { parse_mode: "html" });
   return;
 }
 
-var text = "➕ <b>SELECT CHANNEL TYPE TO ADD:</b>\n\n" +
-  "Choose the type of channel you want to link for Force Subscribe:\n\n" +
+var text = "➕ <b>SELECT FORCE CHANNEL TYPE TO ADD:</b>\n\n" +
+  "Choose the type of channel you want to add:\n\n" +
   "1️⃣ 🌐 <b>Public Channel:</b>\n" +
-  "Has a public username (e.g. <code>@MyChannel</code>). Easiest to configure.\n\n" +
+  "Asks for username (e.g. <code>@MyChannel</code>).\n\n" +
   "2️⃣ 🔒 <b>Private Channel:</b>\n" +
-  "Uses a private invite link (e.g. <code>https://t.me/+join_hash</code>) and channel ID (<code>-100...</code>).\n\n" +
-  "3️⃣ 📝 <b>Request Channel:</b>\n" +
-  "Has 'Request to Join / Admin Approval' enabled. Users can unlock files once they send a join request!";
+  "Step 1: Chat ID (<code>-100...</code>)\n" +
+  "Step 2: Invite Link (<code>https://t.me/+...</code>)\n\n" +
+  "3️⃣ 📝 <b>Private Request Channel (Join Approval):</b>\n" +
+  "Step 1: Chat ID (<code>-100...</code>)\n" +
+  "Step 2: Request Link (<code>https://t.me/+...</code>)\n" +
+  "<i>Users with pending join requests will automatically be approved!</i>\n\n" +
+  "👇 <i>Select an option below:</i>";
 
 var buttons = [
   [
@@ -33,7 +37,7 @@ var buttons = [
     { text: "🔒 2. Private Channel", callback_data: "/addchannel_type private", style: "primary" }
   ],
   [
-    { text: "📝 3. Request Channel", callback_data: "/addchannel_type request", style: "primary" }
+    { text: "📝 3. Private Request Channel", callback_data: "/addchannel_type request", style: "primary" }
   ],
   [
     { text: "🔙 Cancel & Back", callback_data: "/fsubchannels", style: "danger" }
