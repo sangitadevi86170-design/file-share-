@@ -79,7 +79,8 @@ var welcomeText = "👋 <b>Welcome, " + firstName + "!</b>\n\n" +
   "• Upload any Document, Video, Audio, or Photo\n" +
   "• Direct permanent shareable download links\n" +
   "• Live download tracking (see who downloaded your files)\n" +
-  "• Rename, edit captions, or delete your files anytime\n\n" +
+  "• Rename, edit captions, or delete your files anytime\n" +
+  "• Explore our complete bot network via <b>🤖 My Bots</b>\n\n" +
   "👇 <i>Use the menu buttons below to navigate:</i>";
 
 var replyKeyboard = [
@@ -89,15 +90,16 @@ var replyKeyboard = [
   ],
   [
     { text: "📊 My Traffic" },
+    { text: "🤖 My Bots" }
+  ],
+  [
     { text: "ℹ️ Help" }
   ]
 ];
 
 // Add Admin Panel button if caller is admin
 if (user.telegramid == adminId) {
-  replyKeyboard.push([
-    { text: "👑 Admin Panel" }
-  ]);
+  replyKeyboard[2].push({ text: "👑 Admin Panel" });
 }
 
 Api.sendMessage({
