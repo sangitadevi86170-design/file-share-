@@ -1,6 +1,4 @@
 {
   "bb_sync_version": "1.0",
-  "name": "FileShareBot",
-  "description": "Premium File Sharing Telegram Bot for Bots.Business (.bb) with Force Subscribe (FSUB), Admin Panel, Broadcast, and Analytics.",
-  "git_remote": ""
+  "name": "FileShareBot"
 }
