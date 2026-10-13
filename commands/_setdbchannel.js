@@ -6,7 +6,7 @@
   folder: 
   answer: 
   keyboard: 
-  aliases: /storagechannel
+  aliases: 📦 Storage DB, Storage DB, /storagechannel
   group: 
 CMD*/
 

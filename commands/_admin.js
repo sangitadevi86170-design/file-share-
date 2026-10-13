@@ -57,37 +57,36 @@ var adminText = "👑 <b>ADMINISTRATOR CONTROL PANEL</b>\n\n" +
 var adminReplyKeyboard = [
   [
     { text: "📁 All Files" },
-    { text: "📈 All Traffic" }
+    { text: "📈 All Traffic" },
+    { text: "🤖 My Bots" }
   ],
   [
     { text: "📢 Force Channels" },
-    { text: "🔐 Button Locker" }
+    { text: "🔐 Button Locker" },
+    { text: "🛡️ Protect Content" }
   ],
   [
-    { text: "🛡️ Protect Content" },
-    { text: "📢 Broadcast" }
-  ],
-  [
-    { text: "🤖 My Bots" },
+    { text: "📦 Storage DB" },
+    { text: "📢 Broadcast" },
     { text: "🔙 Main Menu" }
   ]
 ];
 
 var inlineButtons = [
   [
-    { text: "📁 File Manager", callback_data: "/files", style: "primary" },
-    { text: "📈 Global Traffic", callback_data: "/traffic", style: "primary" }
+    { text: "📁 All Files", callback_data: "/files", style: "primary" },
+    { text: "📈 All Traffic", callback_data: "/traffic", style: "primary" },
+    { text: "🤖 My Bots", callback_data: "/managebots", style: "primary" }
   ],
   [
-    { text: "🤖 Manage My Bots (" + botsList.length + ")", callback_data: "/managebots", style: "primary" },
-    { text: "📢 Force Channels (3 Types)", callback_data: "/fsubchannels", style: "primary" }
+    { text: "📢 Channels", callback_data: "/fsubchannels", style: "primary" },
+    { text: "🔐 Locker", callback_data: "/buttonlock", style: "primary" },
+    { text: "🛡️ Protect", callback_data: "/protectcontent", style: "primary" }
   ],
   [
-    { text: "🔐 Button Locker", callback_data: "/buttonlock", style: "primary" },
-    { text: "📦 Set DB Channel", callback_data: "/setdbchannel", style: "primary" }
-  ],
-  [
-    { text: "🛡️ Content Protection", callback_data: "/protectcontent", style: "primary" }
+    { text: "📦 Storage DB", callback_data: "/setdbchannel", style: "primary" },
+    { text: "📢 Broadcast", callback_data: "/broadcast", style: "primary" },
+    { text: "📊 Bot Stats", callback_data: "/stats", style: "primary" }
   ]
 ];
 

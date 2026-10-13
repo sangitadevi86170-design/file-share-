@@ -47,10 +47,8 @@ if (logs.length === 0) {
 
 var buttons = [
   [
-    { text: "🔄 Refresh Traffic", callback_data: "/traffic", style: "primary" },
-    { text: "🗑️ Clear All Logs", callback_data: "/traffic clear", style: "danger" }
-  ],
-  [
+    { text: "🔄 Refresh", callback_data: "/traffic", style: "primary" },
+    { text: "🗑️ Clear Logs", callback_data: "/traffic clear", style: "danger" },
     { text: "🔙 Back to Admin", callback_data: "/admin", style: "primary" }
   ]
 ];

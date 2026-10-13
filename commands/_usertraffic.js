@@ -38,8 +38,9 @@ if (userDownloads.length === 0) {
 
 var buttons = [
   [
-    { text: "📁 View My Files", callback_data: "/myfiles", style: "primary" },
-    { text: "🔄 Refresh Traffic", callback_data: "/usertraffic", style: "primary" }
+    { text: "📁 My Files", callback_data: "/myfiles", style: "primary" },
+    { text: "🔄 Refresh", callback_data: "/usertraffic", style: "primary" },
+    { text: "🔙 Main Menu", callback_data: "/start", style: "primary" }
   ]
 ];
 

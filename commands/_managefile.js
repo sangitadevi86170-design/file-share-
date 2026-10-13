@@ -50,15 +50,14 @@ var text = "📁 <b>FILE MANAGER:</b> <code>" + (fileData.name || "Untitled") + 
 
 var buttons = [
   [
-    { text: "✏️ Rename File", callback_data: "/renamefile " + fileCode, style: "primary" },
-    { text: "📝 Edit Caption", callback_data: "/setcaption " + fileCode, style: "primary" }
+    { text: "✏️ Rename", callback_data: "/renamefile " + fileCode, style: "primary" },
+    { text: "📝 Caption", callback_data: "/setcaption " + fileCode, style: "primary" },
+    { text: "📊 Traffic", callback_data: "/filetraffic " + fileCode, style: "primary" }
   ],
   [
-    { text: "📊 View Downloaders", callback_data: "/filetraffic " + fileCode, style: "primary" },
-    { text: "🗑️ Delete File", callback_data: "/deletefile " + fileCode, style: "danger" }
-  ],
-  [
-    { text: "📁 Back to My Files", callback_data: "/myfiles", style: "primary" }
+    { text: "🗑️ Delete", callback_data: "/deletefile " + fileCode, style: "danger" },
+    { text: "📁 My Files", callback_data: "/myfiles", style: "primary" },
+    { text: "🔙 Main Menu", callback_data: "/start", style: "primary" }
   ]
 ];
 

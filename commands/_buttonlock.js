@@ -45,16 +45,12 @@ var text = "🔐 <b>BUTTON LOCKER CONTROL PANEL</b>\n\n" +
 var buttons = [
   [
     { text: (locked.upload ? "🔓 Unlock Upload" : "🔒 Lock Upload"), callback_data: "/buttonlock upload", style: (locked.upload ? "success" : "danger") },
-    { text: (locked.download ? "🔓 Unlock Download" : "🔒 Lock Download"), callback_data: "/buttonlock download", style: (locked.download ? "success" : "danger") }
+    { text: (locked.download ? "🔓 Unlock Download" : "🔒 Lock Download"), callback_data: "/buttonlock download", style: (locked.download ? "success" : "danger") },
+    { text: (locked.stats ? "🔓 Unlock Stats" : "🔒 Lock Stats"), callback_data: "/buttonlock stats", style: (locked.stats ? "success" : "danger") }
   ],
   [
-    { text: (locked.stats ? "🔓 Unlock Stats" : "🔒 Lock Stats"), callback_data: "/buttonlock stats", style: (locked.stats ? "success" : "danger") },
-    { text: (locked.help ? "🔓 Unlock Help" : "🔒 Lock Help"), callback_data: "/buttonlock help", style: (locked.help ? "success" : "danger") }
-  ],
-  [
-    { text: (locked.about ? "🔓 Unlock About" : "🔒 Lock About"), callback_data: "/buttonlock about", style: (locked.about ? "success" : "danger") }
-  ],
-  [
+    { text: (locked.help ? "🔓 Unlock Help" : "🔒 Lock Help"), callback_data: "/buttonlock help", style: (locked.help ? "success" : "danger") },
+    { text: (locked.about ? "🔓 Unlock About" : "🔒 Lock About"), callback_data: "/buttonlock about", style: (locked.about ? "success" : "danger") },
     { text: "🔙 Back to Admin", callback_data: "/admin", style: "primary" }
   ]
 ];

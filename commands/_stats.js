@@ -6,7 +6,7 @@
   folder: 
   answer: 
   keyboard: 
-  aliases: 
+  aliases: 📊 Bot Stats, Bot Stats
   group: 
 CMD*/
 
@@ -35,7 +35,11 @@ var statsMessage = "📊 <b>BOT SYSTEM STATISTICS</b>\n\n" +
   "<i>Powered by Bots.Business (BJS Engine)</i>";
 
 var buttons = [
-  [{ text: "🔙 Back to Home", callback_data: "/start", style: "primary" }]
+  [
+    { text: "📁 My Files", callback_data: "/myfiles", style: "primary" },
+    { text: "🤖 My Bots", callback_data: "/mybots", style: "primary" },
+    { text: "🔙 Main Menu", callback_data: "/start", style: "primary" }
+  ]
 ];
 
 Api.sendMessage({

@@ -54,8 +54,9 @@ if (logs.length === 0) {
 
 var buttons = [
   [
-    { text: "⚙️ Manage File", callback_data: "/managefile " + fileCode, style: "primary" },
-    { text: "📁 Back to My Files", callback_data: "/myfiles", style: "primary" }
+    { text: "⚙️ Manage", callback_data: "/managefile " + fileCode, style: "primary" },
+    { text: "📁 My Files", callback_data: "/myfiles", style: "primary" },
+    { text: "🔙 Main Menu", callback_data: "/start", style: "primary" }
   ]
 ];
 

@@ -6,7 +6,7 @@
   folder: 
   answer: 
   keyboard: 
-  aliases: 
+  aliases: 🤖 About Bot, About Bot
   group: 
 CMD*/
 
@@ -29,7 +29,11 @@ var aboutText = "🤖 <b>ABOUT FILE SHARE BOT (.BB)</b>\n\n" +
   "✨ <i>Fast, 24/7 online, zero hosting costs!</i>";
 
 var buttons = [
-  [{ text: "🔙 Back to Home", callback_data: "/start", style: "primary" }]
+  [
+    { text: "🤖 My Bots", callback_data: "/mybots", style: "primary" },
+    { text: "📊 Bot Stats", callback_data: "/stats", style: "primary" },
+    { text: "🔙 Main Menu", callback_data: "/start", style: "primary" }
+  ]
 ];
 
 Api.sendMessage({

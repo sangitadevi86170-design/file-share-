@@ -174,11 +174,9 @@ if (hasMedia) {
       { text: "🚀 Share to Telegram", url: tgShareLink, style: "success" }
     ],
     [
-      { text: "⚙️ Manage File", callback_data: "/managefile " + fileCode, style: "primary" },
-      { text: "📁 My Files", callback_data: "/myfiles", style: "primary" }
-    ],
-    [
-      { text: "🗑️ Delete File", callback_data: "/deletefile " + fileCode, style: "danger" }
+      { text: "⚙️ Manage", callback_data: "/managefile " + fileCode, style: "primary" },
+      { text: "📁 My Files", callback_data: "/myfiles", style: "primary" },
+      { text: "🗑️ Delete", callback_data: "/deletefile " + fileCode, style: "danger" }
     ]
   ];
 

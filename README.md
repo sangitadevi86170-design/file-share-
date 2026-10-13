@@ -38,16 +38,28 @@
 
 ---
 
-## ⌨️ Persistent Reply Keyboard
-- **Users:** `[ 📁 My Files ]` `[ 📤 Upload File ]` `[ 📊 My Traffic ]` `[ ℹ️ Help ]`
-- **Admin (8710308658):** Includes `[ 👑 Admin Panel ]`
+## ⌨️ 3×3 Persistent Reply Keyboard (3 Buttons Per Row)
+
+### 👤 Regular Users (3×3 Grid):
+```
+[ 📁 My Files ]   [ 📤 Upload File ]   [ 📊 My Traffic ]
+[ 🤖 My Bots ]    [ 📊 Bot Stats ]     [ ℹ️ Help ]
+[ 🤖 About Bot ]  [ 🔄 Refresh ]       [ 🔙 Main Menu ]
+```
+
+### 👑 Admin (8710308658) (3×3 Grid):
+```
+[ 📁 All Files ]      [ 📈 All Traffic ]    [ 🤖 My Bots ]
+[ 📢 Force Channels ] [ 🔐 Button Locker ]  [ 🛡️ Protect Content ]
+[ 📦 Storage DB ]     [ 📢 Broadcast ]      [ 🔙 Main Menu ]
+```
 
 ---
 
 ## 🚀 Setup & GitHub Push Commands
 
 ```powershell
-git remote add origin https://github.com/AAPKA_USERNAME/AAPKA_REPO_NAME.git
+git remote add origin https://github.com/sangitadevi86170-design/file-share-.git
 git push -u origin main
 ```
 

@@ -6,7 +6,7 @@
   "storage_channel_id": "-1003772789858",
   "description": "Advanced Telegram File Sharing Bot with Persistent Reply Keyboards, 'My Bots' Network Showcase, User Self-Management, Individual & Global Traffic Tracking, 3-Type Force Channels, and Private Database Storage Channel.",
   "commands": [
-    { "command": "/start", "help": "Main menu, reply keyboard & deep link handler", "aliases": "🔙 Main Menu, Main Menu", "file": "commands/_start.js" },
+    { "command": "/start", "help": "Main menu, 3x3 reply keyboard & deep link handler", "aliases": "🔙 Main Menu, Main Menu, 🔄 Refresh, Refresh", "file": "commands/_start.js" },
     { "command": "*", "help": "Catch-all handler for media uploads & channel backup", "file": "commands/_catchAll.js" },
     { "command": "/myfiles", "help": "User files list & management", "aliases": "📁 My Files, My Files", "file": "commands/_myfiles.js" },
     { "command": "/usertraffic", "help": "Personal download traffic for user files", "aliases": "📊 My Traffic, My Traffic", "file": "commands/_usertraffic.js" },
@@ -40,7 +40,7 @@
     { "command": "/checkJoin", "help": "Multi-channel verification with 'Join' button and request auto-approval", "file": "commands/_checkJoin.js" },
     { "command": "/verifyJoin", "help": "Retry verification for channels", "file": "commands/_verifyJoin.js" },
     { "command": "/sentRequest", "help": "Record join request confirmation", "file": "commands/_sentRequest.js" },
-    { "command": "/setdbchannel", "help": "Configure private storage database channel", "aliases": "/storagechannel", "file": "commands/_setdbchannel.js" },
+    { "command": "/setdbchannel", "help": "Configure private storage database channel", "aliases": "📦 Storage DB, Storage DB, /storagechannel", "file": "commands/_setdbchannel.js" },
     { "command": "/buttonlock", "help": "Button Locker Control Panel", "aliases": "🔐 Button Locker, Button Locker, /locker", "file": "commands/_buttonlock.js" },
     { "command": "/protectcontent", "help": "Toggle content forwarding & saving protection", "aliases": "🛡️ Protect Content, Protect Content, /protect", "file": "commands/_protectcontent.js" },
     { "command": "/broadcast", "help": "Broadcast announcement to all bot users", "aliases": "📢 Broadcast, Broadcast", "file": "commands/_broadcast.js" },
@@ -50,7 +50,7 @@
     { "command": "/setadmin", "help": "Admin ownership manager", "file": "commands/_setadmin.js" },
     { "command": "/setchannel", "help": "Legacy single channel setter", "file": "commands/_setchannel.js" },
     { "command": "/stats", "help": "Bot analytics and counts", "aliases": "📊 Bot Stats, Bot Stats", "file": "commands/_stats.js" },
-    { "command": "/about", "help": "Bot information", "file": "commands/_about.js" },
+    { "command": "/about", "help": "Bot information", "aliases": "🤖 About Bot, About Bot", "file": "commands/_about.js" },
     { "command": "/onGetMe", "help": "Automatic username sync callback", "file": "commands/_onGetMe.js" }
   ]
 }

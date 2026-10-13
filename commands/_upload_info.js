@@ -31,8 +31,11 @@ var infoText = "📤 <b>HOW TO UPLOAD & SHARE FILES:</b>\n\n" +
   "4️⃣ You can rename your files, change captions, or view who downloaded your files anytime in <b>📁 My Files</b>!";
 
 var buttons = [
-  [{ text: "📁 Open My Files", callback_data: "/myfiles", style: "primary" }],
-  [{ text: "🔙 Back to Home", callback_data: "/start", style: "primary" }]
+  [
+    { text: "📁 My Files", callback_data: "/myfiles", style: "primary" },
+    { text: "📊 My Traffic", callback_data: "/usertraffic", style: "primary" },
+    { text: "🔙 Main Menu", callback_data: "/start", style: "primary" }
+  ]
 ];
 
 Api.sendMessage({

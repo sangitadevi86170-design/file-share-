@@ -47,7 +47,11 @@ for (var i = filesList.length - 1; i >= Math.max(0, filesList.length - maxCount)
   }
 }
 
-buttons.push([{ text: "🔙 Back to Admin", callback_data: "/admin", style: "primary" }]);
+buttons.push([
+  { text: "🔄 Refresh", callback_data: "/files", style: "primary" },
+  { text: "📈 All Traffic", callback_data: "/traffic", style: "primary" },
+  { text: "🔙 Back to Admin", callback_data: "/admin", style: "primary" }
+]);
 
 Api.sendMessage({
   chat_id: chat.chatid,

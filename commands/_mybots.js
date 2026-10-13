@@ -49,7 +49,15 @@ for (var i = 0; i < botsList.length; i++) {
 var adminId = Bot.getProperty("admin_id") || "8710308658";
 if (user.telegramid == adminId) {
   buttons.push([
-    { text: "⚙️ Manage Bots (Admin)", callback_data: "/managebots", style: "primary" }
+    { text: "⚙️ Manage Bots", callback_data: "/managebots", style: "primary" },
+    { text: "📊 Bot Stats", callback_data: "/stats", style: "primary" },
+    { text: "🔙 Main Menu", callback_data: "/start", style: "primary" }
+  ]);
+} else {
+  buttons.push([
+    { text: "📁 My Files", callback_data: "/myfiles", style: "primary" },
+    { text: "📊 Bot Stats", callback_data: "/stats", style: "primary" },
+    { text: "🔙 Main Menu", callback_data: "/start", style: "primary" }
   ]);
 }
 

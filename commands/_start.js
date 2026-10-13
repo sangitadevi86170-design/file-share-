@@ -1,12 +1,12 @@
 /*CMD
   command: /start
-  help: Start the bot, send persistent reply keyboard, or handle deep links
+  help: Start the bot, send persistent 3x3 reply keyboard, or handle deep links
   need_reply: false
   auto_retry_time: 
   folder: 
   answer: 
   keyboard: 
-  aliases: 🔙 Main Menu, Main Menu
+  aliases: 🔙 Main Menu, Main Menu, 🔄 Refresh, Refresh
   group: 
 CMD*/
 
@@ -70,7 +70,7 @@ if (fileCode) {
   return;
 }
 
-// 5. Default Welcome Screen with Reply Keyboard
+// 5. Default Welcome Screen with 3x3 Reply Keyboard
 var firstName = user.first_name || "Friend";
 var welcomeText = "👋 <b>Welcome, " + firstName + "!</b>\n\n" +
   "🚀 <b>Welcome to File Share Bot!</b>\n" +
@@ -81,25 +81,48 @@ var welcomeText = "👋 <b>Welcome, " + firstName + "!</b>\n\n" +
   "• Live download tracking (see who downloaded your files)\n" +
   "• Rename, edit captions, or delete your files anytime\n" +
   "• Explore our complete bot network via <b>🤖 My Bots</b>\n\n" +
-  "👇 <i>Use the menu buttons below to navigate:</i>";
+  "👇 <i>Use the 3x3 menu buttons below to navigate:</i>";
 
-var replyKeyboard = [
-  [
-    { text: "📁 My Files" },
-    { text: "📤 Upload File" }
-  ],
-  [
-    { text: "📊 My Traffic" },
-    { text: "🤖 My Bots" }
-  ],
-  [
-    { text: "ℹ️ Help" }
-  ]
-];
+var replyKeyboard = [];
 
-// Add Admin Panel button if caller is admin
 if (user.telegramid == adminId) {
-  replyKeyboard[2].push({ text: "👑 Admin Panel" });
+  // 3x3 Grid for Admin (9 Buttons)
+  replyKeyboard = [
+    [
+      { text: "📁 My Files" },
+      { text: "📤 Upload File" },
+      { text: "📊 My Traffic" }
+    ],
+    [
+      { text: "🤖 My Bots" },
+      { text: "📊 Bot Stats" },
+      { text: "ℹ️ Help" }
+    ],
+    [
+      { text: "👑 Admin Panel" },
+      { text: "📦 Storage DB" },
+      { text: "🔙 Main Menu" }
+    ]
+  ];
+} else {
+  // 3x3 Grid for Regular Users (9 Buttons)
+  replyKeyboard = [
+    [
+      { text: "📁 My Files" },
+      { text: "📤 Upload File" },
+      { text: "📊 My Traffic" }
+    ],
+    [
+      { text: "🤖 My Bots" },
+      { text: "📊 Bot Stats" },
+      { text: "ℹ️ Help" }
+    ],
+    [
+      { text: "🤖 About Bot" },
+      { text: "🔄 Refresh" },
+      { text: "🔙 Main Menu" }
+    ]
+  ];
 }
 
 Api.sendMessage({
