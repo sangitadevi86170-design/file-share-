@@ -49,11 +49,7 @@ for (var i = 0; i < maxCount; i++) {
       { text: "🗑️ Delete", callback_data: "/deletefile " + code, style: "danger" }
     ]);
   }
-buttons.push([
-  { text: "📤 Upload", callback_data: "/upload_info", style: "primary" },
-  { text: "📊 My Traffic", callback_data: "/usertraffic", style: "primary" },
-  { text: "🔙 Main Menu", callback_data: "/start", style: "primary" }
-]);
+}
 
 text += "<i>Tap 'Manage' to rename, edit caption, or get share link. Tap 'Traffic' to see who downloaded your file!</i>";
 

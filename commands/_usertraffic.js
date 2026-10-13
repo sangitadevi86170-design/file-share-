@@ -36,17 +36,8 @@ if (userDownloads.length === 0) {
   }
 }
 
-var buttons = [
-  [
-    { text: "📁 My Files", callback_data: "/myfiles", style: "primary" },
-    { text: "🔄 Refresh", callback_data: "/usertraffic", style: "primary" },
-    { text: "🔙 Main Menu", callback_data: "/start", style: "primary" }
-  ]
-];
-
 Api.sendMessage({
   chat_id: chat.chatid,
   text: text,
-  parse_mode: "html",
-  reply_markup: { inline_keyboard: buttons }
+  parse_mode: "html"
 });

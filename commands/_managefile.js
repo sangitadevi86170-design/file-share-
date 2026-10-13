@@ -55,9 +55,7 @@ var buttons = [
     { text: "📊 Traffic", callback_data: "/filetraffic " + fileCode, style: "primary" }
   ],
   [
-    { text: "🗑️ Delete", callback_data: "/deletefile " + fileCode, style: "danger" },
-    { text: "📁 My Files", callback_data: "/myfiles", style: "primary" },
-    { text: "🔙 Main Menu", callback_data: "/start", style: "primary" }
+    { text: "🗑️ Delete File", callback_data: "/deletefile " + fileCode, style: "danger" }
   ]
 ];
 

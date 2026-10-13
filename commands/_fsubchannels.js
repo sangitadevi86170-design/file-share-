@@ -45,9 +45,7 @@ if (channels.length === 0) {
 }
 
 buttons.push([
-  { text: "➕ Add Channel", callback_data: "/addchannel", style: "success" },
-  { text: "🔄 Refresh", callback_data: "/fsubchannels", style: "primary" },
-  { text: "🔙 Back to Admin", callback_data: "/admin", style: "primary" }
+  { text: "➕ Add Channel", callback_data: "/addchannel", style: "success" }
 ]);
 
 Api.sendMessage({

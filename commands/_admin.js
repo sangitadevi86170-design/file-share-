@@ -52,45 +52,27 @@ var adminText = "👑 <b>ADMINISTRATOR CONTROL PANEL</b>\n\n" +
   "• <b>Content Protection:</b> " + protectContent + "\n" +
   "• <b>User Upload Access:</b> " + publicUpload + "\n" +
   "• <b>Locked Features:</b> " + lockedCount + " buttons locked\n\n" +
-  "👇 <i>Use the reply keyboard below or tap quick actions:</i>";
+  "👇 <i>Use the 3x3 menu buttons below to manage the bot:</i>";
 
 var adminReplyKeyboard = [
   [
-    { text: "📁 All Files" },
-    { text: "📈 All Traffic" },
-    { text: "🤖 My Bots" }
+    { text: "📁 All Files", style: "primary" },
+    { text: "📈 All Traffic", style: "primary" },
+    { text: "🤖 My Bots", style: "primary" }
   ],
   [
-    { text: "📢 Force Channels" },
-    { text: "🔐 Button Locker" },
-    { text: "🛡️ Protect Content" }
+    { text: "📢 Force Channels", style: "primary" },
+    { text: "🔐 Button Locker", style: "primary" },
+    { text: "🛡️ Protect Content", style: "primary" }
   ],
   [
-    { text: "📦 Storage DB" },
-    { text: "📢 Broadcast" },
-    { text: "🔙 Main Menu" }
+    { text: "📦 Storage DB", style: "success" },
+    { text: "📢 Broadcast", style: "primary" },
+    { text: "🔙 Main Menu", style: "danger" }
   ]
 ];
 
-var inlineButtons = [
-  [
-    { text: "📁 All Files", callback_data: "/files", style: "primary" },
-    { text: "📈 All Traffic", callback_data: "/traffic", style: "primary" },
-    { text: "🤖 My Bots", callback_data: "/managebots", style: "primary" }
-  ],
-  [
-    { text: "📢 Channels", callback_data: "/fsubchannels", style: "primary" },
-    { text: "🔐 Locker", callback_data: "/buttonlock", style: "primary" },
-    { text: "🛡️ Protect", callback_data: "/protectcontent", style: "primary" }
-  ],
-  [
-    { text: "📦 Storage DB", callback_data: "/setdbchannel", style: "primary" },
-    { text: "📢 Broadcast", callback_data: "/broadcast", style: "primary" },
-    { text: "📊 Bot Stats", callback_data: "/stats", style: "primary" }
-  ]
-];
-
-// Send Reply Keyboard so admin has persistent buttons
+// Send colored 3x3 Reply Keyboard for Admin
 Api.sendMessage({
   chat_id: chat.chatid,
   text: adminText,
@@ -100,12 +82,4 @@ Api.sendMessage({
     resize_keyboard: true,
     is_persistent: true
   }
-});
-
-// Also send inline quick action panel
-Api.sendMessage({
-  chat_id: chat.chatid,
-  text: "🛠️ <b>Quick Admin Actions:</b>",
-  parse_mode: "html",
-  reply_markup: { inline_keyboard: inlineButtons }
 });

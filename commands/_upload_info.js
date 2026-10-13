@@ -30,17 +30,8 @@ var infoText = "📤 <b>HOW TO UPLOAD & SHARE FILES:</b>\n\n" +
   "3️⃣ Copy the link and share it anywhere. Anyone clicking it will receive the file instantly.\n\n" +
   "4️⃣ You can rename your files, change captions, or view who downloaded your files anytime in <b>📁 My Files</b>!";
 
-var buttons = [
-  [
-    { text: "📁 My Files", callback_data: "/myfiles", style: "primary" },
-    { text: "📊 My Traffic", callback_data: "/usertraffic", style: "primary" },
-    { text: "🔙 Main Menu", callback_data: "/start", style: "primary" }
-  ]
-];
-
 Api.sendMessage({
   chat_id: chat.chatid,
   text: infoText,
-  parse_mode: "html",
-  reply_markup: { inline_keyboard: buttons }
+  parse_mode: "html"
 });

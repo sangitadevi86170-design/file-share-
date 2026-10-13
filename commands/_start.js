@@ -86,41 +86,41 @@ var welcomeText = "👋 <b>Welcome, " + firstName + "!</b>\n\n" +
 var replyKeyboard = [];
 
 if (user.telegramid == adminId) {
-  // 3x3 Grid for Admin (9 Buttons)
+  // 3x3 Grid for Admin (9 Buttons) with Color Styles
   replyKeyboard = [
     [
-      { text: "📁 My Files" },
-      { text: "📤 Upload File" },
-      { text: "📊 My Traffic" }
+      { text: "📁 My Files", style: "primary" },
+      { text: "📤 Upload File", style: "success" },
+      { text: "📊 My Traffic", style: "primary" }
     ],
     [
-      { text: "🤖 My Bots" },
-      { text: "📊 Bot Stats" },
-      { text: "ℹ️ Help" }
+      { text: "🤖 My Bots", style: "primary" },
+      { text: "📊 Bot Stats", style: "primary" },
+      { text: "ℹ️ Help", style: "primary" }
     ],
     [
-      { text: "👑 Admin Panel" },
-      { text: "📦 Storage DB" },
-      { text: "🔙 Main Menu" }
+      { text: "👑 Admin Panel", style: "primary" },
+      { text: "📦 Storage DB", style: "success" },
+      { text: "🔙 Main Menu", style: "danger" }
     ]
   ];
 } else {
-  // 3x3 Grid for Regular Users (9 Buttons)
+  // 3x3 Grid for Regular Users (9 Buttons) with Color Styles
   replyKeyboard = [
     [
-      { text: "📁 My Files" },
-      { text: "📤 Upload File" },
-      { text: "📊 My Traffic" }
+      { text: "📁 My Files", style: "primary" },
+      { text: "📤 Upload File", style: "success" },
+      { text: "📊 My Traffic", style: "primary" }
     ],
     [
-      { text: "🤖 My Bots" },
-      { text: "📊 Bot Stats" },
-      { text: "ℹ️ Help" }
+      { text: "🤖 My Bots", style: "primary" },
+      { text: "📊 Bot Stats", style: "primary" },
+      { text: "ℹ️ Help", style: "primary" }
     ],
     [
-      { text: "🤖 About Bot" },
-      { text: "🔄 Refresh" },
-      { text: "🔙 Main Menu" }
+      { text: "🤖 About Bot", style: "primary" },
+      { text: "🔄 Refresh", style: "success" },
+      { text: "🔙 Main Menu", style: "danger" }
     ]
   ];
 }

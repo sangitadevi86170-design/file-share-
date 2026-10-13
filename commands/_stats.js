@@ -34,17 +34,8 @@ var statsMessage = "📊 <b>BOT SYSTEM STATISTICS</b>\n\n" +
   "🟢 <b>Status:</b> Online & Operational\n\n" +
   "<i>Powered by Bots.Business (BJS Engine)</i>";
 
-var buttons = [
-  [
-    { text: "📁 My Files", callback_data: "/myfiles", style: "primary" },
-    { text: "🤖 My Bots", callback_data: "/mybots", style: "primary" },
-    { text: "🔙 Main Menu", callback_data: "/start", style: "primary" }
-  ]
-];
-
 Api.sendMessage({
   chat_id: chat.chatid,
   text: statsMessage,
-  parse_mode: "html",
-  reply_markup: { inline_keyboard: buttons }
+  parse_mode: "html"
 });

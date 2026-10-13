@@ -9,7 +9,7 @@
 - **Storage / Database Channel ID:** `-1003772789858` (Preset Default)
 - **Force Channel Button Label:** **`Join`**
 - **Deep Link Format:** `https://t.me/<BotUsername>?start=<File_ID>` *(e.g. `start=BQADAQADzB8AAjAeUEZYFkQvPofTKBYE`)*
-- **Button Type:** Telegram Native Persistent **Reply Keyboard** (Bottom of chat) + Colored **Inline Buttons** (`primary`, `success`, `danger`).
+- **Button Type:** Telegram Native 3×3 Colored Persistent **Reply Keyboard** (`primary`, `success`, `danger` colors) with clean chat interface (no duplicate inline buttons).
 
 ---
 

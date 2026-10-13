@@ -28,17 +28,8 @@ var aboutText = "🤖 <b>ABOUT FILE SHARE BOT (.BB)</b>\n\n" +
   "• <b>Controls:</b> File Manager (Rename, Captions) & Button Locker\n\n" +
   "✨ <i>Fast, 24/7 online, zero hosting costs!</i>";
 
-var buttons = [
-  [
-    { text: "🤖 My Bots", callback_data: "/mybots", style: "primary" },
-    { text: "📊 Bot Stats", callback_data: "/stats", style: "primary" },
-    { text: "🔙 Main Menu", callback_data: "/start", style: "primary" }
-  ]
-];
-
 Api.sendMessage({
   chat_id: chat.chatid,
   text: aboutText,
-  parse_mode: "html",
-  reply_markup: { inline_keyboard: buttons }
+  parse_mode: "html"
 });

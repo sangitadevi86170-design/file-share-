@@ -50,8 +50,7 @@ var buttons = [
   ],
   [
     { text: (locked.help ? "🔓 Unlock Help" : "🔒 Lock Help"), callback_data: "/buttonlock help", style: (locked.help ? "success" : "danger") },
-    { text: (locked.about ? "🔓 Unlock About" : "🔒 Lock About"), callback_data: "/buttonlock about", style: (locked.about ? "success" : "danger") },
-    { text: "🔙 Back to Admin", callback_data: "/admin", style: "primary" }
+    { text: (locked.about ? "🔓 Unlock About" : "🔒 Lock About"), callback_data: "/buttonlock about", style: (locked.about ? "success" : "danger") }
   ]
 ];
 

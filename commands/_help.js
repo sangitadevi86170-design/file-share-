@@ -44,17 +44,8 @@ helpText += "💡 <b>How to download files?</b>\n" +
   "Click any valid link formatted as:\n" +
   "<code>https://t.me/&lt;bot_username&gt;?start=&lt;file_key&gt;</code>";
 
-var buttons = [
-  [
-    { text: "📁 My Files", callback_data: "/myfiles", style: "primary" },
-    { text: "📤 Upload", callback_data: "/upload_info", style: "primary" },
-    { text: "🔙 Main Menu", callback_data: "/start", style: "primary" }
-  ]
-];
-
 Api.sendMessage({
   chat_id: chat.chatid,
   text: helpText,
-  parse_mode: "html",
-  reply_markup: { inline_keyboard: buttons }
+  parse_mode: "html"
 });

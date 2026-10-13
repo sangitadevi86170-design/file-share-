@@ -45,17 +45,14 @@ if (logs.length === 0) {
   }
 }
 
-var buttons = [
-  [
-    { text: "🔄 Refresh", callback_data: "/traffic", style: "primary" },
-    { text: "🗑️ Clear Logs", callback_data: "/traffic clear", style: "danger" },
-    { text: "🔙 Back to Admin", callback_data: "/admin", style: "primary" }
-  ]
-];
+var buttons = [];
+if (downloadLogs.length > 0) {
+  buttons.push([{ text: "🗑️ Clear All Logs", callback_data: "/traffic clear", style: "danger" }]);
+}
 
 Api.sendMessage({
   chat_id: chat.chatid,
   text: text,
   parse_mode: "html",
-  reply_markup: { inline_keyboard: buttons }
+  reply_markup: buttons.length > 0 ? { inline_keyboard: buttons } : undefined
 });

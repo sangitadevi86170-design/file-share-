@@ -40,9 +40,7 @@ if (botsList.length === 0) {
 }
 
 buttons.push([
-  { text: "➕ Add New Bot", callback_data: "/addbot", style: "success" },
-  { text: "🔄 Refresh", callback_data: "/managebots", style: "primary" },
-  { text: "🔙 Back to Admin", callback_data: "/admin", style: "primary" }
+  { text: "➕ Add New Bot", callback_data: "/addbot", style: "success" }
 ]);
 
 Api.sendMessage({
