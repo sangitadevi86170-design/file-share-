@@ -39,16 +39,16 @@ if (channels.length === 0) {
       "   • Link: " + ch.link + "\n\n";
 
     buttons.push([
-      { text: "🗑️ Remove #" + (i + 1) + " (" + (ch.title || ch.id) + ")", callback_data: "/delchannel " + i }
+      { text: "🗑️ Remove #" + (i + 1) + " (" + (ch.title || ch.id) + ")", callback_data: "/delchannel " + i, style: "danger" }
     ]);
   }
 }
 
 buttons.push([
-  { text: "➕ Add New Channel", callback_data: "/addchannel" }
+  { text: "➕ Add New Channel", callback_data: "/addchannel", style: "success" }
 ]);
 buttons.push([
-  { text: "🔙 Back to Admin", callback_data: "/admin" }
+  { text: "🔙 Back to Admin", callback_data: "/admin", style: "primary" }
 ]);
 
 Api.sendMessage({

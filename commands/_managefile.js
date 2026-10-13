@@ -46,12 +46,12 @@ var text = "📁 <b>FILE MANAGER:</b> <code>" + (fileData.name || "Untitled") + 
 
 var buttons = [
   [
-    { text: "✏️ Rename File", callback_data: "/renamefile " + fileCode },
-    { text: "📝 Edit Caption", callback_data: "/setcaption " + fileCode }
+    { text: "✏️ Rename File", callback_data: "/renamefile " + fileCode, style: "primary" },
+    { text: "📝 Edit Caption", callback_data: "/setcaption " + fileCode, style: "primary" }
   ],
   [
-    { text: "🗑️ Delete File", callback_data: "/deletefile " + fileCode },
-    { text: "🔙 Back to Files", callback_data: "/files" }
+    { text: "🗑️ Delete File", callback_data: "/deletefile " + fileCode, style: "danger" },
+    { text: "🔙 Back to Files", callback_data: "/files", style: "primary" }
   ]
 ];
 

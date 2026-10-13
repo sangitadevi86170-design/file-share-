@@ -52,23 +52,41 @@ User.setProperty("requested_file", null, "string");
 fileData.downloads = (fileData.downloads || 0) + 1;
 Bot.setProperty("file_" + fileCode, fileData, "json");
 
-// 📊 LOG DOWNLOAD TRAFFIC (Who downloaded what and when)
+// Format exact timestamp with AM/PM
+var now = new Date();
+var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+var hours = now.getHours();
+var minutes = now.getMinutes();
+var seconds = now.getSeconds();
+var ampm = hours >= 12 ? "PM" : "AM";
+hours = hours % 12;
+hours = hours ? hours : 12;
+var formattedTime = now.getDate() + " " + months[now.getMonth()] + " " + now.getFullYear() + ", " +
+  (hours < 10 ? "0" + hours : hours) + ":" +
+  (minutes < 10 ? "0" + minutes : minutes) + ":" +
+  (seconds < 10 ? "0" + seconds : seconds) + " " + ampm;
+
+// 📊 DETAILED DOWNLOAD & TRAFFIC LOGGING
 var downloadLogs = Bot.getProperty("download_logs") || [];
-var userName = (user.first_name || "") + (user.last_name ? (" " + user.last_name) : "");
-var userHandle = user.username ? ("@" + user.username) : "N/A";
+var fullName = (user.first_name || "") + (user.last_name ? (" " + user.last_name) : "");
+if (!fullName.trim()) fullName = "User " + user.telegramid;
+var userHandle = user.username ? ("@" + user.username) : "No username";
 
 var logItem = {
+  chat_id: chat.chatid,
   user_id: user.telegramid,
-  name: userName,
+  name: fullName.trim(),
   username: userHandle,
   file_code: fileCode,
   file_name: fileData.name || "File",
-  time: new Date().toLocaleString()
+  file_size: fileData.size || "Unknown",
+  file_type: (fileData.type || "document").toUpperCase(),
+  time: formattedTime
 };
 
-downloadLogs.unshift(logItem); // Add newest to start
+downloadLogs.unshift(logItem); // Add latest to top
 if (downloadLogs.length > 50) {
-  downloadLogs.pop(); // Keep latest 50 records
+  downloadLogs.pop(); // Keep recent 50
 }
 Bot.setProperty("download_logs", downloadLogs, "json");
 

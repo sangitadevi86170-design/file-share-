@@ -13,7 +13,7 @@ CMD*/
 // Check if user is banned
 var bannedUsers = Bot.getProperty("banned_users") || [];
 if (bannedUsers.indexOf(user.telegramid) !== -1) {
-  Bot.sendMessage("⛔ <b>Access Denied:</b> You are banned from using this bot.", { parse_mode: "html" });
+  Bot.sendMessage("⛔ <b>Access Denied:</b> You have been banned by the administrator from using this bot.", { parse_mode: "html" });
   return;
 }
 
@@ -143,11 +143,11 @@ if (hasMedia) {
 
   var buttons = [
     [
-      { text: "🚀 Share to Telegram", url: tgShareLink }
+      { text: "🚀 Share to Telegram", url: tgShareLink, style: "success" }
     ],
     [
-      { text: "⚙️ Manage File", callback_data: "/managefile " + fileCode },
-      { text: "🗑️ Delete File", callback_data: "/deletefile " + fileCode }
+      { text: "⚙️ Manage File", callback_data: "/managefile " + fileCode, style: "primary" },
+      { text: "🗑️ Delete File", callback_data: "/deletefile " + fileCode, style: "danger" }
     ]
   ];
 

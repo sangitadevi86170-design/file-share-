@@ -90,13 +90,13 @@ var statsText = lockedButtons.stats ? "🔒 Bot Stats [Locked]" : "📊 Bot Stat
 var helpText = lockedButtons.help ? "🔒 Help [Locked]" : "ℹ️ Help & Commands";
 
 buttons.push([
-  { text: uploadText, callback_data: "/upload_info" },
-  { text: statsText, callback_data: "/stats" }
+  { text: uploadText, callback_data: "/upload_info", style: "primary" },
+  { text: statsText, callback_data: "/stats", style: "primary" }
 ]);
 
 buttons.push([
-  { text: helpText, callback_data: "/help" },
-  { text: "👑 Admin Panel", callback_data: "/admin" }
+  { text: helpText, callback_data: "/help", style: "primary" },
+  { text: "👑 Admin Panel", callback_data: "/admin", style: "success" }
 ]);
 
 Api.sendMessage({

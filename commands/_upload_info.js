@@ -31,7 +31,7 @@ var infoText = "📤 <b>HOW TO UPLOAD & SHARE FILES:</b>\n\n" +
   "🔒 <b>Current Upload Status:</b> " + (publicUpload ? "✅ Open for everyone" : (isUserAdmin ? "👑 Admin Only (You are Admin)" : "🔒 Admin Only"));
 
 var buttons = [
-  [{ text: "🔙 Back to Home", callback_data: "/start" }]
+  [{ text: "🔙 Back to Home", callback_data: "/start", style: "primary" }]
 ];
 
 Api.sendMessage({

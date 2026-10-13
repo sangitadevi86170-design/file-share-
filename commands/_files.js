@@ -39,13 +39,13 @@ for (var i = filesList.length - 1; i >= Math.max(0, filesList.length - maxCount)
       "   • Link: <code>https://t.me/" + botUsername + "?start=" + code + "</code>\n\n";
 
     buttons.push([
-      { text: "⚙️ Manage " + code, callback_data: "/managefile " + code },
-      { text: "🗑️ Delete", callback_data: "/deletefile " + code }
+      { text: "⚙️ Manage " + code, callback_data: "/managefile " + code, style: "primary" },
+      { text: "🗑️ Delete", callback_data: "/deletefile " + code, style: "danger" }
     ]);
   }
 }
 
-buttons.push([{ text: "🔙 Back to Admin", callback_data: "/admin" }]);
+buttons.push([{ text: "🔙 Back to Admin", callback_data: "/admin", style: "primary" }]);
 
 Api.sendMessage({
   chat_id: chat.chatid,

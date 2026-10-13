@@ -27,16 +27,16 @@ var text = "➕ <b>SELECT CHANNEL TYPE TO ADD:</b>\n\n" +
 
 var buttons = [
   [
-    { text: "🌐 1. Public Channel", callback_data: "/addchannel_type public" }
+    { text: "🌐 1. Public Channel", callback_data: "/addchannel_type public", style: "primary" }
   ],
   [
-    { text: "🔒 2. Private Channel", callback_data: "/addchannel_type private" }
+    { text: "🔒 2. Private Channel", callback_data: "/addchannel_type private", style: "primary" }
   ],
   [
-    { text: "📝 3. Request Channel", callback_data: "/addchannel_type request" }
+    { text: "📝 3. Request Channel", callback_data: "/addchannel_type request", style: "primary" }
   ],
   [
-    { text: "🔙 Cancel & Back", callback_data: "/fsubchannels" }
+    { text: "🔙 Cancel & Back", callback_data: "/fsubchannels", style: "danger" }
   ]
 ];
 

@@ -48,7 +48,7 @@ helpText += "💡 <b>How to get files?</b>\n" +
   "<code>https://t.me/&lt;bot_username&gt;?start=&lt;file_code&gt;</code>";
 
 var buttons = [
-  [{ text: "🔙 Back to Home", callback_data: "/start" }]
+  [{ text: "🔙 Back to Home", callback_data: "/start", style: "primary" }]
 ];
 
 Api.sendMessage({

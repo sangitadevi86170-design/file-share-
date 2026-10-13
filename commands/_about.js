@@ -29,7 +29,7 @@ var aboutText = "🤖 <b>ABOUT FILE SHARE BOT (.BB)</b>\n\n" +
   "✨ <i>Fast, 24/7 online, zero hosting costs!</i>";
 
 var buttons = [
-  [{ text: "🔙 Back to Home", callback_data: "/start" }]
+  [{ text: "🔙 Back to Home", callback_data: "/start", style: "primary" }]
 ];
 
 Api.sendMessage({

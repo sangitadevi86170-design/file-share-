@@ -18,37 +18,40 @@ if (user.telegramid != adminId) {
 
 if (params && params.trim() === "clear") {
   Bot.setProperty("download_logs", [], "json");
-  Bot.sendMessage("✅ <b>Download traffic logs cleared!</b>", { parse_mode: "html" });
+  Bot.sendMessage("✅ <b>Download traffic logs have been cleared!</b>", { parse_mode: "html" });
   return;
 }
 
 var logs = Bot.getProperty("download_logs") || [];
-var totalFiles = Bot.getProperty("total_files") || 0;
 
-var text = "📈 <b>DOWNLOAD & USER TRAFFIC LOGS</b>\n\n" +
-  "📊 <b>Total Logged Events:</b> " + logs.length + " (Showing latest 10)\n" +
-  "━━━━━━━━━━━━━━━━━━━━\n\n";
+var text = "📈 <b>LIVE USER DOWNLOAD & TRAFFIC LOGS</b>\n\n" +
+  "📊 <b>Total Download Events Logged:</b> " + logs.length + " (Showing latest 10)\n" +
+  "━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n";
 
 if (logs.length === 0) {
-  text += "<i>No downloads recorded yet. As users download files via links, their details will appear here.</i>\n";
+  text += "<i>No downloads recorded yet. As users download files via your bot links, their full info (Name, Chat ID, Username, Exact Time) will appear here.</i>\n";
 } else {
   var displayCount = Math.min(10, logs.length);
   for (var i = 0; i < displayCount; i++) {
     var l = logs[i];
-    text += (i + 1) + ". 👤 <b>" + (l.name || "Unknown") + "</b> (" + (l.username || "no username") + ")\n" +
-      "   • ID: <code>" + l.user_id + "</code>\n" +
-      "   • File: <b>" + l.file_name + "</b> (<code>" + l.file_code + "</code>)\n" +
-      "   • Time: <i>" + l.time + "</i>\n\n";
+    text += "🔹 <b>EVENT #" + (i + 1) + ":</b>\n" +
+      "   • 👤 <b>Name:</b> " + (l.name || "Unknown") + "\n" +
+      "   • 💬 <b>Username:</b> " + (l.username || "No username") + "\n" +
+      "   • 🆔 <b>Chat ID / User ID:</b> <code>" + (l.chat_id || l.user_id) + "</code>\n" +
+      "   • 📁 <b>File:</b> <code>" + (l.file_name || "File") + "</code>\n" +
+      "   • 🔑 <b>Code:</b> <code>" + l.file_code + "</code> | " + (l.file_size || "") + " [" + (l.file_type || "") + "]\n" +
+      "   • ⏰ <b>Downloaded At:</b> <i>" + l.time + "</i>\n" +
+      "────────────────────────────\n";
   }
 }
 
 var buttons = [
   [
-    { text: "🔄 Refresh Logs", callback_data: "/traffic" },
-    { text: "🗑️ Clear Logs", callback_data: "/traffic clear" }
+    { text: "🔄 Refresh Traffic", callback_data: "/traffic", style: "primary" },
+    { text: "🗑️ Clear All Logs", callback_data: "/traffic clear", style: "danger" }
   ],
   [
-    { text: "🔙 Back to Admin", callback_data: "/admin" }
+    { text: "🔙 Back to Admin", callback_data: "/admin", style: "primary" }
   ]
 ];
 

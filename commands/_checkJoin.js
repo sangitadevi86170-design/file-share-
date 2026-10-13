@@ -86,14 +86,14 @@ for (var i = 0; i < channels.length; i++) {
     label = "🌐 Join: " + (ch.title || ("Channel " + (i + 1)));
   }
 
-  buttons.push([{ text: label, url: ch.link }]);
+  buttons.push([{ text: label, url: ch.link, style: "primary" }]);
 }
 
 if (hasRequestChannel) {
-  buttons.push([{ text: "✅ I Have Sent Join Request", callback_data: "/sentRequest" }]);
+  buttons.push([{ text: "✅ I Have Sent Join Request", callback_data: "/sentRequest", style: "success" }]);
 }
 
-buttons.push([{ text: "🔄 Verify All & Unlock File", callback_data: "/verifyJoin" }]);
+buttons.push([{ text: "🔄 Verify All & Unlock File", callback_data: "/verifyJoin", style: "success" }]);
 
 text += "👇 <i>Join all required channels above, then click <b>Verify All & Unlock</b>!</i>";
 

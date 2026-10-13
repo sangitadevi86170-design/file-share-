@@ -58,20 +58,20 @@ var adminText = "👑 <b>ULTIMATE ADMINISTRATOR CONTROL PANEL</b>\n\n" +
 
 var buttons = [
   [
-    { text: "📁 File Manager & Rename", callback_data: "/files" },
-    { text: "📈 Traffic & Downloads", callback_data: "/traffic" }
+    { text: "📁 File Manager & Rename", callback_data: "/files", style: "primary" },
+    { text: "📈 Traffic & Downloads", callback_data: "/traffic", style: "primary" }
   ],
   [
-    { text: "📢 Force Channels (3 Types)", callback_data: "/fsubchannels" },
-    { text: "🔐 Button Locker", callback_data: "/buttonlock" }
+    { text: "📢 Force Channels (3 Types)", callback_data: "/fsubchannels", style: "primary" },
+    { text: "🔐 Button Locker", callback_data: "/buttonlock", style: "primary" }
   ],
   [
-    { text: "🛡️ Content Protection", callback_data: "/protectcontent" },
-    { text: "🔄 Toggle Public Upload", callback_data: "/publicupload" }
+    { text: "🛡️ Content Protection", callback_data: "/protectcontent", style: "primary" },
+    { text: "🔄 Toggle Public Upload", callback_data: "/publicupload", style: "primary" }
   ],
   [
-    { text: "📢 Broadcast Message", callback_data: "/broadcast" },
-    { text: "📊 Full Analytics", callback_data: "/stats" }
+    { text: "📢 Broadcast Announcement", callback_data: "/broadcast", style: "success" },
+    { text: "📊 Full Analytics", callback_data: "/stats", style: "primary" }
   ]
 ];
 

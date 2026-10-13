@@ -35,7 +35,7 @@ var statsMessage = "📊 <b>BOT SYSTEM STATISTICS</b>\n\n" +
   "<i>Powered by Bots.Business (BJS Engine)</i>";
 
 var buttons = [
-  [{ text: "🔙 Back to Home", callback_data: "/start" }]
+  [{ text: "🔙 Back to Home", callback_data: "/start", style: "primary" }]
 ];
 
 Api.sendMessage({

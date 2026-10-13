@@ -20,7 +20,26 @@ function generateCode(prefix) {
   return p + r1 + r2;
 }
 
+function formatDateTime(d) {
+  var date = d || new Date();
+  var months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  var day = date.getDate();
+  var month = months[date.getMonth()];
+  var year = date.getFullYear();
+  var hours = date.getHours();
+  var minutes = date.getMinutes();
+  var seconds = date.getSeconds();
+  var ampm = hours >= 12 ? "PM" : "AM";
+  hours = hours % 12;
+  hours = hours ? hours : 12;
+  var strTime = (hours < 10 ? "0" + hours : hours) + ":" + 
+                (minutes < 10 ? "0" + minutes : minutes) + ":" + 
+                (seconds < 10 ? "0" + seconds : seconds) + " " + ampm;
+  return day + " " + month + " " + year + ", " + strTime;
+}
+
 publish({
   formatSize: formatSize,
-  generateCode: generateCode
+  generateCode: generateCode,
+  formatDateTime: formatDateTime
 });
