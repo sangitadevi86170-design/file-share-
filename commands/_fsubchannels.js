@@ -40,22 +40,21 @@ if (channels.length === 0) {
 }
 
 text += "➕ <b>Add Channel:</b> /addchannel\n" +
-  "🗑️ <b>Remove All Channels:</b> /delchannel\n\n" +
-  "<i>Use the 3x3 menu buttons below to navigate:</i>";
+  "🗑️ <b>Remove All Channels:</b> /delchannel";
 
 var adminReplyKeyboard = [
   [
     { text: "📁 All Files", style: "primary" },
     { text: "📈 All Traffic", style: "primary" },
-    { text: "🤖 My Bots", style: "primary" }
+    { text: "📢 Force Channels", style: "primary" }
   ],
   [
-    { text: "📢 Force Channels", style: "primary" },
     { text: "🔐 Button Locker", style: "primary" },
-    { text: "🛡️ Protect Content", style: "primary" }
+    { text: "🛡️ Protect Content", style: "primary" },
+    { text: "📦 Storage DB", style: "success" }
   ],
   [
-    { text: "📦 Storage DB", style: "success" },
+    { text: "💬 Set Support", style: "primary" },
     { text: "📢 Broadcast", style: "primary" },
     { text: "🔙 Main Menu", style: "danger" }
   ]

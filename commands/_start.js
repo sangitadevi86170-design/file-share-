@@ -6,7 +6,7 @@
   folder: 
   answer: 
   keyboard: 
-  aliases: 🔙 Main Menu, Main Menu, 🔄 Refresh, Refresh
+  aliases: 🔙 Main Menu, Main Menu
   group: 
 CMD*/
 
@@ -70,7 +70,7 @@ if (fileCode) {
   return;
 }
 
-// 5. Default Welcome Screen with 3x3 Reply Keyboard
+// 5. Default Welcome Screen
 var firstName = user.first_name || "Friend";
 var welcomeText = "👋 <b>Welcome, " + firstName + "!</b>\n\n" +
   "🚀 <b>Welcome to File Share Bot!</b>\n" +
@@ -80,8 +80,7 @@ var welcomeText = "👋 <b>Welcome, " + firstName + "!</b>\n\n" +
   "• Direct permanent shareable download links\n" +
   "• Live download tracking (see who downloaded your files)\n" +
   "• Rename, edit captions, or delete your files anytime\n" +
-  "• Explore our complete bot network via <b>🤖 My Bots</b>\n\n" +
-  "👇 <i>Use the 3x3 menu buttons below to navigate:</i>";
+  "• Explore our complete bot network via <b>🤖 My Bots</b>";
 
 var replyKeyboard = [];
 
@@ -105,7 +104,7 @@ if (user.telegramid == adminId) {
     ]
   ];
 } else {
-  // 3x3 Grid for Regular Users (9 Buttons) with Color Styles
+  // Clean Grid for Regular Users (Color Styles)
   replyKeyboard = [
     [
       { text: "📁 My Files", style: "primary" },
@@ -114,12 +113,7 @@ if (user.telegramid == adminId) {
     ],
     [
       { text: "🤖 My Bots", style: "primary" },
-      { text: "📊 Bot Stats", style: "primary" },
-      { text: "ℹ️ Help", style: "primary" }
-    ],
-    [
-      { text: "🤖 About Bot", style: "primary" },
-      { text: "🔄 Refresh", style: "success" },
+      { text: "ℹ️ Help", style: "primary" },
       { text: "🔙 Main Menu", style: "danger" }
     ]
   ];

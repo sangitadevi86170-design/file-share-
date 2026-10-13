@@ -52,21 +52,21 @@ var text = "📁 <b>FILE MANAGER:</b> <code>" + (fileData.name || "Untitled") + 
   "• 📝 <b>Caption:</b> /setcaption " + fileCode + "\n" +
   "• 📊 <b>Traffic:</b> /filetraffic " + fileCode + "\n" +
   "• 🗑️ <b>Delete:</b> /deletefile " + fileCode + "\n\n" +
-  "<i>Tap any command above or use the 3x3 menu below:</i>";
+  "<i>Tap any command above to manage this file:</i>";
 
 var replyKeyboard = (isAdmin) ? [
   [
     { text: "📁 All Files", style: "primary" },
     { text: "📈 All Traffic", style: "primary" },
-    { text: "🤖 My Bots", style: "primary" }
+    { text: "📢 Force Channels", style: "primary" }
   ],
   [
-    { text: "📢 Force Channels", style: "primary" },
     { text: "🔐 Button Locker", style: "primary" },
-    { text: "🛡️ Protect Content", style: "primary" }
+    { text: "🛡️ Protect Content", style: "primary" },
+    { text: "📦 Storage DB", style: "success" }
   ],
   [
-    { text: "📦 Storage DB", style: "success" },
+    { text: "💬 Set Support", style: "primary" },
     { text: "📢 Broadcast", style: "primary" },
     { text: "🔙 Main Menu", style: "danger" }
   ]
@@ -78,12 +78,7 @@ var replyKeyboard = (isAdmin) ? [
   ],
   [
     { text: "🤖 My Bots", style: "primary" },
-    { text: "📊 Bot Stats", style: "primary" },
-    { text: "ℹ️ Help", style: "primary" }
-  ],
-  [
-    { text: "🤖 About Bot", style: "primary" },
-    { text: "🔄 Refresh", style: "success" },
+    { text: "ℹ️ Help", style: "primary" },
     { text: "🔙 Main Menu", style: "danger" }
   ]
 ];

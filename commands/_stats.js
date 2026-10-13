@@ -1,6 +1,6 @@
 /*CMD
   command: /stats
-  help: View bot statistics and status
+  help: View bot statistics and status (Admin Only)
   need_reply: false
   auto_retry_time: 
   folder: 
@@ -10,11 +10,10 @@
   group: 
 CMD*/
 
-var adminId = Bot.getProperty("admin_id");
-var locked = Bot.getProperty("locked_buttons") || {};
+var adminId = Bot.getProperty("admin_id") || "8710308658";
 
-if (locked.stats && user.telegramid != adminId) {
-  Bot.sendMessage("🔒 <b>Feature Locked:</b> Statistics view is currently locked by the administrator.", { parse_mode: "html" });
+if (user.telegramid != adminId) {
+  Bot.sendMessage("⛔ <b>Access Denied:</b> Bot statistics are only accessible by the administrator.", { parse_mode: "html" });
   return;
 }
 
@@ -34,7 +33,7 @@ var statsMessage = "📊 <b>BOT SYSTEM STATISTICS</b>\n\n" +
   "🟢 <b>Status:</b> Online & Operational\n\n" +
   "<i>Powered by Bots.Business (BJS Engine)</i>";
 
-var replyKeyboard = (user.telegramid == adminId) ? [
+var replyKeyboard = [
   [
     { text: "📁 My Files", style: "primary" },
     { text: "📤 Upload File", style: "success" },
@@ -48,22 +47,6 @@ var replyKeyboard = (user.telegramid == adminId) ? [
   [
     { text: "👑 Admin Panel", style: "primary" },
     { text: "📦 Storage DB", style: "success" },
-    { text: "🔙 Main Menu", style: "danger" }
-  ]
-] : [
-  [
-    { text: "📁 My Files", style: "primary" },
-    { text: "📤 Upload File", style: "success" },
-    { text: "📊 My Traffic", style: "primary" }
-  ],
-  [
-    { text: "🤖 My Bots", style: "primary" },
-    { text: "📊 Bot Stats", style: "primary" },
-    { text: "ℹ️ Help", style: "primary" }
-  ],
-  [
-    { text: "🤖 About Bot", style: "primary" },
-    { text: "🔄 Refresh", style: "success" },
     { text: "🔙 Main Menu", style: "danger" }
   ]
 ];

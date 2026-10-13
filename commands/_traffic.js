@@ -53,15 +53,15 @@ var adminReplyKeyboard = [
   [
     { text: "📁 All Files", style: "primary" },
     { text: "📈 All Traffic", style: "primary" },
-    { text: "🤖 My Bots", style: "primary" }
+    { text: "📢 Force Channels", style: "primary" }
   ],
   [
-    { text: "📢 Force Channels", style: "primary" },
     { text: "🔐 Button Locker", style: "primary" },
-    { text: "🛡️ Protect Content", style: "primary" }
+    { text: "🛡️ Protect Content", style: "primary" },
+    { text: "📦 Storage DB", style: "success" }
   ],
   [
-    { text: "📦 Storage DB", style: "success" },
+    { text: "💬 Set Support", style: "primary" },
     { text: "📢 Broadcast", style: "primary" },
     { text: "🔙 Main Menu", style: "danger" }
   ]

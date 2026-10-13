@@ -38,21 +38,21 @@ for (var i = filesList.length - 1; i >= Math.max(0, filesList.length - maxCount)
   }
 }
 
-text += "<i>💡 Tap any command link above to manage. Use the 3x3 menu below to navigate:</i>";
+text += "<i>💡 Tap any command link above to manage.</i>";
 
 var adminReplyKeyboard = [
   [
     { text: "📁 All Files", style: "primary" },
     { text: "📈 All Traffic", style: "primary" },
-    { text: "🤖 My Bots", style: "primary" }
+    { text: "📢 Force Channels", style: "primary" }
   ],
   [
-    { text: "📢 Force Channels", style: "primary" },
     { text: "🔐 Button Locker", style: "primary" },
-    { text: "🛡️ Protect Content", style: "primary" }
+    { text: "🛡️ Protect Content", style: "primary" },
+    { text: "📦 Storage DB", style: "success" }
   ],
   [
-    { text: "📦 Storage DB", style: "success" },
+    { text: "💬 Set Support", style: "primary" },
     { text: "📢 Broadcast", style: "primary" },
     { text: "🔙 Main Menu", style: "danger" }
   ]

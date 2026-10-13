@@ -6,7 +6,7 @@
   folder: 
   answer: 
   keyboard: 
-  aliases: 🔐 Button Locker, Button Locker, /locker, 🔒 Lock Upload, 🔓 Unlock Upload, 🔒 Lock Download, 🔓 Unlock Download, 🔒 Lock Stats, 🔓 Unlock Stats, 🔒 Lock Help, 🔓 Unlock Help, 🔒 Lock About, 🔓 Unlock About
+  aliases: 🔐 Button Locker, Button Locker, /locker, 🔒 Lock Upload, 🔓 Unlock Upload, 🔒 Lock Download, 🔓 Unlock Download, 🔒 Lock Help, 🔓 Unlock Help
   group: 
 CMD*/
 
@@ -24,12 +24,8 @@ if (p.indexOf("upload") !== -1 && (p.indexOf("lock") !== -1 || p.indexOf("unlock
   toggleKey = "upload";
 } else if (p.indexOf("download") !== -1 && (p.indexOf("lock") !== -1 || p.indexOf("unlock") !== -1 || p === "download")) {
   toggleKey = "download";
-} else if (p.indexOf("stats") !== -1 && (p.indexOf("lock") !== -1 || p.indexOf("unlock") !== -1 || p === "stats")) {
-  toggleKey = "stats";
 } else if (p.indexOf("help") !== -1 && (p.indexOf("lock") !== -1 || p.indexOf("unlock") !== -1 || p === "help")) {
   toggleKey = "help";
-} else if (p.indexOf("about") !== -1 && (p.indexOf("lock") !== -1 || p.indexOf("unlock") !== -1 || p === "about")) {
-  toggleKey = "about";
 }
 
 // If a toggle action was clicked
@@ -41,28 +37,22 @@ if (toggleKey) {
 // Display current status of all button locks
 var uploadStatus = locked.upload ? "🔴 LOCKED" : "🟢 UNLOCKED";
 var downloadStatus = locked.download ? "🔴 LOCKED" : "🟢 UNLOCKED";
-var statsStatus = locked.stats ? "🔴 LOCKED" : "🟢 UNLOCKED";
 var helpStatus = locked.help ? "🔴 LOCKED" : "🟢 UNLOCKED";
-var aboutStatus = locked.about ? "🔴 LOCKED" : "🟢 UNLOCKED";
 
 var text = "🔐 <b>BUTTON LOCKER CONTROL PANEL</b>\n\n" +
   "Control which buttons and features are accessible to regular users:\n\n" +
   "• 📤 <b>Upload Button:</b> " + uploadStatus + "\n" +
   "• 📥 <b>File Downloads:</b> " + downloadStatus + "\n" +
-  "• 📊 <b>Bot Stats Button:</b> " + statsStatus + "\n" +
-  "• ℹ️ <b>Help Button:</b> " + helpStatus + "\n" +
-  "• 🤖 <b>About Button:</b> " + aboutStatus + "\n\n" +
+  "• ℹ️ <b>Help Button:</b> " + helpStatus + "\n\n" +
   "👇 <i>Tap any reply button below to toggle lock/unlock:</i>";
 
 var lockerReplyKeyboard = [
   [
     { text: (locked.upload ? "🔓 Unlock Upload" : "🔒 Lock Upload"), style: (locked.upload ? "success" : "danger") },
-    { text: (locked.download ? "🔓 Unlock Download" : "🔒 Lock Download"), style: (locked.download ? "success" : "danger") },
-    { text: (locked.stats ? "🔓 Unlock Stats" : "🔒 Lock Stats"), style: (locked.stats ? "success" : "danger") }
+    { text: (locked.download ? "🔓 Unlock Download" : "🔒 Lock Download"), style: (locked.download ? "success" : "danger") }
   ],
   [
     { text: (locked.help ? "🔓 Unlock Help" : "🔒 Lock Help"), style: (locked.help ? "success" : "danger") },
-    { text: (locked.about ? "🔓 Unlock About" : "🔒 Lock About"), style: (locked.about ? "success" : "danger") },
     { text: "🔙 Main Menu", style: "danger" }
   ]
 ];

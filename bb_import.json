@@ -1,12 +1,12 @@
 {
   "name": "FileShareBot",
-  "version": "5.0",
+  "version": "5.1",
   "platform": "Bots.Business (.bb)",
   "admin_id": "8710308658",
   "storage_channel_id": "-1003772789858",
   "description": "Advanced Telegram File Sharing Bot with Persistent Reply Keyboards, 'My Bots' Network Showcase, User Self-Management, Individual & Global Traffic Tracking, 3-Type Force Channels, and Private Database Storage Channel.",
   "commands": [
-    { "command": "/start", "help": "Main menu, 3x3 reply keyboard & deep link handler", "aliases": "🔙 Main Menu, Main Menu, 🔄 Refresh, Refresh", "file": "commands/_start.js" },
+    { "command": "/start", "help": "Main menu & deep link handler", "aliases": "🔙 Main Menu, Main Menu", "file": "commands/_start.js" },
     { "command": "*", "help": "Catch-all handler for media uploads & channel backup", "file": "commands/_catchAll.js" },
     { "command": "/myfiles", "help": "User files list & management", "aliases": "📁 My Files, My Files", "file": "commands/_myfiles.js" },
     { "command": "/usertraffic", "help": "Personal download traffic for user files", "aliases": "📊 My Traffic, My Traffic", "file": "commands/_usertraffic.js" },
@@ -17,7 +17,9 @@
     { "command": "/delbot", "help": "Remove bot from network list", "file": "commands/_delbot.js" },
     { "command": "/filetraffic", "help": "Downloaders log for a specific file", "file": "commands/_filetraffic.js" },
     { "command": "/upload_info", "help": "Upload instructions and guide", "aliases": "📤 Upload File, Upload File", "file": "commands/_upload_info.js" },
-    { "command": "/help", "help": "Help guide and manual", "aliases": "ℹ️ Help, Help", "file": "commands/_help.js" },
+    { "command": "/help", "help": "Support contact information", "aliases": "ℹ️ Help, Help", "file": "commands/_help.js" },
+    { "command": "/sethelp", "help": "Configure support contact username", "aliases": "💬 Set Support, Set Support, /support", "file": "commands/_sethelp.js" },
+    { "command": "/onSaveHelp", "help": "Save support contact username", "file": "commands/_onSaveHelp.js" },
     { "command": "/getFile", "help": "Retrieve file and log traffic", "file": "commands/_getFile.js" },
     { "command": "/managefile", "help": "File management card (Rename, Caption, Traffic, Delete)", "file": "commands/_managefile.js" },
     { "command": "/renamefile", "help": "Rename file", "file": "commands/_renamefile.js" },
@@ -49,8 +51,7 @@
     { "command": "/unban", "help": "Unban a user", "file": "commands/_unban.js" },
     { "command": "/setadmin", "help": "Admin ownership manager", "file": "commands/_setadmin.js" },
     { "command": "/setchannel", "help": "Legacy single channel setter", "file": "commands/_setchannel.js" },
-    { "command": "/stats", "help": "Bot analytics and counts", "aliases": "📊 Bot Stats, Bot Stats", "file": "commands/_stats.js" },
-    { "command": "/about", "help": "Bot information", "aliases": "🤖 About Bot, About Bot", "file": "commands/_about.js" },
+    { "command": "/stats", "help": "Bot analytics and counts (Admin only)", "aliases": "📊 Bot Stats, Bot Stats", "file": "commands/_stats.js" },
     { "command": "/onGetMe", "help": "Automatic username sync callback", "file": "commands/_onGetMe.js" }
   ]
 }

@@ -1,4 +1,4 @@
-# 📁 Advanced Multi-User Telegram File Sharing Bot (.bb) v4.0
+# 📁 Advanced Multi-User Telegram File Sharing Bot (.bb) v5.1
 
 > **Cloud Hosted on Bots.Business • Persistent Reply Keyboards • User Self-Management & Personal Traffic • 3-Type Force Channels • Storage Channel: -1003772789858**
 
@@ -7,9 +7,10 @@
 ## 👑 Configuration Details
 - **Admin ID:** `8710308658` (Preset)
 - **Storage / Database Channel ID:** `-1003772789858` (Preset Default)
+- **Support Contact:** Customizable from Admin Panel (`[ 💬 Set Support ]` or `/sethelp @username`)
 - **Force Channel Button Label:** **`Join`**
 - **Deep Link Format:** `https://t.me/<BotUsername>?start=<File_ID>` *(e.g. `start=BQADAQADzB8AAjAeUEZYFkQvPofTKBYE`)*
-- **Button Type:** Telegram Native 3×3 Colored Persistent **Reply Keyboard** (`primary`, `success`, `danger` colors) with clean chat interface (no duplicate inline buttons).
+- **Button Type:** Telegram Native Colored Persistent **Reply Keyboard** (`primary`, `success`, `danger` colors) with clean chat interface (zero inline buttons).
 
 ---
 
@@ -38,20 +39,27 @@
 
 ---
 
-## ⌨️ 3×3 Persistent Reply Keyboard (3 Buttons Per Row)
+## ⌨️ Persistent Reply Keyboard Layout
 
-### 👤 Regular Users (3×3 Grid):
+### 👤 Regular Users (Clean Grid):
+```
+[ 📁 My Files ]   [ 📤 Upload File ]   [ 📊 My Traffic ]
+[ 🤖 My Bots ]    [ ℹ️ Help ]          [ 🔙 Main Menu ]
+```
+*(About Bot और Refresh हटा दिए गए हैं, तथा Bot Stats केवल Admin को दिखेगा)*
+
+### 👑 Admin Main Menu (3×3 Grid):
 ```
 [ 📁 My Files ]   [ 📤 Upload File ]   [ 📊 My Traffic ]
 [ 🤖 My Bots ]    [ 📊 Bot Stats ]     [ ℹ️ Help ]
-[ 🤖 About Bot ]  [ 🔄 Refresh ]       [ 🔙 Main Menu ]
+[ 👑 Admin Panel ] [ 📦 Storage DB ]   [ 🔙 Main Menu ]
 ```
 
-### 👑 Admin (8710308658) (3×3 Grid):
+### 🛠️ Admin Control Panel (3×3 Grid):
 ```
-[ 📁 All Files ]      [ 📈 All Traffic ]    [ 🤖 My Bots ]
-[ 📢 Force Channels ] [ 🔐 Button Locker ]  [ 🛡️ Protect Content ]
-[ 📦 Storage DB ]     [ 📢 Broadcast ]      [ 🔙 Main Menu ]
+[ 📁 All Files ]      [ 📈 All Traffic ]    [ 📢 Force Channels ]
+[ 🔐 Button Locker ]  [ 🛡️ Protect Content ][ 📦 Storage DB ]
+[ 💬 Set Support ]    [ 📢 Broadcast ]      [ 🔙 Main Menu ]
 ```
 
 ---
@@ -59,8 +67,8 @@
 ## 🚀 Setup & GitHub Push Commands
 
 ```powershell
-git remote add origin https://github.com/sangitadevi86170-design/file-share-.git
 git push -u origin main
+git push -u origin master
 ```
 
 Bots.Business में **Settings ⚙️ ➔ Git** में जाकर **Sync / Import** कर लें!

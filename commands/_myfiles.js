@@ -44,7 +44,7 @@ for (var i = 0; i < maxCount; i++) {
   }
 }
 
-text += "<i>💡 Tap /manage_&lt;code&gt; above to rename or edit caption. Use the 3x3 reply keyboard below to navigate:</i>";
+text += "<i>💡 Tap /manage_&lt;code&gt; above to rename or edit caption.</i>";
 
 var adminId = Bot.getProperty("admin_id") || "8710308658";
 var replyKeyboard = (user.telegramid == adminId) ? [
@@ -71,12 +71,7 @@ var replyKeyboard = (user.telegramid == adminId) ? [
   ],
   [
     { text: "🤖 My Bots", style: "primary" },
-    { text: "📊 Bot Stats", style: "primary" },
-    { text: "ℹ️ Help", style: "primary" }
-  ],
-  [
-    { text: "🤖 About Bot", style: "primary" },
-    { text: "🔄 Refresh", style: "success" },
+    { text: "ℹ️ Help", style: "primary" },
     { text: "🔙 Main Menu", style: "danger" }
   ]
 ];

@@ -203,12 +203,7 @@ if (hasMedia) {
     "🔗 <b>Your Permanent Download Link:</b>\n" +
     "<code>" + shareUrl + "</code>\n\n" +
     "🚀 <b>One-Click Share:</b>\n" +
-    tgShareLink + "\n\n" +
-    "⚙️ <b>Quick Actions:</b>\n" +
-    "• <b>Manage:</b> /manage_" + fileCode + "\n" +
-    "• <b>Downloaders:</b> /traffic_" + fileCode + "\n" +
-    "• <b>Delete:</b> /del_" + fileCode + "\n\n" +
-    "<i>Use the 3x3 menu buttons below to navigate:</i>";
+    tgShareLink;
 
   var replyKeyboard = (user.telegramid == adminId) ? [
     [
@@ -234,12 +229,7 @@ if (hasMedia) {
     ],
     [
       { text: "🤖 My Bots", style: "primary" },
-      { text: "📊 Bot Stats", style: "primary" },
-      { text: "ℹ️ Help", style: "primary" }
-    ],
-    [
-      { text: "🤖 About Bot", style: "primary" },
-      { text: "🔄 Refresh", style: "success" },
+      { text: "ℹ️ Help", style: "primary" },
       { text: "🔙 Main Menu", style: "danger" }
     ]
   ];
@@ -314,12 +304,7 @@ var defaultKeyboard = (user.telegramid == adminId) ? [
   ],
   [
     { text: "🤖 My Bots", style: "primary" },
-    { text: "📊 Bot Stats", style: "primary" },
-    { text: "ℹ️ Help", style: "primary" }
-  ],
-  [
-    { text: "🤖 About Bot", style: "primary" },
-    { text: "🔄 Refresh", style: "success" },
+    { text: "ℹ️ Help", style: "primary" },
     { text: "🔙 Main Menu", style: "danger" }
   ]
 ];
@@ -328,7 +313,7 @@ Api.sendMessage({
   chat_id: chat.chatid,
   text: "🤖 <b>Welcome to File Share Bot!</b>\n\n" +
     "• Send or forward any <b>document, video, audio, or photo</b> to upload and get your link instantly.\n" +
-    "• Tap any of the 3x3 menu buttons below:",
+    "• Use the menu below to navigate:",
   parse_mode: "html",
   reply_markup: {
     keyboard: defaultKeyboard,

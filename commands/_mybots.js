@@ -44,7 +44,6 @@ if (user.telegramid == adminId) {
   text += "⚙️ <i>Admin: Manage network bots via:</i> <code>/managebots</code>\n\n";
 }
 
-text += "<i>Use the 3x3 menu buttons below to navigate:</i>";
 
 var replyKeyboard = (user.telegramid == adminId) ? [
   [
@@ -70,12 +69,7 @@ var replyKeyboard = (user.telegramid == adminId) ? [
   ],
   [
     { text: "🤖 My Bots", style: "primary" },
-    { text: "📊 Bot Stats", style: "primary" },
-    { text: "ℹ️ Help", style: "primary" }
-  ],
-  [
-    { text: "🤖 About Bot", style: "primary" },
-    { text: "🔄 Refresh", style: "success" },
+    { text: "ℹ️ Help", style: "primary" },
     { text: "🔙 Main Menu", style: "danger" }
   ]
 ];

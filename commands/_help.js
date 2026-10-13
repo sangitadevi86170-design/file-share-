@@ -1,6 +1,6 @@
 /*CMD
   command: /help
-  help: View all available commands and help guide
+  help: View support and help contact
   need_reply: false
   auto_retry_time: 
   folder: 
@@ -15,34 +15,21 @@ var isUserAdmin = (user.telegramid == adminId);
 var locked = Bot.getProperty("locked_buttons") || {};
 
 if (locked.help && !isUserAdmin) {
-  Bot.sendMessage("🔒 <b>Feature Locked:</b> Help guide is currently locked by the administrator.", { parse_mode: "html" });
+  Bot.sendMessage("🔒 <b>Feature Locked:</b> Help support is currently locked by the administrator.", { parse_mode: "html" });
   return;
 }
 
-var helpText = "📖 <b>FILE SHARING BOT — COMPLETE USER & ADMIN MANUAL</b>\n\n" +
-  "<b>👤 User Commands & Reply Buttons:</b>\n" +
-  "• 📁 <b>My Files:</b> View, rename, edit captions, and manage your uploaded files\n" +
-  "• 📊 <b>My Traffic:</b> See live list of who downloaded your files (Name, Chat ID, Time)\n" +
-  "• 📤 <b>Upload File:</b> Instructions on how to upload documents, videos, photos, music\n" +
-  "• /start — Main menu & activate persistent keyboard\n" +
-  "• /help — Show this help manual\n\n";
+var supportUsername = Bot.getProperty("support_username") || "sangitadevi86170";
+var cleanUser = supportUsername.replace("@", "").trim();
+
+var helpText = "ℹ️ <b>NEED HELP OR SUPPORT?</b>\n\n" +
+  "Agar aapko koi bhi help ya issue ho, toh direct support par message karein:\n\n" +
+  "💬 <b>Support Contact:</b> @" + cleanUser + "\n\n" +
+  "👉 <a href=\"https://t.me/" + cleanUser + "\">Tap here to chat with Support</a>";
 
 if (isUserAdmin) {
-  helpText += "<b>👑 Administrator Commands:</b>\n" +
-    "• /admin — Open the Admin Dashboard\n" +
-    "• 📁 <b>All Files:</b> Manage every file uploaded on the bot\n" +
-    "• 📈 <b>All Traffic:</b> View global downloaders log across all files\n" +
-    "• 📢 <b>Force Channels:</b> Set Public, Private, or Request Channels\n" +
-    "• 🔐 <b>Button Locker:</b> Lock/unlock specific bot features\n" +
-    "• 🛡️ <b>Protect Content:</b> Toggle forwarding/saving prevention\n" +
-    "• /setdbchannel &lt;id&gt; — Set private storage backup channel\n" +
-    "• /broadcast &lt;msg&gt; — Broadcast message to all bot users\n" +
-    "• /ban &lt;id&gt; / /unban &lt;id&gt; — Ban/unban users\n\n";
+  helpText += "\n\n👑 <i>(Admin: You can change this username in Admin Panel via [ 💬 Set Support ] or /sethelp @username)</i>";
 }
-
-helpText += "💡 <b>How to download files?</b>\n" +
-  "Click any valid link formatted as:\n" +
-  "<code>https://t.me/&lt;bot_username&gt;?start=&lt;file_key&gt;</code>";
 
 var replyKeyboard = (user.telegramid == adminId) ? [
   [
@@ -68,12 +55,7 @@ var replyKeyboard = (user.telegramid == adminId) ? [
   ],
   [
     { text: "🤖 My Bots", style: "primary" },
-    { text: "📊 Bot Stats", style: "primary" },
-    { text: "ℹ️ Help", style: "primary" }
-  ],
-  [
-    { text: "🤖 About Bot", style: "primary" },
-    { text: "🔄 Refresh", style: "success" },
+    { text: "ℹ️ Help", style: "primary" },
     { text: "🔙 Main Menu", style: "danger" }
   ]
 ];
