@@ -28,7 +28,7 @@ var helpText = "ℹ️ <b>NEED HELP OR SUPPORT?</b>\n\n" +
   "👉 <a href=\"https://t.me/" + cleanUser + "\">Tap here to chat with Support</a>";
 
 if (isUserAdmin) {
-  helpText += "\n\n👑 <i>(Admin: You can change this username in Admin Panel via [ 💬 Set Support ] or /sethelp @username)</i>";
+  helpText += "\n\n👑 <i>(Admin: Tap [ 💬 Set Support ] in Admin Panel to change this contact)</i>";
 }
 
 var replyKeyboard = (user.telegramid == adminId) ? [

@@ -18,26 +18,39 @@ if (user.telegramid != adminId) {
 
 var currentSupport = Bot.getProperty("support_username") || "sangitadevi86170";
 
-if (params) {
+if (params && params !== "Set Support" && params !== "💬 Set Support") {
   var cleanUser = params.replace("@", "").trim();
   Bot.setProperty("support_username", cleanUser, "string");
   
   Bot.sendMessage(
-    "✅ <b>Support Username Updated!</b>\n\n" +
-    "Support username is now set to: <b>@" + cleanUser + "</b>\n" +
-    "Users clicking <b>ℹ️ Help</b> will now see this contact.",
+    "✅ <b>Support Username Updated Successfully!</b>\n\n" +
+    "• <b>Support Contact:</b> @" + cleanUser + "\n\n" +
+    "Users tapping <b>ℹ️ Help</b> will now directly see this contact.",
     { parse_mode: "html" }
   );
   return;
 }
 
-Bot.sendMessage(
-  "💬 <b>SET SUPPORT USERNAME</b>\n\n" +
-  "Current Support Contact: <b>@" + currentSupport + "</b>\n\n" +
-  "Please send the new Telegram username (with or without @) to show users in <b>ℹ️ Help</b>:\n" +
-  "<i>Example: SupportBot or @AdminUser</i>\n\n" +
-  "<i>Send /cancel to return without changing.</i>",
-  { parse_mode: "html" }
-);
+User.setProperty("admin_state", "waiting_support_username", "string");
 
-Bot.run({ command: "/onSaveHelp" });
+var navKeyboard = [
+  [
+    { text: "👑 Admin Panel", style: "primary" },
+    { text: "🔙 Main Menu", style: "danger" }
+  ]
+];
+
+Api.sendMessage({
+  chat_id: chat.chatid,
+  text: "💬 <b>SET SUPPORT USERNAME</b>\n\n" +
+    "• <b>Current Support Contact:</b> @" + currentSupport + "\n\n" +
+    "Please send the new Telegram username to display in <b>ℹ️ Help</b>:\n" +
+    "<i>Example: SupportBot or @AdminUser</i>\n\n" +
+    "<i>Or tap [ 👑 Admin Panel ] to cancel.</i>",
+  parse_mode: "html",
+  reply_markup: {
+    keyboard: navKeyboard,
+    resize_keyboard: true,
+    is_persistent: true
+  }
+});

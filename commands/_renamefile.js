@@ -13,10 +13,7 @@ CMD*/
 var input = params ? params.trim() : "";
 if (!input) {
   Bot.sendMessage(
-    "✏️ <b>Rename File Usage:</b>\n\n" +
-    "Send: <code>/renamefile &lt;file_code&gt; &lt;new_name&gt;</code>\n" +
-    "Example: <code>/renamefile BQADAQADzB8AAjAeUEZYFkQvPofTKBYE NewMovie.mkv</code>\n\n" +
-    "Or click 'Rename' from /myfiles.",
+    "✏️ <b>Rename File:</b>\n\nPlease select a file from <b>📁 My Files</b> to rename.",
     { parse_mode: "html" }
   );
   return;
@@ -56,7 +53,7 @@ if (parts.length > 1) {
 }
 
 // Prompt for new name interactively
-User.setProperty("renaming_code", fileCode, "string");
+User.setProperty("user_state", "waiting_rename_" + fileCode, "string");
 
 var navKeyboard = [
   [
@@ -77,5 +74,3 @@ Api.sendMessage({
     is_persistent: true
   }
 });
-
-Bot.run({ command: "/onRenameSave" });

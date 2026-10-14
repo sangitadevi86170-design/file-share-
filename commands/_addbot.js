@@ -40,4 +40,4 @@ Api.sendMessage({
   }
 });
 
-Bot.run({ command: "/onSaveBot" });
+User.setProperty("admin_state", "waiting_bot_input", "string");

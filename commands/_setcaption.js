@@ -13,9 +13,7 @@ CMD*/
 var input = params ? params.trim() : "";
 if (!input) {
   Bot.sendMessage(
-    "📝 <b>Set Caption Usage:</b>\n\n" +
-    "Send: <code>/setcaption &lt;file_code&gt; &lt;caption_text&gt;</code>\n" +
-    "Or click 'Edit Caption' from /myfiles.",
+    "📝 <b>Edit Caption:</b>\n\nPlease select a file from <b>📁 My Files</b> to edit caption.",
     { parse_mode: "html" }
   );
   return;
@@ -56,7 +54,7 @@ if (parts.length > 1) {
   return;
 }
 
-User.setProperty("caption_code", fileCode, "string");
+User.setProperty("user_state", "waiting_caption_" + fileCode, "string");
 
 var navKeyboard = [
   [
@@ -78,5 +76,3 @@ Api.sendMessage({
     is_persistent: true
   }
 });
-
-Bot.run({ command: "/onCaptionSave" });

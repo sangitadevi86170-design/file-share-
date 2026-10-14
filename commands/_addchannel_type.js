@@ -35,6 +35,7 @@ var navKeyboard = [
 ];
 
 if (type === "public") {
+  User.setProperty("admin_state", "waiting_public_channel", "string");
   Api.sendMessage({
     chat_id: chat.chatid,
     text: "🌐 <b>ADDING PUBLIC CHANNEL:</b>\n\n" +
@@ -49,8 +50,8 @@ if (type === "public") {
       is_persistent: true
     }
   });
-  Bot.run({ command: "/onPublicInput" });
 } else if (type === "private") {
+  User.setProperty("admin_state", "waiting_private_chat_id", "string");
   Api.sendMessage({
     chat_id: chat.chatid,
     text: "🔒 <b>ADDING PRIVATE CHANNEL (Step 1 of 2):</b>\n\n" +
@@ -65,8 +66,8 @@ if (type === "public") {
       is_persistent: true
     }
   });
-  Bot.run({ command: "/onPrivateChatId" });
 } else if (type === "request") {
+  User.setProperty("admin_state", "waiting_request_chat_id", "string");
   Api.sendMessage({
     chat_id: chat.chatid,
     text: "📝 <b>ADDING PRIVATE REQUEST CHANNEL (Step 1 of 2):</b>\n\n" +
@@ -82,5 +83,4 @@ if (type === "public") {
       is_persistent: true
     }
   });
-  Bot.run({ command: "/onRequestChatId" });
 }

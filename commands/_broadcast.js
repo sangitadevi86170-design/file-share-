@@ -41,7 +41,7 @@ if (!textToBroadcast || textToBroadcast === "Broadcast" || textToBroadcast === "
     }
   });
 
-  Bot.run({ command: "/onBroadcastInput" });
+  User.setProperty("admin_state", "waiting_broadcast_message", "string");
   return;
 }
 

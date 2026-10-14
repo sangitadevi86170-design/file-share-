@@ -247,8 +247,455 @@ if (hasMedia) {
   return;
 }
 
-// Fallback for general text messages
-var incomingText = message || "";
+// Fallback for general text messages & Button-driven State Machine
+var incomingText = (message || "").trim();
+
+// Check if user clicked a menu or navigation button
+var isNavButton = (
+  incomingText.indexOf("Main Menu") !== -1 ||
+  incomingText.indexOf("Admin Panel") !== -1 ||
+  incomingText.indexOf("Back to Channels") !== -1 ||
+  incomingText.indexOf("My Files") !== -1 ||
+  incomingText.indexOf("Force Channels") !== -1 ||
+  incomingText === "/cancel"
+);
+
+var adminState = User.getProperty("admin_state");
+var userState = User.getProperty("user_state") || "";
+
+// If admin tapped a navigation button, cancel any pending state
+if (isNavButton) {
+  User.setProperty("admin_state", null, "string");
+  User.setProperty("user_state", null, "string");
+  if (incomingText.indexOf("Admin Panel") !== -1) {
+    Bot.runCommand("/admin");
+    return;
+  }
+  if (incomingText.indexOf("Back to Channels") !== -1 || incomingText.indexOf("Force Channels") !== -1) {
+    Bot.runCommand("/fsubchannels");
+    return;
+  }
+  if (incomingText.indexOf("My Files") !== -1) {
+    Bot.runCommand("/myfiles");
+    return;
+  }
+  if (incomingText.indexOf("Main Menu") !== -1 || incomingText === "/cancel") {
+    Bot.runCommand("/start");
+    return;
+  }
+}
+
+// ─── ADMIN CONVERSATIONAL STATE MACHINE ─────────────────────────
+if (isUserAdmin && adminState) {
+  // 1. Setting Support Username
+  if (adminState === "waiting_support_username") {
+    User.setProperty("admin_state", null, "string");
+    var cleanSupport = incomingText.replace("@", "").trim();
+    Bot.setProperty("support_username", cleanSupport, "string");
+
+    var adminReplyKeyboard = [
+      [
+        { text: "📁 All Files", style: "primary" },
+        { text: "📈 All Traffic", style: "primary" },
+        { text: "📢 Force Channels", style: "primary" }
+      ],
+      [
+        { text: "🔐 Button Locker", style: "primary" },
+        { text: "🛡️ Protect Content", style: "primary" },
+        { text: "📦 Storage DB", style: "success" }
+      ],
+      [
+        { text: "💬 Set Support", style: "primary" },
+        { text: "📢 Broadcast", style: "primary" },
+        { text: "🔙 Main Menu", style: "danger" }
+      ]
+    ];
+
+    Api.sendMessage({
+      chat_id: chat.chatid,
+      text: "✅ <b>Support Contact Updated Successfully!</b>\n\n" +
+        "• <b>New Support Username:</b> @" + cleanSupport + "\n\n" +
+        "Users tapping <b>ℹ️ Help</b> will now directly see this contact.",
+      parse_mode: "html",
+      reply_markup: {
+        keyboard: adminReplyKeyboard,
+        resize_keyboard: true,
+        is_persistent: true
+      }
+    });
+    return;
+  }
+
+  // 2. Broadcast Message
+  if (adminState === "waiting_broadcast_message") {
+    User.setProperty("admin_state", null, "string");
+    var userList = Bot.getProperty("user_list") || [];
+    var sentCount = 0;
+    var failedCount = 0;
+
+    for (var u = 0; u < userList.length; u++) {
+      try {
+        Api.sendMessage({
+          chat_id: userList[u],
+          text: "📢 <b>Announcement:</b>\n\n" + incomingText,
+          parse_mode: "html"
+        });
+        sentCount++;
+      } catch (err) {
+        failedCount++;
+      }
+    }
+
+    var adminReplyKeyboard = [
+      [
+        { text: "📁 All Files", style: "primary" },
+        { text: "📈 All Traffic", style: "primary" },
+        { text: "📢 Force Channels", style: "primary" }
+      ],
+      [
+        { text: "🔐 Button Locker", style: "primary" },
+        { text: "🛡️ Protect Content", style: "primary" },
+        { text: "📦 Storage DB", style: "success" }
+      ],
+      [
+        { text: "💬 Set Support", style: "primary" },
+        { text: "📢 Broadcast", style: "primary" },
+        { text: "🔙 Main Menu", style: "danger" }
+      ]
+    ];
+
+    Api.sendMessage({
+      chat_id: chat.chatid,
+      text: "✅ <b>Broadcast Dispatched Successfully!</b>\n\n" +
+        "• <b>Total Users Targeted:</b> " + userList.length + "\n" +
+        "• <b>Messages Delivered:</b> " + sentCount + "\n" +
+        (failedCount > 0 ? ("• <b>Failed/Blocked:</b> " + failedCount + "\n") : ""),
+      parse_mode: "html",
+      reply_markup: {
+        keyboard: adminReplyKeyboard,
+        resize_keyboard: true,
+        is_persistent: true
+      }
+    });
+    return;
+  }
+
+  // 3. Public Channel Username Input
+  if (adminState === "waiting_public_channel") {
+    User.setProperty("admin_state", null, "string");
+    var chHandle = incomingText.replace("@", "").trim();
+    var chId = "@" + chHandle;
+    var chLink = "https://t.me/" + chHandle;
+
+    var channels = Bot.getProperty("fsub_channels") || [];
+    var chExists = false;
+    for (var c = 0; c < channels.length; c++) {
+      if (channels[c].id.toLowerCase() === chId.toLowerCase()) {
+        channels[c].link = chLink;
+        channels[c].type = "public";
+        channels[c].title = chId;
+        chExists = true;
+        break;
+      }
+    }
+    if (!chExists) {
+      channels.push({ id: chId, link: chLink, title: chId, type: "public" });
+    }
+    Bot.setProperty("fsub_channels", channels, "json");
+    Bot.setProperty("fsub_channel", chId, "string");
+
+    var fsubKeyboard = [
+      [
+        { text: "🌐 Public Channel", style: "primary" },
+        { text: "🔒 Private Channel", style: "primary" },
+        { text: "📝 Request Channel", style: "primary" }
+      ],
+      [
+        { text: "🗑️ Remove All Channels", style: "danger" },
+        { text: "👑 Admin Panel", style: "primary" },
+        { text: "🔙 Main Menu", style: "danger" }
+      ]
+    ];
+
+    Api.sendMessage({
+      chat_id: chat.chatid,
+      text: "✅ <b>Public Channel Added Successfully!</b>\n\n" +
+        "• <b>Type:</b> 🌐 PUBLIC\n" +
+        "• <b>Username:</b> <code>" + chId + "</code>\n" +
+        "• <b>Link:</b> " + chLink + "\n\n" +
+        "Users will now be required to join this channel before accessing shared files.",
+      parse_mode: "html",
+      reply_markup: {
+        keyboard: fsubKeyboard,
+        resize_keyboard: true,
+        is_persistent: true
+      }
+    });
+    return;
+  }
+
+  // 4. Private Channel: Chat ID (Step 1/2)
+  if (adminState === "waiting_private_chat_id") {
+    User.setProperty("temp_private_id", incomingText, "string");
+    User.setProperty("admin_state", "waiting_private_link", "string");
+
+    var navKeyboard = [
+      [
+        { text: "🔙 Back to Channels", style: "primary" },
+        { text: "👑 Admin Panel", style: "primary" },
+        { text: "🔙 Main Menu", style: "danger" }
+      ]
+    ];
+
+    Api.sendMessage({
+      chat_id: chat.chatid,
+      text: "🔒 <b>PRIVATE CHANNEL SETUP (Step 2 of 2):</b>\n\n" +
+        "• Chat ID Saved: <code>" + incomingText + "</code>\n\n" +
+        "Now please send the Private Channel's <b>Invite Link</b>:\n" +
+        "<i>Example:</i> <code>https://t.me/+AbCdEfGhIj</code>\n\n" +
+        "<i>Or tap [ 🔙 Back to Channels ] to cancel.</i>",
+      parse_mode: "html",
+      reply_markup: {
+        keyboard: navKeyboard,
+        resize_keyboard: true,
+        is_persistent: true
+      }
+    });
+    return;
+  }
+
+  // 5. Private Channel: Invite Link (Step 2/2)
+  if (adminState === "waiting_private_link") {
+    User.setProperty("admin_state", null, "string");
+    var privId = User.getProperty("temp_private_id") || "Private Channel";
+    User.setProperty("temp_private_id", null, "string");
+
+    var channels = Bot.getProperty("fsub_channels") || [];
+    channels.push({
+      id: privId,
+      link: incomingText,
+      title: "Private Channel (" + privId + ")",
+      type: "private"
+    });
+    Bot.setProperty("fsub_channels", channels, "json");
+    Bot.setProperty("fsub_channel", privId, "string");
+
+    var fsubKeyboard = [
+      [
+        { text: "🌐 Public Channel", style: "primary" },
+        { text: "🔒 Private Channel", style: "primary" },
+        { text: "📝 Request Channel", style: "primary" }
+      ],
+      [
+        { text: "🗑️ Remove All Channels", style: "danger" },
+        { text: "👑 Admin Panel", style: "primary" },
+        { text: "🔙 Main Menu", style: "danger" }
+      ]
+    ];
+
+    Api.sendMessage({
+      chat_id: chat.chatid,
+      text: "✅ <b>Private Channel Added Successfully!</b>\n\n" +
+        "• <b>Type:</b> 🔒 PRIVATE\n" +
+        "• <b>Chat ID:</b> <code>" + privId + "</code>\n" +
+        "• <b>Invite Link:</b> " + incomingText,
+      parse_mode: "html",
+      reply_markup: {
+        keyboard: fsubKeyboard,
+        resize_keyboard: true,
+        is_persistent: true
+      }
+    });
+    return;
+  }
+
+  // 6. Request Channel: Chat ID (Step 1/2)
+  if (adminState === "waiting_request_chat_id") {
+    User.setProperty("temp_request_id", incomingText, "string");
+    User.setProperty("admin_state", "waiting_request_link", "string");
+
+    var navKeyboard = [
+      [
+        { text: "🔙 Back to Channels", style: "primary" },
+        { text: "👑 Admin Panel", style: "primary" },
+        { text: "🔙 Main Menu", style: "danger" }
+      ]
+    ];
+
+    Api.sendMessage({
+      chat_id: chat.chatid,
+      text: "📝 <b>PRIVATE REQUEST CHANNEL SETUP (Step 2 of 2):</b>\n\n" +
+        "• Chat ID Saved: <code>" + incomingText + "</code>\n\n" +
+        "Now please send the <b>Join Request Link</b>:\n" +
+        "<i>Example:</i> <code>https://t.me/+RequestJoinHash</code>\n\n" +
+        "💡 <i>Users with pending join requests will automatically be approved to download files!</i>\n\n" +
+        "<i>Or tap [ 🔙 Back to Channels ] to cancel.</i>",
+      parse_mode: "html",
+      reply_markup: {
+        keyboard: navKeyboard,
+        resize_keyboard: true,
+        is_persistent: true
+      }
+    });
+    return;
+  }
+
+  // 7. Request Channel: Request Link (Step 2/2)
+  if (adminState === "waiting_request_link") {
+    User.setProperty("admin_state", null, "string");
+    var reqId = User.getProperty("temp_request_id") || "Request Channel";
+    User.setProperty("temp_request_id", null, "string");
+
+    var channels = Bot.getProperty("fsub_channels") || [];
+    channels.push({
+      id: reqId,
+      link: incomingText,
+      title: "Request Channel (" + reqId + ")",
+      type: "request"
+    });
+    Bot.setProperty("fsub_channels", channels, "json");
+    Bot.setProperty("fsub_channel", reqId, "string");
+
+    var fsubKeyboard = [
+      [
+        { text: "🌐 Public Channel", style: "primary" },
+        { text: "🔒 Private Channel", style: "primary" },
+        { text: "📝 Request Channel", style: "primary" }
+      ],
+      [
+        { text: "🗑️ Remove All Channels", style: "danger" },
+        { text: "👑 Admin Panel", style: "primary" },
+        { text: "🔙 Main Menu", style: "danger" }
+      ]
+    ];
+
+    Api.sendMessage({
+      chat_id: chat.chatid,
+      text: "✅ <b>Private Request Channel Added Successfully!</b>\n\n" +
+        "• <b>Type:</b> 📝 PRIVATE REQUEST (Approval Mode)\n" +
+        "• <b>Chat ID:</b> <code>" + reqId + "</code>\n" +
+        "• <b>Request Link:</b> " + incomingText + "\n\n" +
+        "💡 <i>Users with pending join requests will automatically unlock files!</i>",
+      parse_mode: "html",
+      reply_markup: {
+        keyboard: fsubKeyboard,
+        resize_keyboard: true,
+        is_persistent: true
+      }
+    });
+    return;
+  }
+
+  // 8. Storage DB Channel Update
+  if (adminState === "waiting_db_channel") {
+    User.setProperty("admin_state", null, "string");
+    var dbId = incomingText;
+    Bot.setProperty("db_channel", dbId, "string");
+
+    var adminReplyKeyboard = [
+      [
+        { text: "📁 All Files", style: "primary" },
+        { text: "📈 All Traffic", style: "primary" },
+        { text: "📢 Force Channels", style: "primary" }
+      ],
+      [
+        { text: "🔐 Button Locker", style: "primary" },
+        { text: "🛡️ Protect Content", style: "primary" },
+        { text: "📦 Storage DB", style: "success" }
+      ],
+      [
+        { text: "💬 Set Support", style: "primary" },
+        { text: "📢 Broadcast", style: "primary" },
+        { text: "🔙 Main Menu", style: "danger" }
+      ]
+    ];
+
+    Api.sendMessage({
+      chat_id: chat.chatid,
+      text: "✅ <b>Storage / Database Channel Updated Successfully!</b>\n\n" +
+        "• <b>Backup Channel ID:</b> <code>" + dbId + "</code>\n\n" +
+        "All uploaded files will now automatically be backed up to this channel!",
+      parse_mode: "html",
+      reply_markup: {
+        keyboard: adminReplyKeyboard,
+        resize_keyboard: true,
+        is_persistent: true
+      }
+    });
+    return;
+  }
+
+  // 9. Network Bot Input
+  if (adminState === "waiting_bot_input") {
+    User.setProperty("admin_state", null, "string");
+    var parts = incomingText.split(" ");
+    var bUser = parts[0];
+    if (bUser.indexOf("@") !== 0 && bUser.indexOf("http") !== 0) {
+      bUser = "@" + bUser;
+    }
+    var bLink = "";
+    var cleanHandle = bUser;
+    if (bUser.indexOf("http") === 0) {
+      bLink = bUser;
+      cleanHandle = bUser.split("/").pop();
+      if (cleanHandle.indexOf("@") !== 0) cleanHandle = "@" + cleanHandle;
+    } else {
+      bLink = "https://t.me/" + bUser.replace("@", "");
+    }
+    var bTitle = parts.length > 1 ? parts.slice(1).join(" ") : cleanHandle;
+    var botsList = Bot.getProperty("my_bots_list") || [];
+    botsList.push({ username: cleanHandle, title: bTitle, link: bLink });
+    Bot.setProperty("my_bots_list", botsList, "json");
+
+    Bot.sendMessage(
+      "✅ <b>Bot Added to 'My Bots' Successfully!</b>\n\n" +
+      "• <b>Title:</b> " + bTitle + "\n" +
+      "• <b>Username:</b> " + cleanHandle + "\n" +
+      "• <b>Link:</b> " + bLink,
+      { parse_mode: "html" }
+    );
+    Bot.runCommand("/managebots");
+    return;
+  }
+}
+
+// ─── USER FILE RENAME & CAPTION STATE MACHINE ───────────────────
+if (userState) {
+  if (userState.indexOf("waiting_rename_") === 0) {
+    var rCode = userState.replace("waiting_rename_", "");
+    User.setProperty("user_state", null, "string");
+    var rData = Bot.getProperty("file_" + rCode);
+    if (rData) {
+      rData.name = incomingText;
+      Bot.setProperty("file_" + rCode, rData, "json");
+      Bot.sendMessage(
+        "✅ <b>File Renamed Successfully!</b>\n\n" +
+        "• <b>New Name:</b> <code>" + incomingText + "</code>",
+        { parse_mode: "html" }
+      );
+      Bot.runCommand("/managefile " + rCode);
+      return;
+    }
+  }
+
+  if (userState.indexOf("waiting_caption_") === 0) {
+    var cCode = userState.replace("waiting_caption_", "");
+    User.setProperty("user_state", null, "string");
+    var cData = Bot.getProperty("file_" + cCode);
+    if (cData) {
+      cData.caption = (incomingText.toLowerCase() === "clear" || incomingText.toLowerCase() === "none") ? "" : incomingText;
+      Bot.setProperty("file_" + cCode, cData, "json");
+      Bot.sendMessage(
+        "✅ <b>Caption Updated Successfully!</b>",
+        { parse_mode: "html" }
+      );
+      Bot.runCommand("/managefile " + cCode);
+      return;
+    }
+  }
+}
+
+// Clickable action command shortcuts
 if (incomingText.indexOf("/del_") === 0) {
   var codeToDel = incomingText.replace("/del_", "");
   Bot.runCommand("/deletefile " + codeToDel);
@@ -279,7 +726,7 @@ if (incomingText.indexOf("/delchannel_") === 0) {
   return;
 }
 
-// If user sent unrecognized text
+// Default fallback for any unrecognized text
 var defaultKeyboard = (user.telegramid == adminId) ? [
   [
     { text: "📁 My Files", style: "primary" },
