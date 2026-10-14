@@ -47,6 +47,7 @@
     { "command": "/protectcontent", "help": "Toggle content forwarding & saving protection", "aliases": "🛡️ Protect Content, Protect Content, /protect", "file": "commands/_protectcontent.js" },
     { "command": "/broadcast", "help": "Broadcast announcement to all bot users", "aliases": "📢 Broadcast, Broadcast", "file": "commands/_broadcast.js" },
     { "command": "/onBroadcastInput", "help": "Dispatch broadcast announcement callback", "file": "commands/_onBroadcastInput.js" },
+    { "command": "/onBroadcastError", "help": "Handle broadcast failure delivery callback", "file": "commands/_onBroadcastError.js" },
     { "command": "/publicupload", "help": "Toggle user upload permissions", "file": "commands/_publicupload.js" },
     { "command": "/ban", "help": "Ban an abusive user", "file": "commands/_ban.js" },
     { "command": "/unban", "help": "Unban a user", "file": "commands/_unban.js" },

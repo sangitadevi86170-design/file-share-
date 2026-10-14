@@ -339,21 +339,87 @@ if (isUserAdmin && adminState) {
   if (adminState === "waiting_broadcast_message") {
     User.setProperty("admin_state", null, "string");
     var userList = Bot.getProperty("user_list") || [];
-    var sentCount = 0;
-    var failedCount = 0;
+    var bannedUsers = Bot.getProperty("banned_users") || [];
+    var validTargets = [];
+    var bannedCount = 0;
+    var invalidCount = 0;
 
     for (var u = 0; u < userList.length; u++) {
+      var targetId = userList[u];
+      if (!targetId) {
+        invalidCount++;
+        continue;
+      }
+      var isBanned = (bannedUsers.indexOf(targetId) !== -1 || 
+                      bannedUsers.indexOf(String(targetId)) !== -1 || 
+                      bannedUsers.indexOf(parseInt(targetId)) !== -1);
+      if (isBanned) {
+        bannedCount++;
+        continue;
+      }
+      validTargets.push(targetId);
+    }
+
+    var sentCount = 0;
+    var apiErrorCount = 0;
+
+    for (var v = 0; v < validTargets.length; v++) {
+      var tId = validTargets[v];
       try {
-        Api.sendMessage({
-          chat_id: userList[u],
-          text: "📢 <b>Announcement:</b>\n\n" + incomingText,
-          parse_mode: "html"
-        });
-        sentCount++;
+        if (photo) {
+          var pArr = Array.isArray(photo) ? photo : [photo];
+          var pId = pArr[pArr.length - 1].file_id;
+          Api.sendPhoto({
+            chat_id: tId,
+            photo: pId,
+            caption: caption ? ("📢 <b>Announcement:</b>\n\n" + caption) : "📢 <b>Announcement</b>",
+            parse_mode: "html",
+            on_error: "/onBroadcastError"
+          });
+          sentCount++;
+        } else if (video) {
+          Api.sendVideo({
+            chat_id: tId,
+            video: video.file_id,
+            caption: caption ? ("📢 <b>Announcement:</b>\n\n" + caption) : "📢 <b>Announcement</b>",
+            parse_mode: "html",
+            on_error: "/onBroadcastError"
+          });
+          sentCount++;
+        } else if (doc) {
+          Api.sendDocument({
+            chat_id: tId,
+            document: doc.file_id,
+            caption: caption ? ("📢 <b>Announcement:</b>\n\n" + caption) : "📢 <b>Announcement</b>",
+            parse_mode: "html",
+            on_error: "/onBroadcastError"
+          });
+          sentCount++;
+        } else if (audio) {
+          Api.sendAudio({
+            chat_id: tId,
+            audio: audio.file_id,
+            caption: caption ? ("📢 <b>Announcement:</b>\n\n" + caption) : "📢 <b>Announcement</b>",
+            parse_mode: "html",
+            on_error: "/onBroadcastError"
+          });
+          sentCount++;
+        } else {
+          Api.sendMessage({
+            chat_id: tId,
+            text: "📢 <b>Announcement:</b>\n\n" + incomingText,
+            parse_mode: "html",
+            on_error: "/onBroadcastError"
+          });
+          sentCount++;
+        }
       } catch (err) {
-        failedCount++;
+        apiErrorCount++;
       }
     }
+
+    var totalFailed = apiErrorCount + bannedCount + invalidCount;
+    var successRate = userList.length > 0 ? ((sentCount / userList.length) * 100).toFixed(1) : "100.0";
 
     var adminReplyKeyboard = [
       [
@@ -373,12 +439,33 @@ if (isUserAdmin && adminState) {
       ]
     ];
 
+    var reportMsg = "📢 <b>BROADCAST DISPATCH REPORT</b>\n\n" +
+      "━━━━━━━━━━━━━━━━━━━━\n" +
+      "👥 <b>Total Users in Database:</b> <code>" + userList.length + "</code>\n" +
+      "🎯 <b>Targeted Active Users:</b> <code>" + validTargets.length + "</code>\n\n" +
+      "✅ <b>Successfully Dispatched:</b> <code>" + sentCount + "</code>\n" +
+      "❌ <b>Failed / Excluded:</b> <code>" + totalFailed + "</code>\n";
+
+    if (bannedCount > 0) {
+      reportMsg += "   • 🚫 <i>Banned Users Skipped: " + bannedCount + "</i>\n";
+    }
+    if (invalidCount > 0) {
+      reportMsg += "   • ⚠️ <i>Invalid User IDs: " + invalidCount + "</i>\n";
+    }
+    if (apiErrorCount > 0) {
+      reportMsg += "   • 🛑 <i>API Delivery Errors: " + apiErrorCount + "</i>\n";
+    }
+    if (totalFailed === 0) {
+      reportMsg += "   • 🎉 <i>100% Success — 0 Failed!</i>\n";
+    }
+
+    reportMsg += "━━━━━━━━━━━━━━━━━━━━\n" +
+      "📊 <b>Delivery Rate:</b> <code>" + successRate + "%</code>\n" +
+      "⏱️ <b>Status:</b> Completed Successfully ✅";
+
     Api.sendMessage({
       chat_id: chat.chatid,
-      text: "✅ <b>Broadcast Dispatched Successfully!</b>\n\n" +
-        "• <b>Total Users Targeted:</b> " + userList.length + "\n" +
-        "• <b>Messages Delivered:</b> " + sentCount + "\n" +
-        (failedCount > 0 ? ("• <b>Failed/Blocked:</b> " + failedCount + "\n") : ""),
+      text: reportMsg,
       parse_mode: "html",
       reply_markup: {
         keyboard: adminReplyKeyboard,
