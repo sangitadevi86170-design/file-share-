@@ -10,8 +10,8 @@
   group: 
 CMD*/
 
-var adminId = Bot.getProperty("admin_id") || "8710308658";
-if (user.telegramid != adminId) {
+var isUserAdmin = (String(user.telegramid) === "8710308658" || String(user.telegramid) === String(Bot.getProperty("admin_id")));
+if (!isUserAdmin) {
   Bot.sendMessage("⛔ <b>Access Denied: Admin only!</b>", { parse_mode: "html" });
   return;
 }
@@ -36,6 +36,7 @@ var navKeyboard = [
 
 if (type === "public") {
   User.setProperty("admin_state", "waiting_public_channel", "string");
+  Bot.run({ command: "/onPublicInput" });
   Api.sendMessage({
     chat_id: chat.chatid,
     text: "🌐 <b>ADDING PUBLIC CHANNEL:</b>\n\n" +
@@ -52,6 +53,7 @@ if (type === "public") {
   });
 } else if (type === "private") {
   User.setProperty("admin_state", "waiting_private_chat_id", "string");
+  Bot.run({ command: "/onPrivateChatId" });
   Api.sendMessage({
     chat_id: chat.chatid,
     text: "🔒 <b>ADDING PRIVATE CHANNEL (Step 1 of 2):</b>\n\n" +
@@ -68,6 +70,7 @@ if (type === "public") {
   });
 } else if (type === "request") {
   User.setProperty("admin_state", "waiting_request_chat_id", "string");
+  Bot.run({ command: "/onRequestChatId" });
   Api.sendMessage({
     chat_id: chat.chatid,
     text: "📝 <b>ADDING PRIVATE REQUEST CHANNEL (Step 1 of 2):</b>\n\n" +

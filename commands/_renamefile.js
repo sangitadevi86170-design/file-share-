@@ -53,7 +53,9 @@ if (parts.length > 1) {
 }
 
 // Prompt for new name interactively
+User.setProperty("renaming_code", fileCode, "string");
 User.setProperty("user_state", "waiting_rename_" + fileCode, "string");
+Bot.run({ command: "/onRenameSave" });
 
 var navKeyboard = [
   [

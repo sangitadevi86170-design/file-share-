@@ -18,41 +18,41 @@ if (bannedUsers.indexOf(user.telegramid) !== -1) {
 }
 
 var adminId = Bot.getProperty("admin_id") || "8710308658";
-var isUserAdmin = (user.telegramid == adminId);
+var isUserAdmin = (String(user.telegramid) === "8710308658" || String(user.telegramid) === String(adminId));
 var lockedButtons = Bot.getProperty("locked_buttons") || {};
 
 // Comprehensive media detection across all Bots.Business BJS execution contexts
-var doc = (request && request.document) || 
-          (request && request.message && request.message.document) || 
-          (options && options.document) || 
+var doc = (typeof request !== "undefined" && request && request.document) || 
+          (typeof request !== "undefined" && request && request.message && request.message.document) || 
+          (typeof options !== "undefined" && options && options.document) || 
           (typeof message === "object" && message && message.document);
 
-var video = (request && request.video) || 
-            (request && request.message && request.message.video) || 
-            (options && options.video) || 
+var video = (typeof request !== "undefined" && request && request.video) || 
+            (typeof request !== "undefined" && request && request.message && request.message.video) || 
+            (typeof options !== "undefined" && options && options.video) || 
             (typeof message === "object" && message && message.video);
 
-var photo = (request && request.photo) || 
-            (request && request.message && request.message.photo) || 
-            (options && options.photo) || 
+var photo = (typeof request !== "undefined" && request && request.photo) || 
+            (typeof request !== "undefined" && request && request.message && request.message.photo) || 
+            (typeof options !== "undefined" && options && options.photo) || 
             (typeof message === "object" && message && message.photo);
 
-var audio = (request && request.audio) || 
-            (request && request.message && request.message.audio) || 
-            (options && options.audio) || 
+var audio = (typeof request !== "undefined" && request && request.audio) || 
+            (typeof request !== "undefined" && request && request.message && request.message.audio) || 
+            (typeof options !== "undefined" && options && options.audio) || 
             (typeof message === "object" && message && message.audio);
 
-var voice = (request && request.voice) || 
-            (request && request.message && request.message.voice) || 
-            (options && options.voice) || 
+var voice = (typeof request !== "undefined" && request && request.voice) || 
+            (typeof request !== "undefined" && request && request.message && request.message.voice) || 
+            (typeof options !== "undefined" && options && options.voice) || 
             (typeof message === "object" && message && message.voice);
 
-var animation = (request && request.animation) || 
-                (request && request.message && request.message.animation) || 
-                (options && options.animation);
+var animation = (typeof request !== "undefined" && request && request.animation) || 
+                (typeof request !== "undefined" && request && request.message && request.message.animation) || 
+                (typeof options !== "undefined" && options && options.animation);
 
-var caption = (request && request.caption) || 
-              (request && request.message && request.message.caption) || 
+var caption = (typeof request !== "undefined" && request && request.caption) || 
+              (typeof request !== "undefined" && request && request.message && request.message.caption) || 
               (typeof message === "string" && message ? message : "");
 
 var hasMedia = (doc || video || photo || audio || voice || animation);
@@ -205,7 +205,7 @@ if (hasMedia) {
     "🚀 <b>One-Click Share:</b>\n" +
     tgShareLink;
 
-  var replyKeyboard = (user.telegramid == adminId) ? [
+  var replyKeyboard = (isUserAdmin) ? [
     [
       { text: "📁 My Files", style: "primary" },
       { text: "📤 Upload File", style: "success" },
@@ -248,7 +248,16 @@ if (hasMedia) {
 }
 
 // Fallback for general text messages & Button-driven State Machine
-var incomingText = (message || "").trim();
+var incomingText = "";
+if (typeof message === "string") {
+  incomingText = message.trim();
+} else if (typeof message === "object" && message && message.text) {
+  incomingText = message.text.trim();
+} else if (typeof request !== "undefined" && request && request.text) {
+  incomingText = request.text.trim();
+} else if (typeof request !== "undefined" && request && request.message && request.message.text) {
+  incomingText = request.message.text.trim();
+}
 
 // Check if user clicked a menu or navigation button
 var isNavButton = (
@@ -384,6 +393,9 @@ if (isUserAdmin && adminState) {
   if (adminState === "waiting_public_channel") {
     User.setProperty("admin_state", null, "string");
     var chHandle = incomingText.replace("@", "").trim();
+    if (chHandle.indexOf("t.me/") !== -1) {
+      chHandle = chHandle.split("t.me/")[1].replace("/", "").trim();
+    }
     var chId = "@" + chHandle;
     var chLink = "https://t.me/" + chHandle;
 
@@ -431,6 +443,7 @@ if (isUserAdmin && adminState) {
         is_persistent: true
       }
     });
+    Bot.runCommand("/fsubchannels");
     return;
   }
 
@@ -506,6 +519,7 @@ if (isUserAdmin && adminState) {
         is_persistent: true
       }
     });
+    Bot.runCommand("/fsubchannels");
     return;
   }
 
@@ -583,6 +597,7 @@ if (isUserAdmin && adminState) {
         is_persistent: true
       }
     });
+    Bot.runCommand("/fsubchannels");
     return;
   }
 
@@ -727,7 +742,7 @@ if (incomingText.indexOf("/delchannel_") === 0) {
 }
 
 // Default fallback for any unrecognized text
-var defaultKeyboard = (user.telegramid == adminId) ? [
+var defaultKeyboard = (isUserAdmin) ? [
   [
     { text: "📁 My Files", style: "primary" },
     { text: "📤 Upload File", style: "success" },

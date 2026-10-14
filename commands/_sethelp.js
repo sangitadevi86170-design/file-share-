@@ -32,6 +32,7 @@ if (params && params !== "Set Support" && params !== "💬 Set Support") {
 }
 
 User.setProperty("admin_state", "waiting_support_username", "string");
+Bot.run({ command: "/onSaveHelp" });
 
 var navKeyboard = [
   [

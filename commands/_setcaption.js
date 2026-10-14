@@ -54,7 +54,9 @@ if (parts.length > 1) {
   return;
 }
 
+User.setProperty("caption_code", fileCode, "string");
 User.setProperty("user_state", "waiting_caption_" + fileCode, "string");
+Bot.run({ command: "/onCaptionSave" });
 
 var navKeyboard = [
   [

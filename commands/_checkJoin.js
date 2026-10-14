@@ -10,7 +10,7 @@
   group: 
 CMD*/
 
-var member = options && options.result;
+var member = (typeof options !== "undefined" && options && options.result) ? options.result : null;
 var channels = Bot.getProperty("fsub_channels") || [];
 var requestedFile = User.getProperty("requested_file");
 
